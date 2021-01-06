@@ -11,8 +11,8 @@ const request = (Xhrdata) => {
 		data: Xhrdata.data || '',
 		dataType: 'json',
 		header: {
-			source: 1,
-			sourceName: 'WAP'
+			source: 2,
+			sourceName: 'WEB'
 		}
 	};
 	return uni.request(parames).then(res => {
