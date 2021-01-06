@@ -16,10 +16,9 @@ $color2:#e04343;
 .disable {
 	pointer-events: none;
 }
-//灰色禁用
+//灰色滤镜
 .gray {
     filter: grayscale(100%);
-    pointer-events: none;
 }
 
 //溢出省略

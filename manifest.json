@@ -82,6 +82,47 @@
 					"pathRewrite": {
 						"^/user": "user"
 					}
+				},
+				"/userConsign": {
+					"target": "http://10.1.44.75:9002",
+					"ws": true,
+					"changeOrigin": true,
+					"pathRewrite": {
+						"^/userConsign": "userConsign"
+					}
+				},
+				"/shopper": {
+					"target": "http://10.1.44.75:9003",
+					"ws": true,
+					"changeOrigin": true,
+					"pathRewrite": {
+						"^/shopper": "shopper"
+					}
+				},
+
+				"/product/categoryProductList": {
+					"target": "http://10.1.44.75:9010",
+					"ws": true,
+					"changeOrigin": true,
+					"pathRewrite": {
+						"^/product/categoryProductList": "product/categoryProductList"
+					}
+				},
+				"/product/findAttrProduct": {
+					"target": "http://10.1.44.75:9010",
+					"ws": true,
+					"changeOrigin": true,
+					"pathRewrite": {
+						"^/product/findAttrProduct": "product/findAttrProduct"
+					}
+				},
+				"/order": {
+					"target": "http://10.1.44.75:9004",
+					"ws": true,
+					"changeOrigin": true,
+					"pathRewrite": {
+						"^/order": "order"
+					}
 				}
 			}
 		}

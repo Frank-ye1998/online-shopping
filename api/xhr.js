@@ -4,6 +4,7 @@ import Vue from 'vue';
 
 //普通请求
 const request = (Xhrdata) => {
+	console.log(Xhrdata);
 	Xhrdata.data.Frank = randomCode(20);
 	let parames = {
 		url: config.domain + Xhrdata.url,
@@ -12,7 +13,8 @@ const request = (Xhrdata) => {
 		dataType: 'json',
 		header: {
 			source: 2,
-			sourceName: 'WEB'
+			sourceName: 'WEB',
+			"content-type": Xhrdata.isFrom ? "application/x-www-form-urlencoded;charset=utf-8" : "application/json;charset=UTF-8",
 		}
 	};
 	return uni.request(parames).then(res => {
