@@ -120,12 +120,10 @@
 				//获取当前页面的query参数
 				this.$Route.query;
 			*/
-		},
-		onLoad() {
-
-		},
-		methods: {},
-	};
+  },
+  onLoad() {},
+  methods: {},
+};
 </script>
 
 <style lang="scss">

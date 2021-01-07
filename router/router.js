@@ -11,7 +11,7 @@ router.beforeEach((to, from, next) => {
 });
 // 全局路由后置守卫
 router.afterEach((to, from) => {
-    
+   
 })
 
 export {
