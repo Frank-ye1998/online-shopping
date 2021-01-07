@@ -1,71 +1,28 @@
 <template>
 	<view class="index-main">
 		<warp-bar></warp-bar>
-		<view class="img-vip">
-			<image src="../../static/images/home/VIP.jpg" mode="" class="gvip"></image>
-		</view>
+		
 		<view class="food-img">
-			<view class="food-top">
-				<view class="query">
-					<!-- <image src="../../static/images/tabBar/tabA-true.png" mode=""></image> -->
-					<text>营养早餐</text>
-				</view>
-				<view class="query">
-					<!-- <image src="../../static/images/tabBar/tabA-true.png" mode=""></image> -->
-					<text>营养早餐</text>
-				</view>
-				<view class="query">
-					<!-- <image src="../../static/images/tabBar/tabA-true.png" mode=""></image> -->
-					<text>营养早餐</text>
-				</view>
-				<view class="query">
-					<!-- <image src="../../static/images/tabBar/tabA-true.png" mode=""></image> -->
-					<text>营养早餐</text>
-				</view>
-				<view class="query">
-					<!-- <image src="../../static/images/tabBar/tabA-true.png" mode=""></image> -->
-					<text>营养早餐</text>
-				</view>
-			</view>
-			<view class="food-boot">
-				<view class="query">
-					<!-- <image src="../../static/images/tabBar/tabA-true.png" mode=""></image> -->
-					<text>营养早餐</text>
-				</view>
-				<view class="query">
-					<!-- <image src="../../static/images/tabBar/tabA-true.png" mode=""></image> -->
-					<text>营养早餐</text>
-				</view>
-				<view class="query">
-					<!-- <image src="../../static/images/tabBar/tabA-true.png" mode=""></image> -->
-					<text>营养早餐</text>
-				</view>
-				<view class="query">
-					<!-- <image src="../../static/images/tabBar/tabA-true.png" mode=""></image> -->
-					<text>营养早餐</text>
-				</view>
-				<view class="query">
-					<!-- <image src="../../static/images/tabBar/tabA-true.png" mode=""></image> -->
-					<text>营养早餐</text>
-				</view>
+			<view class="font-query" v-for="(item,index) in mess" :key="index">
+				<image src="../../static/images/home/food.jpg" mode="widthFix" class="menu-img"></image>
+				<view class="menu-font">{{item.msg}}</view>
 			</view>
 		</view>
 		<view class="vip-save">
-			<image src="../../static/images/home/VIP.jpg" mode="" class="save-img"></image>
+			<i class="icon vipplus"></i>
 		</view>
 		<view class="limited">
 			<view class="lim-title">
 				<view title="" class="lim">限时抢购</view>
-				<TS-TimeOut></TS-TimeOut>
 				<text class="more">更多</text>
 			</view>
 			<view class="limit-content">
 				<view class="limt-query">
-					<image src="../../static/images/home/food.jpg" mode="" class="limit-food"></image>
+					<image src="../../static/images/home/food.jpg" mode="widthFix" class="limit-food"></image>
 					<text>现磨豆浆</text>
 					<view class="pri">
 						<text>￥3</text>
-						<button type="default" class="btn-car"></button>
+						<view type="default" class="btn-car"><i class="icon shopping-car"></i></view>
 					</view>
 				</view>
 			</view>
@@ -77,6 +34,24 @@
 			<view class="recom-content">
 				<view class="content-top">
 					<view v-for="(item,index) in arr" :key="index" :class="['cli-font',index===arrStatus?'content-top-select':'']" @tap="getItem(index)">{{item.name}}</view>
+				</view>
+				<view class="content-bottom">
+					<view class="content-query">
+						<image src="../../static/images/home/food.jpg" mode="widthFix" class="con-img"></image>
+						<text>现磨豆浆</text>
+						<view class="pri">
+							<text>￥3</text>
+							<button type="default" class="btn-car"><i class="icon shopping-car"></i></button>
+						</view>
+					</view>
+					<view class="content-query">
+						<image src="../../static/images/home/food.jpg" mode="widthFix" class="con-img"></image>
+						<text>现磨豆浆</text>
+						<view class="pri">
+							<text>￥3</text>
+							<button type="default" class="btn-car"><i class="icon shopping-car"></i></button>
+						</view>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -92,6 +67,26 @@
 	export default {
 		data() {
 			return {
+				mess:[
+					{
+						msg:"营养早餐",
+					},
+					{
+						msg:"营养早餐",
+					},
+					{
+						msg:"营养早餐",
+					},
+					{
+						msg:"营养早餐",
+					},
+					{
+						msg:"营养早餐",
+					},
+					{
+						msg:"营养早餐",
+					}
+				],
 				arrStatus: 0,
 				arr: [{
 						name: "全部",
@@ -106,12 +101,15 @@
 						name: "心选",
 					},
 				],
+				con:[{
+					
+				}]
 			};
 		},
 		methods:{
 			getItem(index){
 				console.log(index);
-				//this.arrStatus = index
+				this.arrStatus = index
 			}
 		},
 		onShow() {
@@ -141,8 +139,7 @@
 				this.$Route.query;
 			*/
 		},
-		onLoad() {},
-		methods: {},
+		onLoad() {}
 	};
 </script>
 
@@ -166,44 +163,33 @@
 	.food-img {
 		width: 100%;
 		height: 400rpx;
-
-		.food-top {
-			width: 100%;
-			height: 200rpx;
-			text-align: center;
-			line-height: 250rpx;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		text-align: center;
+		line-height: 200rpx;
+		padding: 28rpx 0;
+		
+		.font-query{
+			width: 20%;
+			height: 160rpx;
 			display: flex;
-			flex-direction: row;
-			justify-content: space-around;
-
-			.query {
-				width: 20%;
-				height: 200rpx;
-				font-size: 14px;
+			flex-direction: column;
+			align-items: center;
+			.menu-font{
+				width: 100%;
+				height: 50rpx;
+				margin-top: -50rpx;
 			}
-		}
-
-		.food-boot {
-			width: 100%;
-			height: 200rpx;
-			text-align: center;
-			line-height: 230rpx;
-			display: flex;
-			flex-direction: row;
-			justify-content: space-around;
-
-			.query {
-				width: 20%;
-				height: 200rpx;
-				font-size: 14px;
+			.menu-img{
+				width: 68%;
 			}
 		}
 	}
-
 	.vip-save {
 		width: 100%;
 		height: 70rpx;
-
+		background: $color-red;
 		.save-img {
 			width: 100%;
 			height: 70rpx;
@@ -214,9 +200,8 @@
 		width: 100%;
 		height: auto;
 		margin-top: 60rpx;
-
 		.lim-title {
-			width: 90%;
+			width: 100%;
 			height: 60rpx;
 			line-height: 60rpx;
 			padding-left: 30rpx;
@@ -224,17 +209,17 @@
 			font-size: 40rpx;
 			display: flex;
 			flex-direction: row;
-
+			position: relative;
 			.more {
 				font-size: 15rpx;
-				margin-left: 220rpx;
 				color: #3CB963;
+				position: absolute;
+				right: 20rpx;
 			}
 		}
 
 		.limit-content {
 			width: 100%;
-			height: auto;
 			margin-left: 50rpx;
 			margin-top: 50rpx;
 
@@ -254,13 +239,19 @@
 					display: flex;
 					flex-direction: row;
 					margin-top: 30rpx;
-
+					position: relative;
 					.btn-car {
 						width: 50rpx;
 						height: 50rpx;
 						background: #3CB963;
-						margin-left: 180rpx;
 						border-radius: 50%;
+						position: absolute;
+						right: 10rpx;
+						@include flexCenter;
+						.shopping-car{
+							font-size: 38rpx;
+							
+						}
 					}
 				}
 			}
@@ -278,13 +269,14 @@
 			padding-left: 30rpx;
 			border-left: solid 5px $color-green;
 			font-size: 40rpx;
+			margin-top: 30rpx;
 		}
 
 		//content-top
 		.recom-content {
 			width: 100%;
 			height: auto;
-
+			margin-top: 30rpx;	
 			.content-top {
 				width: 100%;
 				height: 70rpx;
@@ -301,6 +293,41 @@
 			.content-top-select {
 				color: $color-green;
 				border-bottom: solid 2px $color-green;
+			}
+			.content-bottom{
+				width: 100%;
+				margin-top: 30rpx;
+				display: flex;
+				flex-direction: row;
+				padding: 0 24rpx;
+				justify-content: space-between;
+				.content-query{
+					width: 330rpx;
+					.con-img{
+						width: 100%;
+						height: 200rpx;
+					}
+					.pri{
+						display: flex;
+						width: 100%;
+						height: 70rpx;
+						flex-direction: row;
+						position: relative;
+						.btn-car {
+							width: 50rpx;
+							height: 50rpx;
+							background: #3CB963;
+							border-radius: 50%;
+							position: absolute;
+							right: 10rpx;
+							@include flexCenter;
+							.shopping-car{
+								font-size: 38rpx;
+								
+							}
+						}
+					}
+				}
 			}
 		}
 	}

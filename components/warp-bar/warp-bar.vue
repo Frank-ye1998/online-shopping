@@ -1,25 +1,19 @@
 <template>
 	<view>
-		<view class="uni-padding-wrap" :style="{background: 'url('+imageURL+')'}">
+		<view class="uni-padding-wrap">
 			<view class="page-section swiper">
 				<view class="page-section-spacing">
-						<swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay">
-							<swiper-item>
-								<view class="swiper-item uni-bg-red">
-									<image src="../../static/images/warpBar/dominobanner.jpg" mode="" class="img"></image>
-								</view>
-							</swiper-item>
-							<swiper-item>
-								<view class="swiper-item uni-bg-green">
-									<image src="../../static/images/warpBar/doms.jpeg" mode="" class="img"></image>
-								</view>
-							</swiper-item>
-							<swiper-item>
-								<view class="swiper-item uni-bg-blue">
-									<image src="../../static/images/warpBar/covers-dml.jpg" mode="" class="img"></image>
-								</view>
-							</swiper-item>
-						</swiper>
+					<swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay">
+						<swiper-item class="swiper-item">
+							<image src="../../static/images/warpBar/dominobanner.jpg" mode="heightFix" class="img"></image>
+						</swiper-item class="swiper-item">
+						<swiper-item>
+							<image src="../../static/images/warpBar/doms.jpeg" mode="heightFix" class="img"></image>
+						</swiper-item>
+						<swiper-item class="swiper-item">
+							<image src="../../static/images/warpBar/covers-dml.jpg" mode="heightFix" class="img"></image>
+						</swiper-item>
+					</swiper>
 				</view>
 			</view>
 		</view>
@@ -28,7 +22,7 @@
 
 <script>
 	export default {
-		data(){
+		data() {
 			return {
 				background: ['color1', 'color2', 'color3'],
 				indicatorDots: true,
@@ -36,20 +30,21 @@
 				imageURL: '/static/images/banner.png'
 			}
 		},
-		methods:{
-			
+		methods: {
+
 		}
 	}
 </script>
 
 <style lang="scss">
-	.uni-padding-wrap{
-		width: 100%;
-		height: 430rpx;
-		background-image: "";
-		.img{
-			width: 100%;
-			height:430rpx;
+	.swiper-item {
+		position: relative; 
+		.img {
+			@include absCenter;
+			height: 100%;
 		}
+	}
+	.swiper {
+		height: 420rpx;
 	}
 </style>

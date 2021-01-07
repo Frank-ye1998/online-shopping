@@ -16,6 +16,7 @@
 	font-family: "iconfont" !important;
 	font-size: 16px;
 	font-style: normal;
+	color: #fff;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
@@ -48,7 +49,7 @@
 	content: "\e75e";
 }
 
-.icontianchongxing-:before {
+.vipplus:before {
 	content: "\e639";
 }
 
@@ -60,7 +61,7 @@
 	content: "\e600";
 }
 
-.icongouwuche:before {
+.shopping-car:before {
 	content: "\e699";
 }
 
