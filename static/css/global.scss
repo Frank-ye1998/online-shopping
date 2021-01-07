@@ -1,21 +1,25 @@
 //样式重置
 * {
-	margin: 0;
-	padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 :not(not) {
-	box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 //主题色
-$color1:#3cb963;
-$color2:#e04343;
+$color-green: #3cb963;
+$color-green-transparent: #e3f8e9;
+$color-red: #e04343;
+$color-red-transparent: #e04343ad;
+
 
 //禁用
 .disable {
-	pointer-events: none;
+    pointer-events: none;
 }
+
 //灰色滤镜
 .gray {
     filter: grayscale(100%);
@@ -26,4 +30,27 @@ $color2:#e04343;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+@mixin btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    border-radius: 999px;
+}
+
+@mixin btnGreen {
+    @include btn;
+    background-color: $color-green;
+}
+
+@mixin btnGreen-gradient {
+    @include btn;
+    background: linear-gradient(90deg, #24d64e 0%, #2eba59 100%);
+}
+
+@mixin btnRed {
+    @include btn;
+    background: $color-red;
 }

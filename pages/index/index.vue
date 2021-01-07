@@ -1,20 +1,19 @@
 <template>
-	<view class="index-main">
-		<top-bar pageTitle="首页"></top-bar>
+  <view class="index-main">
+    <top-bar pageTitle="首页"></top-bar>
 
-		<div class="btn"></div>
-	</view>
+  </view>
 </template>
 
 <script>
-	import userApi from "@/api/userApi.js";
-	import topBar from "@/components/top-bar/top-bar.vue";
-	export default {
-		data() {
-			return {};
-		},
-		onShow() {
-			/*
+import userApi from "@/api/userApi.js";
+import topBar from "@/components/top-bar/top-bar.vue";
+export default {
+  data() {
+    return {};
+  },
+  onShow() {
+    /*
 				页面管理规则：
 				4个tab页面要一直保持打开状态，非特殊情况不要使用replace和replaceAll关闭Tab页面；
 				page.json 中所有的页面都要命名name，所有路由跳转使用name跳转
@@ -39,18 +38,12 @@
 				//获取当前页面的query参数
 				this.$Route.query;
 			*/
-		},
-		onLoad() {
-
-		},
-		methods: {},
-	};
+  },
+  onLoad() {},
+  methods: {},
+};
 </script>
 
 <style lang="scss">
-	.btn {
-		width: 750rpx;
-		height: 100rpx;
-		border: 2px solid #000;
-	}
+
 </style>
