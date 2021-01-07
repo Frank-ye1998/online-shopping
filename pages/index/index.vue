@@ -1,6 +1,5 @@
 <template>
 	<view class="index-main">
-		<top-bar pageTitle="首页"></top-bar>
 		<warp-bar></warp-bar>
 		<view class="img-vip">
 			<image src="../../static/images/home/VIP.jpg" mode="" class="gvip"></image>
@@ -56,7 +55,7 @@
 		</view>
 		<view class="limited">
 			<view class="lim-title">
-				<uni-title title="" class="lim">限时抢购</uni-title>
+				<view title="" class="lim">限时抢购</view>
 				<TS-TimeOut></TS-TimeOut>
 				<text class="more">更多</text>
 			</view>
@@ -73,11 +72,11 @@
 		</view>
 		<view class="recommed">
 			<view class="recom-title">
-				<uni-title title="" class="reco">人气推荐</uni-title>
+				<view title="" class="reco">人气推荐</view>
 			</view>
 			<view class="recom-content">
-				<view class="">
-					
+				<view class="content-top">
+					<view v-for="(item,index) in arr" :key="index" :class="['cli-font',index===arrStatus?'content-top-select':'']" @tap="getItem(index)">{{item.name}}</view>
 				</view>
 			</view>
 		</view>
@@ -89,10 +88,31 @@
 	import topBar from "@/components/top-bar/top-bar.vue";
 	import warpBar from "@/components/warp-bar/warp-bar.vue";
 	// import TS-TimeOut from "@/components/TS-TimeOut/TS-TimeOut.vue";
-	
+
 	export default {
 		data() {
-			return {};
+			return {
+				arrStatus: 0,
+				arr: [{
+						name: "全部",
+					},
+					{
+						name: "晚餐",
+					},
+					{
+						name: "人气",
+					},
+					{
+						name: "心选",
+					},
+				],
+			};
+		},
+		methods:{
+			getItem(index){
+				console.log(index);
+				//this.arrStatus = index
+			}
 		},
 		onShow() {
 			/*
@@ -120,10 +140,10 @@
 				//获取当前页面的query参数
 				this.$Route.query;
 			*/
-  },
-  onLoad() {},
-  methods: {},
-};
+		},
+		onLoad() {},
+		methods: {},
+	};
 </script>
 
 <style lang="scss">
@@ -132,18 +152,22 @@
 		height: 100rpx;
 		border: 2px solid #000;
 	}
-	.img-vip{
+
+	.img-vip {
 		width: 100%;
 		height: 100rpx;
-		.gvip{
+
+		.gvip {
 			width: 100%;
 			height: 100rpx;
 		}
 	}
-	.food-img{
+
+	.food-img {
 		width: 100%;
 		height: 400rpx;
-		.food-top{
+
+		.food-top {
 			width: 100%;
 			height: 200rpx;
 			text-align: center;
@@ -151,13 +175,15 @@
 			display: flex;
 			flex-direction: row;
 			justify-content: space-around;
-			.query{
+
+			.query {
 				width: 20%;
 				height: 200rpx;
 				font-size: 14px;
 			}
 		}
-		.food-boot{
+
+		.food-boot {
 			width: 100%;
 			height: 200rpx;
 			text-align: center;
@@ -165,26 +191,31 @@
 			display: flex;
 			flex-direction: row;
 			justify-content: space-around;
-			.query{
+
+			.query {
 				width: 20%;
 				height: 200rpx;
 				font-size: 14px;
 			}
 		}
 	}
-	.vip-save{
+
+	.vip-save {
 		width: 100%;
 		height: 70rpx;
-		.save-img{
+
+		.save-img {
 			width: 100%;
 			height: 70rpx;
 		}
 	}
-	.limited{
+
+	.limited {
 		width: 100%;
 		height: auto;
 		margin-top: 60rpx;
-		.lim-title{
+
+		.lim-title {
 			width: 90%;
 			height: 60rpx;
 			line-height: 60rpx;
@@ -193,32 +224,38 @@
 			font-size: 40rpx;
 			display: flex;
 			flex-direction: row;
-			.more{
+
+			.more {
 				font-size: 15rpx;
 				margin-left: 220rpx;
 				color: #3CB963;
 			}
 		}
-		.limit-content{
+
+		.limit-content {
 			width: 100%;
 			height: auto;
 			margin-left: 50rpx;
 			margin-top: 50rpx;
-			.limt-query{
+
+			.limt-query {
 				width: 40%;
 				height: auto;
-				.limit-food{
+
+				.limit-food {
 					width: 100%;
 					height: 200rpx;
 					margin-top: 10rpx;
 				}
-				.pri{
+
+				.pri {
 					width: 100%;
 					height: 50rpx;
 					display: flex;
 					flex-direction: row;
 					margin-top: 30rpx;
-					.btn-car{
+
+					.btn-car {
 						width: 50rpx;
 						height: 50rpx;
 						background: #3CB963;
@@ -229,16 +266,42 @@
 			}
 		}
 	}
-	.recommed{
+
+	.recommed {
 		width: 100%;
 		height: auto;
-		.recom-title{
+
+		.recom-title {
 			width: 90%;
 			height: 60rpx;
 			line-height: 60rpx;
 			padding-left: 30rpx;
-			border-left: solid 5px #3CB963;
+			border-left: solid 5px $color-green;
 			font-size: 40rpx;
+		}
+
+		//content-top
+		.recom-content {
+			width: 100%;
+			height: auto;
+
+			.content-top {
+				width: 100%;
+				height: 70rpx;
+				display: flex;
+				flex-direction: row;
+				text-align: center;
+				justify-content: space-around;
+				line-height: 70rpx;
+				color: $color-text3;
+				.cli-font{
+					width: 25%;
+				}
+			}
+			.content-top-select {
+				color: $color-green;
+				border-bottom: solid 2px $color-green;
+			}
 		}
 	}
 </style>
