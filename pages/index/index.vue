@@ -2,13 +2,94 @@
 	<view class="index-main">
 		<top-bar pageTitle="首页"></top-bar>
 		<warp-bar></warp-bar>
+		<view class="img-vip">
+			<image src="../../static/images/home/VIP.jpg" mode="" class="gvip"></image>
+		</view>
+		<view class="food-img">
+			<view class="food-top">
+				<view class="query">
+					<!-- <image src="../../static/images/tabBar/tabA-true.png" mode=""></image> -->
+					<text>营养早餐</text>
+				</view>
+				<view class="query">
+					<!-- <image src="../../static/images/tabBar/tabA-true.png" mode=""></image> -->
+					<text>营养早餐</text>
+				</view>
+				<view class="query">
+					<!-- <image src="../../static/images/tabBar/tabA-true.png" mode=""></image> -->
+					<text>营养早餐</text>
+				</view>
+				<view class="query">
+					<!-- <image src="../../static/images/tabBar/tabA-true.png" mode=""></image> -->
+					<text>营养早餐</text>
+				</view>
+				<view class="query">
+					<!-- <image src="../../static/images/tabBar/tabA-true.png" mode=""></image> -->
+					<text>营养早餐</text>
+				</view>
+			</view>
+			<view class="food-boot">
+				<view class="query">
+					<!-- <image src="../../static/images/tabBar/tabA-true.png" mode=""></image> -->
+					<text>营养早餐</text>
+				</view>
+				<view class="query">
+					<!-- <image src="../../static/images/tabBar/tabA-true.png" mode=""></image> -->
+					<text>营养早餐</text>
+				</view>
+				<view class="query">
+					<!-- <image src="../../static/images/tabBar/tabA-true.png" mode=""></image> -->
+					<text>营养早餐</text>
+				</view>
+				<view class="query">
+					<!-- <image src="../../static/images/tabBar/tabA-true.png" mode=""></image> -->
+					<text>营养早餐</text>
+				</view>
+				<view class="query">
+					<!-- <image src="../../static/images/tabBar/tabA-true.png" mode=""></image> -->
+					<text>营养早餐</text>
+				</view>
+			</view>
+		</view>
+		<view class="vip-save">
+			<image src="../../static/images/home/VIP.jpg" mode="" class="save-img"></image>
+		</view>
+		<view class="limited">
+			<view class="lim-title">
+				<uni-title title="" class="lim">限时抢购</uni-title>
+				<TS-TimeOut></TS-TimeOut>
+				<text class="more">更多</text>
+			</view>
+			<view class="limit-content">
+				<view class="limt-query">
+					<image src="../../static/images/home/food.jpg" mode="" class="limit-food"></image>
+					<text>现磨豆浆</text>
+					<view class="pri">
+						<text>￥3</text>
+						<button type="default" class="btn-car"></button>
+					</view>
+				</view>
+			</view>
+		</view>
+		<view class="recommed">
+			<view class="recom-title">
+				<uni-title title="" class="reco">人气推荐</uni-title>
+			</view>
+			<view class="recom-content">
+				<view class="">
+					
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
 <script>
 	import userApi from "@/api/userApi.js";
 	import topBar from "@/components/top-bar/top-bar.vue";
-	import warpBar from "@/components/warp-bar/warp-bar.vue"
+	import warpBar from "@/components/warp-bar/warp-bar.vue";
+	// import TS-TimeOut from "@/components/TS-TimeOut/TS-TimeOut.vue";
+	
 	export default {
 		data() {
 			return {};
@@ -52,5 +133,114 @@
 		width: 750rpx;
 		height: 100rpx;
 		border: 2px solid #000;
+	}
+	.img-vip{
+		width: 100%;
+		height: 100rpx;
+		.gvip{
+			width: 100%;
+			height: 100rpx;
+		}
+	}
+	.food-img{
+		width: 100%;
+		height: 400rpx;
+		.food-top{
+			width: 100%;
+			height: 200rpx;
+			text-align: center;
+			line-height: 250rpx;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-around;
+			.query{
+				width: 20%;
+				height: 200rpx;
+				font-size: 14px;
+			}
+		}
+		.food-boot{
+			width: 100%;
+			height: 200rpx;
+			text-align: center;
+			line-height: 230rpx;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-around;
+			.query{
+				width: 20%;
+				height: 200rpx;
+				font-size: 14px;
+			}
+		}
+	}
+	.vip-save{
+		width: 100%;
+		height: 70rpx;
+		.save-img{
+			width: 100%;
+			height: 70rpx;
+		}
+	}
+	.limited{
+		width: 100%;
+		height: auto;
+		margin-top: 60rpx;
+		.lim-title{
+			width: 90%;
+			height: 60rpx;
+			line-height: 60rpx;
+			padding-left: 30rpx;
+			border-left: solid 5px #3CB963;
+			font-size: 40rpx;
+			display: flex;
+			flex-direction: row;
+			.more{
+				font-size: 15rpx;
+				margin-left: 220rpx;
+				color: #3CB963;
+			}
+		}
+		.limit-content{
+			width: 100%;
+			height: auto;
+			margin-left: 50rpx;
+			margin-top: 50rpx;
+			.limt-query{
+				width: 40%;
+				height: auto;
+				.limit-food{
+					width: 100%;
+					height: 200rpx;
+					margin-top: 10rpx;
+				}
+				.pri{
+					width: 100%;
+					height: 50rpx;
+					display: flex;
+					flex-direction: row;
+					margin-top: 30rpx;
+					.btn-car{
+						width: 50rpx;
+						height: 50rpx;
+						background: #3CB963;
+						margin-left: 180rpx;
+						border-radius: 50%;
+					}
+				}
+			}
+		}
+	}
+	.recommed{
+		width: 100%;
+		height: auto;
+		.recom-title{
+			width: 90%;
+			height: 60rpx;
+			line-height: 60rpx;
+			padding-left: 30rpx;
+			border-left: solid 5px #3CB963;
+			font-size: 40rpx;
+		}
 	}
 </style>

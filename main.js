@@ -4,7 +4,7 @@ import App from './App'
 import xhr from "./api/xhr.js";
 Vue.prototype.$request = xhr.request;
 //路由守卫
-import {router,RouterMount} from './router/router.js'  //路径换成自己的
+import {router,RouterMount} from './router/router.js'
 Vue.use(router)
 
 Vue.config.productionTip = false
