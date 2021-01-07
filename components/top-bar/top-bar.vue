@@ -56,12 +56,13 @@
 			line-height: 32rpx;
 			color: #282933;
 			font-weight: 700;
+			
 		}
 	}
 
 	.top-bar-plc {
 		width: 100%;
 		height: 82rpx;
-		background-color: #fff;
+		background-color: #007AFF;
 	}
 </style>
