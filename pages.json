@@ -1,24 +1,17 @@
 {
 	"pages": [{
 		"path": "pages/index/index",
-		"style": {
-
-		}
+		"name": "index"
 	}, {
 		"path": "pages/menu/menu",
-		"style": {
-
-		}
+		"name": "menu"
+		
 	}, {
 		"path": "pages/shoppingCart/shoppingCart",
-		"style": {
-
-		}
+		"name": "shoppingCart"
 	}, {
 		"path": "pages/mine/mine",
-		"style": {
-
-		}
+		"name": "mine"
 	}],
 	"globalStyle": {
 		"navigationStyle": "custom",
