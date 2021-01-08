@@ -1,8 +1,10 @@
 <template>
 	<view>
-		菜单
-		<div @tap="toPage" class="btn"></div>
-
+		<div class="top"></div>
+		<div class="main">
+			<div class="test">测试</div>
+		</div>
+		<div class="bottom-plc"></div>
 	</view>
 </template>
 
@@ -13,29 +15,33 @@
 
 			};
 		},
-		methods: {
-			toPage: function() {
-				// uni.switchTab({
-				// 	url:'/pages/index/index'
-				// })
-				this.$Router.pushTab({
-					name: 'index',
-					params: {
-						name: '张三',
-						arr: [1, 2, 3, {
-							age: 18
-						}]
-					}
-				})
-			}
-		}
+		methods: {}
 	}
 </script>
 
 <style lang="scss">
-	.btn {
-		width: 750rpx;
-		height: 100rpx;
-		border: 2px solid #000;
+	.top {
+		width: 100%;
+		height: 200rpx;
+		background-color: pink;
 	}
+
+	.main {
+		position: relative;
+		width: 100%;
+		height: calc(100vh - 200rpx - var(--window-bottom));
+		background-color: skyblue;
+
+		.test {
+			position: absolute;
+			bottom: 0;
+			left: 50%;
+			transform: translateX(-50%);
+		}
+	}
+
+	// .bottom-plc {
+	// 	width: 100%;
+	// 	height: var(--window-bottom);
+	// }
 </style>
