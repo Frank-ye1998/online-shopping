@@ -1,6 +1,6 @@
 <template>
 	<view>
-		购物车
+		<top-bar></top-bar>
 	</view>
 </template>
 
