@@ -1,8 +1,6 @@
 <template>
 	<view>
-		<view class="btn">
-			测试
-		</view>
+		<top-bar></top-bar>
 	</view>
 </template>
 
