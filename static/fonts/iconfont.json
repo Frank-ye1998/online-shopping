@@ -2,69 +2,76 @@
   "id": "2311403",
   "name": "中台菜单",
   "font_family": "iconfont",
-  "css_prefix_text": "icon",
+  "css_prefix_text": "icon-",
   "description": "达美乐",
   "glyphs": [
     {
+      "icon_id": "19292124",
+      "name": "edit",
+      "font_class": "edit",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
       "icon_id": "781638",
       "name": "右箭头",
-      "font_class": "sanjiaoright",
+      "font_class": "right",
       "unicode": "e6b7",
       "unicode_decimal": 59063
     },
     {
       "icon_id": "852293",
       "name": "订单",
-      "font_class": "dingdan2",
+      "font_class": "order",
       "unicode": "e60a",
       "unicode_decimal": 58890
     },
     {
       "icon_id": "900057",
       "name": "安全",
-      "font_class": "anquan",
+      "font_class": "safety",
       "unicode": "e626",
       "unicode_decimal": 58918
     },
     {
       "icon_id": "908553",
       "name": "地址管理",
-      "font_class": "dizhiguanli",
+      "font_class": "address",
       "unicode": "e692",
       "unicode_decimal": 59026
     },
     {
       "icon_id": "953311",
       "name": "返回",
-      "font_class": "fanhui",
+      "font_class": "back",
       "unicode": "e611",
       "unicode_decimal": 58897
     },
     {
       "icon_id": "1157313",
       "name": "时间 00",
-      "font_class": "shijian00",
+      "font_class": "time",
       "unicode": "e6ce",
       "unicode_decimal": 59086
     },
     {
       "icon_id": "1330789",
       "name": "右箭头",
-      "font_class": "youjiantou",
+      "font_class": "to",
       "unicode": "e75e",
       "unicode_decimal": 59230
     },
     {
       "icon_id": "6446252",
       "name": "皇冠",
-      "font_class": "tianchongxing-",
+      "font_class": "vip-plus",
       "unicode": "e639",
       "unicode_decimal": 58937
     },
     {
       "icon_id": "6940841",
       "name": "电话",
-      "font_class": "dianhua",
+      "font_class": "phone",
       "unicode": "e65c",
       "unicode_decimal": 58972
     },
@@ -78,42 +85,42 @@
     {
       "icon_id": "10268929",
       "name": "购物车",
-      "font_class": "gouwuche",
+      "font_class": "shopping-cart",
       "unicode": "e699",
       "unicode_decimal": 59033
     },
     {
       "icon_id": "11372789",
       "name": "优惠券",
-      "font_class": "youhuiquan",
+      "font_class": "coupon",
       "unicode": "e8c8",
       "unicode_decimal": 59592
     },
     {
       "icon_id": "11641854",
       "name": "人民币单价 (2)",
-      "font_class": "renminbidanjia",
+      "font_class": "rmb",
       "unicode": "e616",
       "unicode_decimal": 58902
     },
     {
       "icon_id": "12974865",
       "name": "定位",
-      "font_class": "dingwei",
+      "font_class": "location",
       "unicode": "e62d",
       "unicode_decimal": 58925
     },
     {
       "icon_id": "15023351",
       "name": "配送",
-      "font_class": "peisong",
+      "font_class": "delivery",
       "unicode": "e63a",
       "unicode_decimal": 58938
     },
     {
       "icon_id": "19102827",
       "name": "注释",
-      "font_class": "zhushi",
+      "font_class": "tips",
       "unicode": "e627",
       "unicode_decimal": 58919
     }

@@ -1,7 +1,7 @@
 <template>
   <view class="top-bar-main">
     <view class="top-bar">
-      <i @tap="PageBack" class="icon page-back"></i>
+      <i @tap="PageBack" class="icon icon-back"></i>
       <text class="page_title">{{ pageTitle }}</text>
       <slot></slot>
     </view>
@@ -37,7 +37,7 @@ export default {
   align-items: center;
   background-color: #fff;
   overflow: hidden;
-  .page-back {
+  .icon-back {
     position: absolute;
     top: 50%;
     left: 0;

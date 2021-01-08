@@ -1,6 +1,8 @@
 <template>
 	<view>
-		购物车
+		<view class="btn">
+			测试
+		</view>
 	</view>
 </template>
 
@@ -15,5 +17,7 @@
 </script>
 
 <style lang="scss">
-
+	.btn {
+		
+	}
 </style>
