@@ -11,7 +11,7 @@
           :checked="true"
         />
         <img-view
-          src="/static/images/mine/avatar.jpg"
+          src="/static/images/shopping-car/caomei.jpg"
           mode="widthFix"
           class="img-view"
         />
@@ -36,7 +36,7 @@
           :checked="true"
         />
         <img-view
-          src="/static/images/mine/avatar.jpg"
+          src="/static/images/shopping-car/caomei.jpg"
           mode="widthFix"
           class="img-view"
         />
@@ -66,7 +66,7 @@
         <img-view
           class="img-view"
           mode="widthFix"
-          src="/static/shopping-car/caomei.jpg"
+          src="/static/images/shopping-car/caomei.jpg"
         />
         <view class="name">大草莓大草莓大草莓大草莓大草莓大草莓</view>
         <view class="price">
@@ -81,7 +81,7 @@
         <img-view
           class="img-view"
           mode="widthFix"
-          src="/static/shopping-car/caomei.jpg"
+          src="/static/images/shopping-car/caomei.jpg"
         />
         <view class="name">大草莓大草莓大草莓大草莓大草莓大草莓</view>
         <view class="price">
@@ -96,7 +96,7 @@
         <img-view
           class="img-view"
           mode="widthFix"
-          src="/static/shopping-car/caomei.jpg"
+          src="/static/images/shopping-car/caomei.jpg"
         />
         <view class="name">大草莓大草莓大草莓大草莓大草莓大草莓</view>
         <view class="price">
@@ -111,7 +111,7 @@
         <img-view
           class="img-view"
           mode="widthFix"
-          src="/static/shopping-car/caomei.jpg"
+          src="/static/images/shopping-car/caomei.jpg"
         />
         <view class="name">大草莓大草莓大草莓大草莓大草莓大草莓</view>
         <view class="price">
@@ -126,7 +126,7 @@
         <img-view
           class="img-view"
           mode="widthFix"
-          src="/static/shopping-car/caomei.jpg"
+          src="/static/images/shopping-car/caomei.jpg"
         />
         <view class="name">大草莓大草莓大草莓大草莓大草莓大草莓</view>
         <view class="price">
@@ -141,7 +141,7 @@
         <img-view
           class="img-view"
           mode="widthFix"
-          src="/static/shopping-car/caomei.jpg"
+          src="/static/images/shopping-car/caomei.jpg"
         />
         <view class="name">大草莓大草莓大草莓大草莓大草莓大草莓</view>
         <view class="price">
@@ -156,9 +156,11 @@
         <img-view
           class="img-view"
           mode="widthFix"
-          src="/static/shopping-car/caomei.jpg"
+          src="/static/images/shopping-car/caomei.jpg"
         />
-        <view class="name">大草莓大草莓大草莓大草莓大草莓大草莓</view>
+        <view class="name"
+          >大草莓大草莓大草莓大草莓大草莓大草莓大草莓大草莓大草莓大草莓大草莓大草莓</view
+        >
         <view class="price">
           <view class="last-price"><text class="rmb">¥</text>99</view>
           <view class="original-price">¥28</view>
@@ -171,9 +173,9 @@
         <img-view
           class="img-view"
           mode="widthFix"
-          src="/static/shopping-car/caomei.jpg"
+          src="/static/images/shopping-car/caomei.jpg"
         />
-        <view class="name">大草莓大草莓大草莓大草莓大草莓大草莓</view>
+        <view class="name">大草莓大草莓大草莓</view>
         <view class="price">
           <view class="last-price"><text class="rmb">¥</text>99</view>
           <view class="original-price">¥28</view>
@@ -186,7 +188,7 @@
         <img-view
           class="img-view"
           mode="widthFix"
-          src="/static/shopping-car/caomei.jpg"
+          src="/static/images/shopping-car/caomei.jpg"
         />
         <view class="name">大草莓大草莓大草莓大草莓大草莓大草莓</view>
         <view class="price">
@@ -252,6 +254,7 @@ page {
 .shopping-cart {
   width: 94.8%;
   margin: 20rpx auto;
+  margin-bottom: 0;
   border-radius: 8px;
   background-color: #fff;
 
@@ -351,6 +354,7 @@ page {
   width: 100%;
   height: 60rpx;
   padding: 0 50rpx;
+  margin: 14rpx 0;
   .hr {
     width: 32%;
     height: 1px;
@@ -447,7 +451,7 @@ page {
   height: 120rpx;
   background-color: #fff;
   padding: 0 28rpx;
-
+  border-top: 1px solid $color-page;
   .select-all {
     @include flexVtCenter;
     font-size: 26rpx;
