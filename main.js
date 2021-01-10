@@ -6,13 +6,20 @@ import store from './store'
 import xhr from "./api/xhr.js";
 Vue.prototype.$request = xhr.request;
 //路由守卫
-import {router,RouterMount} from './router/router.js'
+import {
+	router,
+	RouterMount
+} from './router/router.js'
 Vue.use(router)
+//全局组件
+import imgView from './components/img-view/img-view.vue';
+Vue.component('img-view', imgView);
+import stepper from './components/stepper/stepper.vue';
+Vue.component('stepper', stepper);
+
 
 Vue.config.productionTip = false
-
 App.mpType = 'app'
-
 const app = new Vue({
 	store,
 	...App

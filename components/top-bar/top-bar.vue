@@ -2,7 +2,7 @@
   <view class="top-bar-main">
     <view class="top-bar">
       <i @tap="PageBack" class="icon page-back"></i>
-      <text class="page_title">{{ pageTitle }}</text>
+      <text class="page-title">{{ pageTitle }}</text>
       <slot></slot>
     </view>
     <view class="top-bar-plc"></view>

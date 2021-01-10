@@ -15,6 +15,20 @@ $color-page:#f5f5f5;
     align-items: center;
 }
 
+@mixin flexVtCenter{
+	display: flex;
+	align-items: center;
+}
+@mixin flexLvCenter{
+	display: flex;
+	justify-content: center;
+}
+@mixin absVtCenter{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
 @mixin absCenter {
     position: absolute;
     top: 50%;
