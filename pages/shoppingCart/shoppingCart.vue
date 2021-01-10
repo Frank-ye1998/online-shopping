@@ -21,7 +21,7 @@
           </view>
           <view class="goods-result">热/半糖/大杯</view>
           <view class="goods-price">
-            <view class="last-price">¥16</view>
+            <view class="last-price"><text class="rmb">¥</text>16</view>
             <view class="original-price">¥28</view>
           </view>
           <stepper class="stepper" :change="change" :value="0"></stepper>
@@ -44,7 +44,7 @@
           <view class="goods-name">小白菜</view>
           <view class="goods-result">热/半糖/大杯</view>
           <view class="goods-price">
-            <view class="last-price">¥16</view>
+            <view class="last-price"><text class="rmb">¥</text>16</view>
             <view class="original-price">¥28</view>
           </view>
           <stepper class="stepper" :change="change" :value="0"></stepper>
@@ -77,7 +77,7 @@
           <i class="icon icon-shopping-cart"></i>
         </view>
       </view>
-            <view class="list">
+      <view class="list">
         <img-view
           class="img-view"
           mode="widthFix"
@@ -92,7 +92,7 @@
           <i class="icon icon-shopping-cart"></i>
         </view>
       </view>
-            <view class="list">
+      <view class="list">
         <img-view
           class="img-view"
           mode="widthFix"
@@ -107,7 +107,7 @@
           <i class="icon icon-shopping-cart"></i>
         </view>
       </view>
-            <view class="list">
+      <view class="list">
         <img-view
           class="img-view"
           mode="widthFix"
@@ -122,7 +122,7 @@
           <i class="icon icon-shopping-cart"></i>
         </view>
       </view>
-            <view class="list">
+      <view class="list">
         <img-view
           class="img-view"
           mode="widthFix"
@@ -137,7 +137,7 @@
           <i class="icon icon-shopping-cart"></i>
         </view>
       </view>
-            <view class="list">
+      <view class="list">
         <img-view
           class="img-view"
           mode="widthFix"
@@ -152,7 +152,7 @@
           <i class="icon icon-shopping-cart"></i>
         </view>
       </view>
-            <view class="list">
+      <view class="list">
         <img-view
           class="img-view"
           mode="widthFix"
@@ -167,7 +167,7 @@
           <i class="icon icon-shopping-cart"></i>
         </view>
       </view>
-            <view class="list">
+      <view class="list">
         <img-view
           class="img-view"
           mode="widthFix"
@@ -182,7 +182,7 @@
           <i class="icon icon-shopping-cart"></i>
         </view>
       </view>
-            <view class="list">
+      <view class="list">
         <img-view
           class="img-view"
           mode="widthFix"
@@ -307,13 +307,18 @@ page {
           color: $color-red;
           font-weight: 700;
           margin-right: 18rpx;
+          .rmb {
+            font-size: 26rpx;
+            font-weight: 700;
+            line-height: 26rpx;
+            margin-right: 2rpx;
+          }
         }
 
         .original-price {
           font-size: 26rpx;
           line-height: 26rpx;
           color: $color-text3;
-          font-weight: 700;
           text-decoration: line-through;
         }
       }
@@ -363,7 +368,7 @@ page {
     font-weight: 700;
     line-height: 24rpx;
     color: $color-text2;
-    letter-spacing:2rpx;
+    letter-spacing: 2rpx;
   }
 }
 
@@ -376,7 +381,7 @@ page {
   .list {
     position: relative;
     width: 48%;
-    height: 560rpx;
+    height: 500rpx;
     border-radius: 8px;
     background-color: #fff;
     padding: 0 18rpx;
