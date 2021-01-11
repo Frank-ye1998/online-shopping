@@ -24,6 +24,23 @@
             "path" : "pages/mine/sub/coupon/coupon",
 			"name" : "coupon"            
         }
+        ,{
+            "path" : "pages/mine/sub/myOrder/myOrder",
+			"name" : "myPrder"
+        }
+        ,{
+            "path" : "components/tab/tab",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/mine/sub/userCenter/userCenter",
+			"name" : "userCenter"
+        }
     ],
 	"globalStyle": {
 		"navigationStyle": "custom",
