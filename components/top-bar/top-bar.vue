@@ -37,7 +37,7 @@ export default {
   align-items: center;
   background-color: #fff;
   overflow: hidden;
-  .page-back {
+  .icon-back {
     position: absolute;
     top: 50%;
     left: 0;
