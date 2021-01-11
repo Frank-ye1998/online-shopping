@@ -6,14 +6,18 @@
 
 <script>
 /*
-  图片自适应组件
+  图片自适应组件 防止图片显示溢出||宽高比异常
+  传入参数见props
 */
 export default {
   props: {
-    src: String,
+    src: {
+      type: String,
+      required: true
+    },
     mode: {
       type: String,
-      default: "scaleToFill",
+      default: "widthFix",
     },
   },
   data() {
