@@ -5,12 +5,15 @@
 </template>
 
 <script>
+/*
+  图片自适应组件
+*/
 export default {
   props: {
     src: String,
     mode: {
       type: String,
-      default: "",
+      default: "scaleToFill",
     },
   },
   data() {
