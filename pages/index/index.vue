@@ -1,7 +1,6 @@
 <template>
 	<view class="index-main">
-		<warp-bar></warp-bar>
-		
+		<warp-bar class="warp-bar"></warp-bar>
 		<view class="food-img">
 			<view class="font-query" v-for="(item,index) in mess" :key="index">
 				<image src="../../static/images/home/food.jpg" mode="widthFix" class="menu-img"></image>
@@ -19,7 +18,7 @@
 			<view class="limit-content">
 				<view class="limt-query">
 					<image src="../../static/images/home/food.jpg" mode="widthFix" class="limit-food"></image>
-					<text>现磨豆浆</text>
+					<text class="name-food">现磨豆浆</text>
 					<view class="pri">
 						<text>￥3</text>
 						<view type="default" class="btn-car"><i class="icon shopping-car"></i></view>
@@ -38,7 +37,7 @@
 				<view class="content-bottom">
 					<view class="content-query">
 						<image src="../../static/images/home/food.jpg" mode="widthFix" class="con-img"></image>
-						<text>现磨豆浆</text>
+						<text class="name-title">现磨豆浆</text>
 						<view class="pri">
 							<text>￥3</text>
 							<button type="default" class="btn-car"><i class="icon shopping-car"></i></button>
@@ -46,7 +45,31 @@
 					</view>
 					<view class="content-query">
 						<image src="../../static/images/home/food.jpg" mode="widthFix" class="con-img"></image>
-						<text>现磨豆浆</text>
+						<text class="name-title">现磨豆浆</text>
+						<view class="pri">
+							<text>￥3</text>
+							<button type="default" class="btn-car"><i class="icon shopping-car"></i></button>
+						</view>
+					</view>
+					<view class="content-query">
+						<image src="../../static/images/home/food.jpg" mode="widthFix" class="con-img"></image>
+						<text class="name-title">现磨豆浆</text>
+						<view class="pri">
+							<text>￥3</text>
+							<button type="default" class="btn-car"><i class="icon shopping-car"></i></button>
+						</view>
+					</view>
+					<view class="content-query">
+						<image src="../../static/images/home/food.jpg" mode="widthFix" class="con-img"></image>
+						<text class="name-title">现磨豆浆</text>
+						<view class="pri">
+							<text>￥3</text>
+							<button type="default" class="btn-car"><i class="icon shopping-car"></i></button>
+						</view>
+					</view>
+					<view class="content-query">
+						<image src="../../static/images/home/food.jpg" mode="widthFix" class="con-img"></image>
+						<text class="name-title">现磨豆浆</text>
 						<view class="pri">
 							<text>￥3</text>
 							<button type="default" class="btn-car"><i class="icon shopping-car"></i></button>
@@ -144,6 +167,13 @@ import warpBar from "@/components/warp-bar/warp-bar.vue";
 </script>
 
 <style lang="scss">
+page {
+  background-color: $color-page;
+}
+.warp-bar{
+	width: 100%;
+	height: 430rpx;
+}	
 .btn {
   width: 750rpx;
   height: 100rpx;
@@ -161,7 +191,7 @@ import warpBar from "@/components/warp-bar/warp-bar.vue";
 }
 
 	.food-img {
-		width: 100%;
+		width: 90%;
 		height: 400rpx;
 		display: flex;
 		flex-direction: row;
@@ -169,7 +199,10 @@ import warpBar from "@/components/warp-bar/warp-bar.vue";
 		text-align: center;
 		line-height: 200rpx;
 		padding: 28rpx 0;
-		
+		background: $color-green-transparent;
+		margin-top: 20rpx;
+		margin-left: 5%;
+		border-radius: 20rpx;
 		.font-query{
 			width: 20%;
 			height: 160rpx;
@@ -190,6 +223,7 @@ import warpBar from "@/components/warp-bar/warp-bar.vue";
 		width: 100%;
 		height: 70rpx;
 		background: $color-red;
+		margin-top: 20rpx;
 		.save-img {
 			width: 100%;
 			height: 70rpx;
@@ -220,43 +254,52 @@ import warpBar from "@/components/warp-bar/warp-bar.vue";
 
 		.limit-content {
 			width: 100%;
-			margin-left: 50rpx;
+			padding-left: 22rpx;
 			margin-top: 50rpx;
 
     .limt-query {
-      width: 40%;
-      height: auto;
-
+     margin-top: 30rpx;
+     width: 340rpx;
+     height: 380rpx;
+     overflow: hidden;
+     background: #FFFFFF;
+     border-radius: 20rpx;
+     display: flex;
+     flex-direction: column;
       .limit-food {
-        width: 100%;
+        width: 90%;
         height: 200rpx;
-        margin-top: 10rpx;
+        margin-left: 5%;
+        margin-top: 20rpx;
       }
-
-				.pri {
-					width: 100%;
+	  .name-food{
+		  padding-left: 10rpx;
+		 }
+			.pri {
+				width: 100%;
+				height: 50rpx;
+				display: flex;
+				flex-direction: row;
+				margin-top: 30rpx;
+				position: relative;
+				padding-left: 10rpx;
+				.btn-car {
+					width: 50rpx;
 					height: 50rpx;
-					display: flex;
-					flex-direction: row;
-					margin-top: 30rpx;
-					position: relative;
-					.btn-car {
-						width: 50rpx;
-						height: 50rpx;
-						background: #3CB963;
-						border-radius: 50%;
-						position: absolute;
-						right: 10rpx;
-						@include flexCenter;
-						.shopping-car{
-							font-size: 38rpx;
-							
-						}
+					background: #3CB963;
+					border-radius: 50%;
+					position: absolute;
+					right: 10rpx;
+					@include flexCenter;
+					.shopping-car{
+						font-size: 38rpx;
+						
 					}
 				}
 			}
 		}
 	}
+}
 
 .recommed {
   width: 100%;
@@ -296,16 +339,29 @@ import warpBar from "@/components/warp-bar/warp-bar.vue";
 			}
 			.content-bottom{
 				width: 100%;
-				margin-top: 30rpx;
+				margin-top: 20rpx;
 				display: flex;
 				flex-direction: row;
+				flex-wrap: wrap;
 				padding: 0 24rpx;
 				justify-content: space-between;
 				.content-query{
-					width: 330rpx;
+					margin-top: 30rpx;
+					width: 340rpx;
+					height: 380rpx;
+					overflow: hidden;
+					background: #FFFFFF;
+					border-radius: 20rpx;
+					display: flex;
+					flex-direction: column;
 					.con-img{
-						width: 100%;
+						width: 90%;
 						height: 200rpx;
+						margin-left: 5%;
+						margin-top: 20rpx;
+					}
+					.name-title{
+						padding-left: 10rpx;
 					}
 					.pri{
 						display: flex;
@@ -313,6 +369,10 @@ import warpBar from "@/components/warp-bar/warp-bar.vue";
 						height: 70rpx;
 						flex-direction: row;
 						position: relative;
+						margin-top: 15rpx;
+						line-height: 70rpx;
+						align-items: center;
+						padding-left: 10rpx;
 						.btn-car {
 							width: 50rpx;
 							height: 50rpx;

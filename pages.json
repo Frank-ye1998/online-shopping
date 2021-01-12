@@ -24,6 +24,17 @@
             "path" : "pages/mine/sub/coupon/coupon",
 			"name" : "coupon"            
         }
+        ,{
+            "path" : "pages/shoppingCart/sub/detail/detail",
+            "name" : "detail"                                                                                 
+        }
+		,{
+            "path" : "pages/login/loginindex/loginindex",
+            "name" : "loginindex"
+        },{
+            "path" : "pages/login/mobileLogin/mobileLogin",
+			"name" : "mobileLogin"
+        }
     ],
 	"globalStyle": {
 		"navigationStyle": "custom",
