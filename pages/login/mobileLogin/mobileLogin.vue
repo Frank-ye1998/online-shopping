@@ -1,26 +1,26 @@
 <template>
-	<view class="mobile-box">
+	<view>
 		<top-bar pageTitle="账号登陆"></top-bar>
-		<view class="mobile-img">
-			<!-- <image src="../../../static/images/warpBar/doms.jpeg" mode=""></image> -->
-		</view>
-		<view class="mobile-ipt">
-			<view class="ipt-mobile">
-				<input type="text" value="" placeholder="请输入手机号"/>
+			<view class="mobile-img">
+				<image src="../../../static/icon/favicon.png" mode="" class="imgs"></image>		
 			</view>
-			<view class="ipt-code">
-				<input type="text" value="" placeholder="请输入手机验证码"/>
-				<view class="get-code">
-					获取验证码
+			<view class="mobile-ipt">
+				<view class="ipt-mobile">
+					<input type="text" value="" placeholder="请输入手机号"/>
+				</view>
+				<view class="ipt-code">
+					<input type="text" value="" placeholder="请输入手机验证码"/>
+					<view class="get-code">
+						获取验证码
+					</view>
 				</view>
 			</view>
-		</view>
-		<view class="cli-sure">
-			确定
-		</view>
-		<view class="font">
-			点击确定，即表示已阅读并同意 <text class="text">《注册会员服务条款》</text>
-		</view>
+			<view class="cli-sure">
+				确定
+			</view>
+			<view class="font">
+				点击确定，即表示已阅读并同意 <text class="text">《注册会员服务条款》</text>
+			</view>
 	</view>
 </template>
 
@@ -39,22 +39,31 @@ page {
   background-color: $color-page;
 }
 
-.mobile-title{
-	text-align: center;
-}
+	.mobile-img{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		height: 300rpx;
+		margin-top: 60rpx;
+		.imgs{
+			width: 300rpx;
+			height: 260rpx;
+		}
+	}
+
+
 .mobile-ipt{
 	width: 96%;
 	height: 240rpx;
 	background: $color-green-transparent;
-	position: fixed;
-	top: 300rpx;
-	left: 2%;
+	margin: 0 auto;
 	border-radius: 10rpx;
-	position: relative;
+	margin-top: 40rpx;
 	.ipt-mobile{
 		width: 90%;
 		height: 120rpx;
-		margin-left: 5%;
+		margin: 0 auto;
 		border-bottom: solid 2px $color-text4;
 		line-height: 120rpx;
 		input{
@@ -68,15 +77,16 @@ page {
 	.ipt-code{
 		width: 90%;
 		height: 120rpx;
-		margin-left: 5%;
+		margin: 0 auto;
 		line-height: 120rpx;
+		position: relative;
 		input{
 			width: 100%;
 			height: 100%;
 			font-size: 32rpx;
 			letter-spacing: 2rpx;
 			font-weight: lighter;
-			position: relative;
+			
 		}
 		.get-code{
 			width: 180rpx;
@@ -90,7 +100,7 @@ page {
 			font-weight: lighter;
 			border-radius: 40rpx;
 			position: absolute;
-			right: 14rpx;
+			right: 10rpx;
 			bottom: 30rpx;
 		}
 	}
@@ -99,16 +109,14 @@ page {
 	width: 96%;
 	height: 90rpx;
 	background: $color-text6;
-	position: absolute;
-	margin-left: 2%;
-	top: 700rpx;
 	border-radius: 40rpx;
 	text-align: center;
 	line-height: 90rpx;
 	color: $color-green-transparent;
 	letter-spacing: 8rpx;
 	font-weight: lighter;
-	
+	margin: 0 auto;
+	margin-top: 60rpx;
 }
 .font{
 	width: 100%;
@@ -116,9 +124,7 @@ page {
 	line-height: 90rpx;
 	letter-spacing: 3rpx;
 	font-size: 26rpx;
-	position: fixed;
 	color: $color-text3;
-	top: 830rpx;
 	.text{
 		color: #b6bce4;
 	}

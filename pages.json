@@ -37,7 +37,7 @@
 			"name": "mobileLogin"
 		},
 		{
-			"path": "./pages/shoppingCart/sub/detail/detail",
+			"path": "pages/shoppingCart/sub/detail/detail",
 			"name": "detail"
 		}
 	],
