@@ -88,7 +88,7 @@ export default {
 
 <style lang="scss">
 page {
-  background-color: $color-page;
+ background-color: $color-page;
 }
 
 .user-top {

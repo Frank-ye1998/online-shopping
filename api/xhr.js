@@ -1,10 +1,7 @@
-import md5 from 'js-md5';
 import config from '../config.js';
-import Vue from 'vue';
 
 //普通请求
 const request = (Xhrdata) => {
-	console.log(Xhrdata);
 	Xhrdata.data.Frank = randomCode(20);
 	let parames = {
 		url: config.domain + Xhrdata.url,

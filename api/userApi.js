@@ -3,11 +3,12 @@ import xhr from "@/api/xhr.js";
 
 const userApi = {
     //发送验证码
-    getPhoneCaptcha(data){
+    sendCode(data){
         const params = {
             url: '/user/sendCode',
             method: 'get',
-            data: data
+            data: data,
+            isFrom:true
         }
         return xhr.request(params)
     },
