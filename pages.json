@@ -1,32 +1,46 @@
 {
 	"pages": [{
-		"path": "pages/index/index",
-		"name": "index"
-	}, {
-		"path": "pages/menu/menu",
-		"name": "menu"
-	}, {
-		"path": "pages/shoppingCart/shoppingCart",
-		"name": "shoppingCart"
-	}, {
-		"path": "pages/mine/mine",
-		"name": "mine"
-	}, {
-		"path": "pages/mine/sub/address/address",
-		"name": "address"
-	}, {
-		"path": "pages/mine/sub/makeAddress/makeAddress",
-		"name": "makeAddress"
-	}, {
-		"path": "pages/mine/sub/coupon/coupon",
-		"name": "coupon"
-	}, {
-		"path": "pages/mine/sub/myOrder/myOrder",
-		"name": "myPrder"
-	},{
-		"path": "pages/mine/sub/userCenter/userCenter",
-		"name": "userCenter"
-	}],
+			"path": "pages/index/index",
+			"name": "index"
+		}, {
+			"path": "pages/menu/menu",
+			"name": "menu"
+		}, {
+			"path": "pages/shoppingCart/shoppingCart",
+			"name": "shoppingCart"
+		}, {
+			"path": "pages/mine/mine",
+			"name": "mine"
+		}, {
+			"path": "pages/mine/sub/address/address",
+			"name": "address"
+		}, {
+			"path": "pages/mine/sub/makeAddress/makeAddress",
+			"name": "makeAddress"
+		}, {
+			"path": "pages/mine/sub/coupon/coupon",
+			"name": "coupon"
+		}, {
+			"path": "pages/mine/sub/myOrder/myOrder",
+			"name": "myPrder"
+		},
+		{
+			"path": "pages/mine/sub/userCenter/userCenter",
+			"name": "userCenter"
+		},
+		{
+			"path": "pages/login/loginindex/loginindex",
+			"name": "loginindex"
+		},
+		{
+			"path": "pages/login/mobileLogin/mobileLogin",
+			"name": "mobileLogin"
+		},
+		{
+			"path": "./pages/shoppingCart/sub/detail/detail",
+			"name": "detail"
+		}
+	],
 	"globalStyle": {
 		"navigationStyle": "custom",
 		"backgroundColor": "#F8F8F8"
