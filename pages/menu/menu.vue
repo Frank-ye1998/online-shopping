@@ -1,6 +1,8 @@
 <template>
 	<view>
-		<view class="top"></view>
+		<view class="top">
+			<warp-bar class="warp-bar"></warp-bar>
+		</view>
 		<view class="main">
 			<view class="main-cli">
 				<view v-for="(item,index) in ifiArr" :key="index" :class="['single',index === ificaArr?'main-cli-select':'']" @tap="getItem(index)">
@@ -141,6 +143,9 @@
 		width: 100%;
 		height: 200rpx;
 		background-color: pink;
+		.warp-bar {
+			height: 100%;
+		}
 	}
 
 	.main {
