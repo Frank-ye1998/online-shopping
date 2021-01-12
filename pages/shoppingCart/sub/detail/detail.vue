@@ -78,6 +78,9 @@
 </script>
 
 <style lang="scss">
+page {
+  background-color: $color-page;
+}
 .detail-main{
 	.deta-mess{
 		width: 100%;
