@@ -25,15 +25,21 @@
 			"name" : "coupon"            
         }
         ,{
-            "path" : "pages/shoppingCart/sub/detail/detail",
-            "name" : "detail"                                                                                 
+            "path" : "pages/mine/sub/myOrder/myOrder",
+			"name" : "myPrder"
         }
-		,{
-            "path" : "pages/login/loginindex/loginindex",
-            "name" : "loginindex"
-        },{
-            "path" : "pages/login/mobileLogin/mobileLogin",
-			"name" : "mobileLogin"
+        ,{
+            "path" : "components/tab/tab",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/mine/sub/userCenter/userCenter",
+			"name" : "userCenter"
         }
     ],
 	"globalStyle": {
