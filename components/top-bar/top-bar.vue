@@ -1,7 +1,7 @@
 <template>
   <view class="top-bar-main">
     <view class="top-bar">
-      <i @tap="PageBack" class="icon page-back"></i>
+      <i @tap="PageBack" class="icon icon-back"></i>
       <text class="page-title">{{ pageTitle }}</text>
       <slot></slot>
     </view>

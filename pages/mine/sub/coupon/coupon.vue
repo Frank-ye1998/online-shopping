@@ -68,9 +68,7 @@
 		flex-direction: row;
 		@include flexCenter width: 100%
 	}
-	.cli-font{
-		width: 40%;
-	}
+	
 	.content-top-select {
 		color: $color-red;
 		border-bottom: solid 2px $color-red;
@@ -79,12 +77,10 @@
 		width: 36%;
 		margin-left: 40rpx;
 		margin-right: 40rpx;
-
 		height: 80rpx;
 		font-size: 38rpx;
 		text-align: center;
 		line-height: 80rpx;
-		border-bottom: solid 2rpx $color-red;
 	}
 
 	.fillIn {

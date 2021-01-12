@@ -7,10 +7,8 @@
 			<swiper-item>
 				<image src="../../static/images/warpBar/doms.jpeg" mode="heightFix" class="img"></image>
 			</swiper-item>
-			<swiper-item class="swiper-item">
-				<image src="../../static/images/warpBar/covers-dml.jpg" mode="heightFix" class="img"></image>
-			</swiper-item>
 		</swiper>
+
 	</view>
 </template>
 
@@ -31,17 +29,16 @@
 </script>
 
 <style lang="scss">
+	.swiper-item {
+		position: relative;
+
+		.img {
+			@include absCenter;
+			height: 100%;
+		}
+	}
+
 	.swiper {
 		height: 100%;
-
-		.swiper-item {
-			position: relative;
-
-			.img {
-				@include absCenter;
-				height: 100%;
-			}
-		}
-
 	}
 </style>

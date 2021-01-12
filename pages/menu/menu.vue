@@ -2,13 +2,27 @@
 	<view>
 		<view class="top">
 			<warp-bar class="warp-bar"></warp-bar>
+			<view class="take-away">
+				<view class="away-left">
+					
+				</view>
+				<view class="away-right">
+					<view class="btn_switch">
+						<view class="btn-left" :class="index === 1 ? 'active' : ''" @click="changeType(1)">自提</view>
+						<view class="btn-right" :class="index === 2 ? 'active' : ''" @click="changeType(2)">外卖</view>
+					</view>
+				</view>
+			</view>
 		</view>
+		
 		<view class="main">
+			<!-- 左边点击 -->
 			<view class="main-cli">
 				<view v-for="(item,index) in ifiArr" :key="index" :class="['single',index === ificaArr?'main-cli-select':'']" @tap="getItem(index)">
 					{{item.name}}
 				</view>
 			</view>
+			<!-- 右侧 -->
 			<view class="main-con">
 				<view class="select-top">
 					<scroll-view class="scroll-view_H" scroll-x="true" @scroll="scroll" scroll-left="120">
@@ -19,7 +33,7 @@
 					特惠专区
 				</view>
 				<view class="content">
-					<view class="content-query">
+					<view class="content-query" @tap="getDetail(id)">
 						<view class="con-img">
 							<image src="../../static/images/home/food.jpg" mode="widthFix" class="conimgs"></image>
 						</view>
@@ -71,6 +85,16 @@
 	export default {
 		data() {
 			return {
+				index: this.$store.getters.ChangeType,
+				takeArr:[
+					{
+						mess:"自提"
+					},
+					{
+						mess:"外送"
+					},
+				],
+				takeStatus:0, 
 				seleStatus:0, 
 				ificaArr:0,
 				ifiArr: [
@@ -128,11 +152,21 @@
 			};
 		},
 		methods: {
+			changeType (index) {
+			      console.log(index)
+			      this.index = index
+			    },
 			getItem(index){
 				this.ificaArr = index
 			},
 			selecItem(index){
 				this.seleStatus = index
+			},
+			getDetail(id){
+				this.$Router.push({name:'detail',query:{typeId: id}});
+			},
+			takeItem(index){
+				this.takeArr = index
 			}
 		}
 	}
@@ -141,17 +175,77 @@
 <style lang="scss">
 	.top {
 		width: 100%;
-		height: 200rpx;
-		background-color: pink;
-		.warp-bar {
-			height: 100%;
+		height: 480rpx;
+		background: $color-red;
+		.warp-bar{
+			width: 90%;
+			height: 330rpx;
+			margin-left: 5%;
+			padding-top: 20rpx;
+			border-radius: 10rpx;
+		}
+		.take-away{
+			width: 90%;
+			height: 100rpx;
+			background: #FFFFFF;
+			margin-left: 5%;
+			margin-top: 30rpx;
+			border-radius: 10rpx;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-around;
+			align-items: center;
+			.away-left{
+				width: 50%;
+				height: 70%;
+				background: #007AFF;
+			}
+			.away-right{
+				width: 30%;
+				height: 70%;
+				display: flex;
+				flex-direction: row;
+				justify-content: space-between;
+				border-radius: 40rpx;
+				.btn_switch{
+				    width: 85px;
+				    height: 25px;
+				    border-radius: 20px;
+				    display: flex;
+				    text-align: center;
+				    line-height: 25px;
+				    border: 1px solid #7AA7D4;
+				    color: #7AA7D4;
+				      .btn-left{
+				      width: 42.5px;
+				      height: 25px;
+				      border-radius: 20px;
+				      }
+				      .btn-right{
+				        width: 42.5px;
+				        height: 25px;
+				        border-radius: 20px;
+				      }
+				    }
+					.active{
+					  background: #7AA7D4;
+					  color:#fff;
+					}
+			}
+			.away-right-select{
+				width: 45%;
+				height: 100%;
+				background: $color-red;
+				border-radius: 40rpx;
+				
+			}
 		}
 	}
-
+	
 	.main {
 		position: relative;
 		width: 100%;
-		height: calc(100vh - 200rpx - var(--window-bottom));
+		height: calc(100vh - 370rpx - var(--window-bottom));
 		overflow: hidden;
 		display: flex;
 		flex-direction: row;
@@ -185,7 +279,7 @@
 				height: 80rpx;
 				overflow:hidden;
 				padding-left: 22rpx;
-				margin-top: 63rpx;
+				margin-top: 33rpx;
 				.scroll-view_H{
 					width: 100%;
 					height: 100rpx;
@@ -198,10 +292,10 @@
 						display: inline-block;
 						text-align: center;
 						line-height: 60rpx;
-						border: solid 1px $color-text4;
 						margin: 0 10rpx;
 						font-size: 28rpx;
 						letter-spacing: 7rpx;
+						background:$color-text4;
 					}
 				}
 				.select-box-select{
@@ -278,6 +372,8 @@
 								font-size: 25rpx;
 								color: $color-text3;
 								text-decoration: line-through;
+								padding-left: 10rpx;
+								padding-top: 9rpx;
 							}
 							.addCar{
 								width: 50rpx;
