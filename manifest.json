@@ -76,7 +76,7 @@
             "disableHostCheck" : true,
             "proxy" : {
                 "/user" : {
-                    "target" : "http://10.1.44.75:9002",
+                    "target" : "http://10.1.44.108:9002",
                     "changeOrigin" : true,
                     "ws" : true,
                     "pathRewrite" : {
@@ -84,7 +84,7 @@
                     }
                 },
                 "/userConsign" : {
-                    "target" : "http://10.1.44.75:9002",
+                    "target" : "http://10.1.44.108:9002",
                     "ws" : true,
                     "changeOrigin" : true,
                     "pathRewrite" : {
@@ -92,7 +92,7 @@
                     }
                 },
                 "/shopper" : {
-                    "target" : "http://10.1.44.75:9003",
+                    "target" : "http://10.1.44.108:9003",
                     "ws" : true,
                     "changeOrigin" : true,
                     "pathRewrite" : {
@@ -100,7 +100,7 @@
                     }
                 },
                 "/product/categoryProductList" : {
-                    "target" : "http://10.1.44.75:9010",
+                    "target" : "http://10.1.44.108:9010",
                     "ws" : true,
                     "changeOrigin" : true,
                     "pathRewrite" : {
@@ -108,7 +108,7 @@
                     }
                 },
                 "/product/findAttrProduct" : {
-                    "target" : "http://10.1.44.75:9010",
+                    "target" : "http://10.1.44.108:9010",
                     "ws" : true,
                     "changeOrigin" : true,
                     "pathRewrite" : {
@@ -116,7 +116,7 @@
                     }
                 },
                 "/order" : {
-                    "target" : "http://10.1.44.75:9004",
+                    "target" : "http://10.1.44.108:9004",
                     "ws" : true,
                     "changeOrigin" : true,
                     "pathRewrite" : {

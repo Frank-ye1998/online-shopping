@@ -22,7 +22,7 @@ const userApi = {
         return xhr.request(params)
     },
     //注册
-    phoneCaptchaLogin(data){
+    register(data){
         const params = {
             url: '/user/register',
             method: 'post',

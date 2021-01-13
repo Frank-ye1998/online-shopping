@@ -19,24 +19,15 @@
       </view>
       <view class="btn-view">
         <view class="btn">
-          <image
-            src="/static/images/mine/mine-icon-1.png"
-            class="icon-img"
-          ></image>
+          <image src="/static/images/mine/mine-icon-1.png" class="icon-img"></image>
           <view class="txt">待支付</view>
         </view>
-		        <view class="btn">
-          <image
-            src="/static/images/mine/mine-icon-2.png"
-            class="icon-img"
-          ></image>
+        <view class="btn">
+          <image src="/static/images/mine/mine-icon-2.png" class="icon-img"></image>
           <view class="txt">待收货</view>
         </view>
-		        <view class="btn">
-          <image
-            src="/static/images/mine/mine-icon-3.png"
-            class="icon-img"
-          ></image>
+        <view class="btn">
+          <image src="/static/images/mine/mine-icon-3.png" class="icon-img"></image>
           <view class="txt">售后/退款</view>
         </view>
       </view>
@@ -74,21 +65,25 @@
 </template>
 
 <script>
+import userApi from "@/api/userApi.js";
 export default {
   data() {
     return {
       scrollTop: 0,
     };
   },
-  onPageScroll(e) {
-    this.scrollTop = e.scrollTop;
+  onLoad() {
+    console.log(userApi);
+    userApi.getUserInfo().then((res) => {
+      console.log(res);
+    });
   },
 };
 </script>
 
 <style lang="scss">
 page {
- background-color: $color-page;
+  background-color: $color-page;
 }
 
 .user-top {
@@ -174,20 +169,20 @@ page {
   .btn {
     display: flex;
     width: 160rpx;
-	height: 160rpx;
-	flex-flow: column;
-	align-items: center;
-	padding: 18rpx;
+    height: 160rpx;
+    flex-flow: column;
+    align-items: center;
+    padding: 18rpx;
     .icon-img {
       width: 60rpx;
-	  height: 60rpx;
-	  margin-bottom: 12rpx;
+      height: 60rpx;
+      margin-bottom: 12rpx;
     }
     .txt {
       width: 100%;
       font-size: 28rpx;
-	  color: $color-text1;
-	  text-align: center;
+      color: $color-text1;
+      text-align: center;
     }
   }
 }

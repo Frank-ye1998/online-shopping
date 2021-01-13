@@ -1,47 +1,91 @@
 <template>
-	<view>
-		<top-bar pageTitle="账号登陆"></top-bar>
-			<view class="mobile-img">
-				<image src="../../../static/icon/favicon.png" mode="" class="imgs"></image>		
-			</view>
-			<view class="mobile-ipt">
-				<view class="ipt-mobile">
-					<input type="text" value="" placeholder="请输入手机号"/>
-				</view>
-				<view class="ipt-code">
-					<input type="text" value="" placeholder="请输入手机验证码"/>
-					<view class="get-code">
-						获取验证码
-					</view>
-				</view>
-			</view>
-			<view class="cli-sure">
-				确定
-			</view>
-			<view class="font">
-				点击确定，即表示已阅读并同意 <text class="text">《注册会员服务条款》</text>
-			</view>
-	</view>
+  <view>
+    <top-bar pageTitle="账号登陆"></top-bar>
+    <view class="mobile-img">
+      <image src="../../../static/icon/favicon.png" mode="" class="imgs"></image>
+    </view>
+    <view class="mobile-ipt">
+      <view class="ipt-mobile">
+        <input type="text" v-model="phone" placeholder="请输入手机号" />
+      </view>
+      <view class="ipt-code">
+        <input type="text" value="" placeholder="请输入手机验证码" />
+        <view class="get-code"> 获取验证码 </view>
+      </view>
+    </view>
+    <view class="cli-sure" @tap="registered"> 确定 </view>
+    <view class="font">
+      点击确定，即表示已阅读并同意
+      <text class="text">《注册会员服务条款》</text>
+    </view>
+  </view>
 </template>
 
 <script>
-import userApi from "../../../api/userApi";
+import userApi from "@/api/userApi.js";
+import Vue from "vue";
 
 export default {
   data() {
-    return {};
+    return {
+      phone: 17696769527,
+    };
   },
   methods: {
     registered: function () {
+      if (!this.phone) {
+        uni.showToast({
+          title: "请输入手机号",
+          icon: "none",
+        });
+        return;
+      }
+      uni.showLoading({
+        title: "请稍等",
+        mask: true,
+      });
       userApi
         .sendCode({
-          cellPhone: 17696769527,
+          cellPhone: this.phone,
           pageCode: "REGISTER_PAGE",
         })
         .then((res) => {
           console.log(res);
+          if (res.data.code) {
+            userApi
+              .register({
+                cellPhone: this.phone,
+                smsCode: res.data.code,
+                passWord: 123456,
+              })
+              .then((res) => {
+                console.log(res);
+                if (res.successCode === "00") {
+                  Vue.prototype.sessionId = res.data.sessionId;
+                  Vue.prototype.userId = res.data.userId;
+                  uni.setStorageSync("sessionId", res.data.sessionId);
+                  uni.setStorageSync("userId", res.data.userId);
+                  uni.hideLoading();
+                  uni.showToast({
+                    title: "注册成功",
+                    icon: "none",
+                  });
+                } else {
+                  uni.hideLoading();
+                  uni.showToast({
+                    title: res.message,
+                    icon: "none",
+                  });
+                }
+              })
+              .catch((err) => {
+                uni.hideLoading();
+                console.log(err);
+              });
+          }
         })
         .catch((err) => {
+          uni.hideLoading();
           console.log(err);
         });
     },
@@ -54,94 +98,101 @@ page {
   background-color: $color-page;
 }
 
-	.mobile-img{
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		width: 100%;
-		height: 300rpx;
-		margin-top: 60rpx;
-		.imgs{
-			width: 300rpx;
-			height: 260rpx;
-		}
-	}
+.mobile-img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 300rpx;
+  margin-top: 60rpx;
 
+  .imgs {
+    width: 300rpx;
+    height: 260rpx;
+  }
+}
 
-.mobile-ipt{
-	width: 96%;
-	height: 240rpx;
-	background: $color-green-transparent;
-	margin: 0 auto;
-	border-radius: 10rpx;
-	margin-top: 40rpx;
-	.ipt-mobile{
-		width: 90%;
-		height: 120rpx;
-		margin: 0 auto;
-		border-bottom: solid 2px $color-text4;
-		line-height: 120rpx;
-		input{
-			width: 100%;
-			height: 100%;
-			font-size: 32rpx;
-			letter-spacing: 2rpx;
-			font-weight: lighter;
-		}
-	}
-	.ipt-code{
-		width: 90%;
-		height: 120rpx;
-		margin: 0 auto;
-		line-height: 120rpx;
-		position: relative;
-		input{
-			width: 100%;
-			height: 100%;
-			font-size: 32rpx;
-			letter-spacing: 2rpx;
-			font-weight: lighter;
-			
-		}
-		.get-code{
-			width: 180rpx;
-			height:60rpx;
-			border: solid 1rpx $color-text6;
-			text-align: center;
-			line-height: 60rpx;
-			font-size: 20rpx;
-			color:  $color-text6;
-			letter-spacing: 2rpx;
-			font-weight: lighter;
-			border-radius: 40rpx;
-			position: absolute;
-			right: 10rpx;
-			bottom: 30rpx;
-		}
-	}
+.mobile-ipt {
+  width: 96%;
+  height: 240rpx;
+  background: $color-green-transparent;
+  margin: 0 auto;
+  border-radius: 10rpx;
+  margin-top: 40rpx;
+
+  .ipt-mobile {
+    width: 90%;
+    height: 120rpx;
+    margin: 0 auto;
+    border-bottom: solid 2px $color-text4;
+    line-height: 120rpx;
+
+    input {
+      width: 100%;
+      height: 100%;
+      font-size: 32rpx;
+      letter-spacing: 2rpx;
+      font-weight: lighter;
+    }
+  }
+
+  .ipt-code {
+    width: 90%;
+    height: 120rpx;
+    margin: 0 auto;
+    line-height: 120rpx;
+    position: relative;
+
+    input {
+      width: 100%;
+      height: 100%;
+      font-size: 32rpx;
+      letter-spacing: 2rpx;
+      font-weight: lighter;
+    }
+
+    .get-code {
+      width: 180rpx;
+      height: 60rpx;
+      border: solid 1rpx $color-text6;
+      text-align: center;
+      line-height: 60rpx;
+      font-size: 20rpx;
+      color: $color-text6;
+      letter-spacing: 2rpx;
+      font-weight: lighter;
+      border-radius: 40rpx;
+      position: absolute;
+      right: 10rpx;
+      bottom: 30rpx;
+    }
+  }
 }
-.cli-sure{
-	width: 96%;
-	height: 90rpx;
-	background: $color-text6;
-	border-radius: 40rpx;
-	text-align: center;
-	line-height: 90rpx;
-	color: $color-green-transparent;
-	letter-spacing: 8rpx;
-	font-weight: lighter;
-	margin: 0 auto;
-	margin-top: 60rpx;
+
+.cli-sure {
+  width: 96%;
+  height: 90rpx;
+  background: $color-text6;
+  border-radius: 40rpx;
+  text-align: center;
+  line-height: 90rpx;
+  color: $color-green-transparent;
+  letter-spacing: 8rpx;
+  font-weight: lighter;
+  margin: 0 auto;
+  margin-top: 60rpx;
 }
-.font{
-	width: 100%;
-	text-align: center;
-	line-height: 90rpx;
-	letter-spacing: 3rpx;
-	font-size: 26rpx;
-	color: $color-text3;
-	.text{
-		color: #b6bce4;
-	}
+
+.font {
+  width: 100%;
+  text-align: center;
+  line-height: 90rpx;
+  letter-spacing: 3rpx;
+  font-size: 26rpx;
+  color: $color-text3;
+
+  .text {
+    color: #b6bce4;
+  }
 }
 </style>

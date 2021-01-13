@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import App from './App'
 import store from './store'
-
 //请求器
 import xhr from "./api/xhr.js";
 Vue.prototype.$request = xhr.request;

@@ -1,7 +1,8 @@
 import config from '../config.js';
-
+import Vue from "vue";
 //普通请求
 const request = (Xhrdata) => {
+	if (!Xhrdata.data) Xhrdata.data = {};
 	Xhrdata.data.Frank = randomCode(20);
 	let parames = {
 		url: config.domain + Xhrdata.url,
@@ -12,6 +13,7 @@ const request = (Xhrdata) => {
 			source: 2,
 			sourceName: 'WEB',
 			"content-type": Xhrdata.isFrom ? "application/x-www-form-urlencoded;charset=utf-8" : "application/json;charset=UTF-8",
+			sessionId: Vue.prototype.sessionId
 		}
 	};
 	return uni.request(parames).then(res => {
