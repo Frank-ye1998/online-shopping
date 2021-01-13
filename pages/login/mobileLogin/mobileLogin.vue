@@ -32,6 +32,7 @@ export default {
     };
   },
   methods: {
+    //页面code（LOGIN_PAGE;REGISTER_PAGE）
     registered: function () {
       if (!this.phone) {
         uni.showToast({
@@ -44,50 +45,66 @@ export default {
         title: "请稍等",
         mask: true,
       });
-      userApi
+
+      this.getSmsCode("REGISTER_PAGE").then((registerCode) => {
+        userApi
+          .register({
+            cellPhone: this.phone,
+            smsCode: registerCode,
+            passWord: 123456,
+          })
+          .then((res) => {
+            if (res.successCode === "00") {
+              this.saveUserKey(res.data);
+              uni.showToast({
+                title: "注册成功",
+                icon: "none",
+              });
+            } else if (res.successCode === "01") {
+              this.getSmsCode("LOGIN_PAGE").then((loginCode) => {
+                userApi
+                  .smsLogin({
+                    cellPhone: this.phone,
+                    smsCode: loginCode,
+                  })
+                  .then((res) => {
+                    this.saveUserKey(res.data);
+                    uni.showToast({
+                      title: "登录成功",
+                      icon: "none",
+                    });
+                  });
+              });
+            } else {
+              uni.hideLoading();
+              uni.showToast({
+                title: res.message,
+                icon: "none",
+              });
+            }
+          })
+          .catch((err) => {
+            uni.hideLoading();
+            console.log(err);
+          });
+      });
+    },
+    getSmsCode: function (code) {
+      return userApi
         .sendCode({
           cellPhone: this.phone,
-          pageCode: "REGISTER_PAGE",
+          pageCode: code,
         })
         .then((res) => {
-          console.log(res);
-          if (res.data.code) {
-            userApi
-              .register({
-                cellPhone: this.phone,
-                smsCode: res.data.code,
-                passWord: 123456,
-              })
-              .then((res) => {
-                console.log(res);
-                if (res.successCode === "00") {
-                  Vue.prototype.sessionId = res.data.sessionId;
-                  Vue.prototype.userId = res.data.userId;
-                  uni.setStorageSync("sessionId", res.data.sessionId);
-                  uni.setStorageSync("userId", res.data.userId);
-                  uni.hideLoading();
-                  uni.showToast({
-                    title: "注册成功",
-                    icon: "none",
-                  });
-                } else {
-                  uni.hideLoading();
-                  uni.showToast({
-                    title: res.message,
-                    icon: "none",
-                  });
-                }
-              })
-              .catch((err) => {
-                uni.hideLoading();
-                console.log(err);
-              });
-          }
-        })
-        .catch((err) => {
-          uni.hideLoading();
-          console.log(err);
+          return res.data.code;
         });
+    },
+    saveUserKey: function (data) {
+      Vue.prototype.sessionId = data.sessionId;
+      Vue.prototype.userId = data.userId;
+      uni.setStorageSync("sessionId", data.sessionId);
+      uni.setStorageSync("userId", data.userId);
+      uni.hideLoading();
     },
   },
 };
