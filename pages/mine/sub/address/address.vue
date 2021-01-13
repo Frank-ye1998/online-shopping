@@ -1,32 +1,33 @@
 <template>
 	<view>
 		<top-bar class="toptxt">我的收货地址</top-bar>
-		<view class="noData" v-show="shippingAddress.length<1">
-			<image src="../../../../static/images/mine/noData.jpeg" mode="" class="noImage"></image>
+		<view class="noData" v-show="this.shippingAddress.length<1">
+			<image src="../../../../static/images/mine/noData.jpeg" mode="" class="no-image"></image>
 			<text class="tip">还没有地址，快去添加吧~</text>
 		</view>
 		<view class="isData" v-model="chosenAddressIndex">
-			<form @submit="onAdd()">
+			<form>
 				<!-- 遍历查询地址接口内的地址列表 -->
-				<view class="wrap">
-					<view class="address">
-						徐汇日月光
+				<view class="wrap" v-for="(item,index) in this.shippingAddress" :key="index">				
+					<view class="left">
+						<view class="address">
+							{{item.address}}
+						</view>
+						<!-- 为了让名字和电话在一行显示再包一个view -->
+						<view class="aa">
+							<view class="name">
+								{{item.name}}
+							</view>
+							<text class="phone">
+								{{item.tel}}
+							</text>
+						</view>
 					</view>
-					<!-- 为了让名字和电话在一行显示再包一个view -->
-					<view class="aa"> 
-						<view class="name">
-							Frank
-						</view>
-						<text class="phone">
-							15000661359
-						</text>
-						<view class="pic">
-							<i class="icon icon-edit" @tap="onEdit()"></i>
-						</view>
-						
+					<view class="pic">
+						<i class="icon icon-edit" @tap="onEdit(item)"></i>
 					</view>
 				</view>
-				<button form-type="submit" class="add">新增收货地址</button>
+				<button form-type="submit" @tap="onAdd()" class="add">新增收货地址</button>
 			</form>
 		</view>
 
@@ -34,6 +35,7 @@
 </template>
 
 <script>
+	import userApi from "@/api/userApi.js"
 	export default {
 		data() {
 			return {
@@ -43,14 +45,32 @@
 				addressIndex: ''
 			};
 		},
+		onLoad() {
+			this.getAddress()
+		},
 		methods: {
-			onAdd() {
-				this.$router.push({ path: '/pages/mine/sub/makeAddress/makeAddress' });
+			getAddress() {
+				userApi
+					.findAddress()
+					.then((res) => {
+						this.shippingAddress = res.data
+					})
 			},
-			onEdit(item){
-			    uni.navigateTo({
-			        url: '/pages/mine/sub/makeAddress/makeAddress?id=15000661359&name=uniapp&address=sssssss'
-			    });
+			onAdd() {
+				this.$router.push({
+					name: 'makeAddress'
+				});
+			},
+			onEdit(item) {
+				// 	// path: `/pages/mine/sub/makeAddress/makeAddress?content=${item.creator}&name=${item.name}
+				// 	// &tel=${item.tel}&detail=${item.detailAddress}&postCode=${item.postcode}`
+				// );
+				this.$Router.push({
+					path: '/pages/mine/sub/makeAddress/makeAddress',
+					query: {
+						item
+					}
+				});
 			}
 		}
 	}
@@ -61,40 +81,56 @@
 		color: $color-text1;
 	}
 
-	.noImage {
+	.no-image {
 		display: flex;
 		margin-left: 48rpx;
 	}
-	.tip{
+
+	.tip {
 		margin-left: 120rpx;
 	}
-	.wrap{
-		margin-left: 40rpx;
-		margin-top: 20rpx;
-	}
+
+
+
 	.address {
+		font-size: 40rpx;
 		color: $color-text1;
 	}
 
 	.name {
+		font-size: 40rpx;
 		color: $color-text2;
 		margin-right: 20rpx;
 	}
 
 	.phone {
+		font-size: 40rpx;
 		color: $color-text2;
 		display: inline-block;
 	}
-	.pic{
-		margin-left: 330rpx;
+
+	.pic {
+		height: 100rpx;
+		width: 100rpx;
+		@include flexCenter;
 	}
+
 	.aa {
 		display: flex;
 		flex-direction: row;
 	}
 
+	.wrap {
+		margin-left: 40rpx;
+		margin-top: 20rpx;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between; //一个在最左边，一个在右边
+	}
+
 	.add {
-		margin-top: 530rpx;
+		margin-top: 100rpx;
+		width: 620rpx;
 		@include btnRed
 	}
 </style>

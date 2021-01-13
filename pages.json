@@ -22,7 +22,7 @@
 			"name": "coupon"
 		}, {
 			"path": "pages/mine/sub/myOrder/myOrder",
-			"name": "myPrder"
+			"name": "myOrder"
 		},
 		{
 			"path": "pages/mine/sub/userCenter/userCenter",
