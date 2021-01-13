@@ -1,6 +1,6 @@
 <template>
   <view>
-    <view class="user-top">
+    <view class="user-top" @tap="toLogin">
       <view class="avatar">
         <image src="/static/images/mine/avatar.jpg" mode="widthFix"></image>
       </view>
@@ -71,6 +71,11 @@ export default {
     return {
       scrollTop: 0,
     };
+  },
+  methods:{
+	  toLogin:function(){
+		  this.$Router.push({name:'mobileLogin'})
+	  }
   },
   onLoad() {
     console.log(userApi);

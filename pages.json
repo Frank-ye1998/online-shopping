@@ -1,8 +1,5 @@
 {
 	"pages": [{
-			"path": "pages/login/mobileLogin/mobileLogin",
-			"name": "mobileLogin"
-		}, {
 			"path": "pages/index/index",
 			"name": "index"
 		}, {
@@ -39,6 +36,10 @@
 		{
 			"path": "pages/shoppingCart/sub/detail/detail",
 			"name": "detail"
+		},
+		{
+			"path": "pages/login/mobileLogin/mobileLogin",
+			"name": "mobileLogin"
 		}
 	],
 	"globalStyle": {
