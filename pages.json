@@ -1,5 +1,14 @@
 {
-	"pages": [{
+	"pages": [
+		{
+		    "path" : "pages/test/test",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},{
 			"path": "pages/index/index",
 			"name": "index"
 		}, {
@@ -41,7 +50,8 @@
 			"path": "pages/login/mobileLogin/mobileLogin",
 			"name": "mobileLogin"
 		}
-	],
+
+    ],
 	"globalStyle": {
 		"navigationStyle": "custom",
 		"backgroundColor": "#F8F8F8"
