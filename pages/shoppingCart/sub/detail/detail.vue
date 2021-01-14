@@ -5,43 +5,39 @@
 			<view class="deta-mess">
 				<view class="detail-img">
 					<img-view :src="`http://10.1.44.108:9010/images/${detailData.mainImg}`" mode="widthFix" class="details-imgs" />
-
 				</view>
 			</view>
 			<view class="detail-con">
-				<view class="con-name">{{detailData.name}}</view>
-				<view class="con-brief">{{detailData.description}}</view>
+				<view class="con-name">{{ detailData.name }}</view>
+				<view class="con-brief">{{ detailData.description }}</view>
 			</view>
 		</view>
 		<!-- 规格 -->
 		<view class="choice-commodity">
-			<view class="commod" v-for="(item,index) in detailData.ptSpuAttrs" :key="index">
+			<view class="commod" v-for="(item, index) in detailData.ptSpuAttrs" :key="index">
 				<view class="font-left">
-					{{item.name}}
+					{{ item.name }}
 				</view>
-				<view v-for="(item,index) in item.ptSpuAttrValues" :key="index" :class="['font-right',index===spuAtt?'font-right-select':'']"
-				 @tap="selectItem(index)">
-					{{item.value}}
+				<view v-for="(sub, idx) in item.ptSpuAttrValues" :key="idx" :class="[
+            'font-right',
+            item.selectedCode === sub.skuSpliceCode ? 'font-right-select' : '',
+          ]"
+				 @tap="selectItem(item, sub.skuSpliceCode)">
+					{{ sub.value }}
 				</view>
 			</view>
 		</view>
-		<view class="default">
-			超值加购推荐，满足加倍~
-		</view>
+		<view class="default"> 超值加购推荐，满足加倍~ </view>
 		<view class="calculation">
 			<view class="price">
-				<view class="calcula-price">
-					￥{{detailData.price}}
-				</view>
+				<view class="calcula-price"> ￥{{ detailData.price }} </view>
 				<view class="add-class">
 					<view class="calcula-cli">
 						<view class="sub">-</view>
 						<text>1</text>
 						<view class="add">+</view>
 					</view>
-					<view class="add-cart" @tap="clickAddCart">
-						加入购物车
-					</view>
+					<view class="add-cart" @tap="clickAddCart"> 加入购物车 </view>
 				</view>
 			</view>
 		</view>
@@ -50,6 +46,7 @@
 
 <script>
 	import productApi from "@/api/productApi.js";
+	import shopperApi from "@/api/shopperApi.js";
 	export default {
 		data() {
 			return {
@@ -57,42 +54,181 @@
 				detailData: {},
 				commodity: this.$route.query,
 				sizeArr: [],
-				comArr: []
+				comArr: [],
+				detailData: {},
+				skuCode: "",
+				skuStr: "",
 			};
 		},
 		methods: {
-			selectItem(index) {
-				this.spuAtt = index;
+			selectItem(item, code) {
+				this.$set(item, "selectedCode", code);
+				console.log(item);
+				console.log(code);
 			},
+
+			// this.detailData.ptSpuAttrs.ptSpuAttrValues.skuSpliceCode((item) =>{
+
+			// }),
 			goBack() {
 				this.$Router.back(1);
-				console.log(this.commodity, 'commodity');
+				console.log(this.commodity, "commodity");
 			},
 			getCommodity: function() {
 				productApi
 					.goToGoodsDetail({
-						id: this.commodity.id
+						id: this.commodity.id,
 					})
 					.then((res) => {
 						// console.log(res.data, 'detailres');
-						this.detailData = res.data;
-						// console.log(this.detailData, 'detailData');
+						let defultCode = res.data.skuCode.replace(res.data.skuId, "");
+						// defultCode = T1H1S1
+						res.defultCode = defultCode;
 
-					})
+						res.data.ptSpuAttrs.forEach((item) => {
+							item.ptSpuAttrValues.forEach((sub) => {
+								if (defultCode.indexOf(sub.skuSpliceCode) > -1) {
+									item.selectedCode = sub.skuSpliceCode;
+								}
+							});
+						});
+						this.detailData = res.data;
+						console.log(this.detailData);
+
+						//  let skucode = "";
+						//  let skuStr = "";
+						// this.detailData.ptSpuAttrs.sort((a, b) => {
+						// 	return a.sort - b.sort;
+						// });
+						//   console.log(this.detailData.ptSpuAttrs);
+						//   this.detailData.ptSpuAttrs.forEach((item) => {
+						// 	skucode += item.skuSpliceCode + item.selectedCode;
+						// 	item.ptSpuAttrValues.forEach((sub) => {
+						// 	  if (sub.skuSpliceCode === item.selectedCode) {
+						// 		skuStr += sub.value + "  ";
+						// 	  }
+						// 	});
+						//   });
+						//   console.log(skuStr, "skustr");
+						//   console.log(this.detailData.skuId+skucode,'skucode');
+					});
 			},
 			//加入购物车接口
 			clickAddCart: function() {
-				shopperApi
-					.addCart({
+				let code = this.detailData.skuId;
+				this.detailData.ptSpuAttrs.forEach((item) => {
+					code += item.selectedCode;
+				});
 
-					})
+				let lastItem = {};
+				this.detailData.ptSkus.forEach((item) => {
+					if (item.code === code) {
+						lastItem = item;
+					}
+				});
 
-			}
+
+
+				console.log(lastItem);
+				let obj = {};
+				obj.spuType = 1;
+				obj.skuId = lastItem.skuId;
+				obj.skuCode = code;
+				obj.skuName = lastItem.name;
+				obj.specsValues = code;
+				obj.badgeImg = lastItem.badgeImg;
+				obj.smallImage = lastItem.smallImage;
+				obj.originPrice = lastItem.originPrice;
+				obj.price = lastItem.price;
+				obj.vipPrice = lastItem.vipPrice;
+				obj.isGift = lastItem.isGift;
+				obj.canBookingMsg = lastItem.canBookingMsg;
+				obj.isBooking = lastItem.isBooking;
+				obj.isPresale = lastItem.isPresale;
+				obj.buyLimit = lastItem.buyLimit;
+				obj.isPromotion = lastItem.isPromotion;
+				obj.markDiscount = lastItem.markDiscount;
+				obj.markNew = lastItem.markNew;
+				obj.presaleDeliveryDateDisplay = lastItem.presaleDeliveryDateDisplay;
+				obj.length = lastItem.length;
+				obj.width = lastItem.width;
+				obj.height = lastItem.height;
+				obj.roughWeight = lastItem.roughWeight;
+				obj.saleUnit = lastItem.saleUnit;
+				obj.minimumOrderQuantity = lastItem.minimumOrderQuantity;
+				obj.isInvoice = lastItem.isInvoice;
+				obj.salePointMsg = lastItem.subtitle;
+				obj.countPrice = lastItem.price;
+				obj.quantity = 1;
+
+				shopperApi.addCart(obj).then(res => {
+					console.log(res);
+				}).catch(err => {
+					console.log(err);
+				})
+
+				// let arr2 = [
+				//   "storeCode",
+				//   "storeName",
+				//   "deliveryFee",
+				//   "totalOriginPrice",
+				//   "totalPrice",
+				//   "totalPePrice",
+				//   "cityName",
+				//   "cityCode",
+				//   "loyaltyLevel",
+				//   "item",
+				//   "spuType",
+				//   "skuId",
+				//   "skuCode",
+				//   "skuName",
+				//   "specsValues",
+				//   "badgeImg",
+				//   "smallImage",
+				//   "originPrice",
+				//   "price",
+				//   "vipPrice",
+				//   "isGift",
+				//   "canBookingMsg",
+				//   "isBooking",
+				//   "isPresale",
+				//   "buyLimit",
+				//   "isPromotion",
+				//   "markDiscount",
+				//   "markNew",
+				//   "isCombined",
+				//   "presaleDeliveryDateDisplay",
+				//   "length",
+				//   "width",
+				//   "height",
+				//   "roughWeight",
+				//   "saleUnit",
+				//   "minimumOrderQuantity",
+				//   "isInvoice",
+				//   "salePointMsg",
+				//   "countPrice",
+				//   "quantity",
+				//   "promotionId",
+				//   "promotionPrice",
+				//   "promotionDesc",
+				//   "shopIngredientVos",
+				//   "id",
+				//   "code",
+				//   "name",
+				//   "addPrice",
+				//   "quantity",
+				//   "defaultNum",
+				// ];
+				// let obj = {};
+				// arr2.forEach((item) => {
+				//   obj[item] = item233[item] || "不存在";
+				// });
+			},
 		},
 		onLoad: function() {
 			this.getCommodity();
-		}
-	}
+		},
+	};
 </script>
 
 <style lang="scss">
@@ -128,7 +264,6 @@
 					width: 100%;
 					height: 100%;
 				}
-
 			}
 		}
 
@@ -172,7 +307,6 @@
 					height: 90rpx;
 					text-align: center;
 					line-height: 90rpx;
-
 				}
 
 				.font-right {
@@ -278,8 +412,6 @@
 					}
 				}
 			}
-
-
 		}
 	}
 </style>
