@@ -247,7 +247,7 @@
 				以下是路由常用方法：
 			
 				//跳转到某个页面(在当前页面栈上增加) name 是页面名称，query是需要传递的参数，不需要传参就不写query
-				this.$Router.push({name:'xxx'},query:{xxx}); //下面的方法参数和这个相同
+				this.$Router.push({name:'xxx',query:{xxx}}); //下面的方法参数和这个相同
 				
 				//关闭当前页面然后跳转到某个页面
 				this.$Router.replace();

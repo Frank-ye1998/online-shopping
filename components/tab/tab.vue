@@ -34,7 +34,7 @@
 		display: flex;
 		margin-left: 22rpx;
 		border-radius: 35rpx;
-		background-color: $color-red;
+		background-color: #d08683;
 		width: 95%;
 	}
 	.contentTitle {

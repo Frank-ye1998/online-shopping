@@ -30,6 +30,11 @@ $color-text6:#768cc7;
     top: 50%;
     transform: translateY(-50%);
 }
+@mixin absLvCenter{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
 
 @mixin absCenter {
     position: absolute;

@@ -1,10 +1,10 @@
 <template>
   <view>
-    <view class="user-top" @tap="toLogin">
+    <view class="user-top" @tap="goDetail()">
       <view class="avatar">
         <image src="/static/images/mine/avatar.jpg" mode="widthFix"></image>
       </view>
-      <view class="phone">手机号：17696769527</view>
+      <view class="phone">手机号：{{this.userInfo.cellPhone}}</view>
       <view class="right">
         <i class="icon icon-to"></i>
       </view>
@@ -12,7 +12,7 @@
     <view class="top-bg"></view>
 
     <view class="list-order list">
-      <view class="content">
+      <view class="content" @tap="goto('myOrder')">
         <i class="icon icon-order"></i>
         <view class="tit">我的订单</view>
         <i class="icon icon-to"></i>
@@ -33,14 +33,14 @@
       </view>
     </view>
     <view class="list">
-      <view class="content">
+      <view class="content" @tap="goto('coupon')">
         <i class="icon icon-coupon"></i>
         <view class="tit">优惠券</view>
         <i class="icon icon-to"></i>
       </view>
     </view>
     <view class="list">
-      <view class="content">
+      <view class="content" @tap="goto('address')">
         <i class="icon icon-address"></i>
         <view class="tit">收货地址</view>
         <i class="icon icon-to"></i>
@@ -70,17 +70,26 @@ export default {
   data() {
     return {
       scrollTop: 0,
+	  userInfo:[]
     };
   },
+
   methods:{
 	  toLogin:function(){
 		  this.$Router.push({name:'mobileLogin'})
+	  },
+	  goto(name){
+		  this.$router.push({name})
+	  },
+	  goDetail(){
+		  let obj = this.userInfo
+		  this.$Router.push({name:'userCenter',params:{obj}});
 	  }
   },
   onLoad() {
-    console.log(userApi);
     userApi.getUserInfo().then((res) => {
-      console.log(res);
+      this.userInfo = res.data
+	  console.log(this.userInfo)
     });
   },
 };

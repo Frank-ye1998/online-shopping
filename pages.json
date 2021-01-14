@@ -1,14 +1,8 @@
 {
-	"pages": [
-		{
-		    "path" : "pages/test/test",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "",
-		        "enablePullDownRefresh": false
-		    }
-		    
-		},{
+	"pages": [{
+			"path": "pages/addressSelection/addressSelection",
+			"name": "addressSelection"
+		}, {
 			"path": "pages/index/index",
 			"name": "index"
 		}, {
@@ -31,7 +25,7 @@
 			"name": "coupon"
 		}, {
 			"path": "pages/mine/sub/myOrder/myOrder",
-			"name": "myPrder"
+			"name": "myOrder"
 		},
 		{
 			"path": "pages/mine/sub/userCenter/userCenter",

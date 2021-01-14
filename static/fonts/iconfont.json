@@ -6,6 +6,13 @@
   "description": "达美乐",
   "glyphs": [
     {
+      "icon_id": "11177800",
+      "name": "对号",
+      "font_class": "check",
+      "unicode": "e62e",
+      "unicode_decimal": 58926
+    },
+    {
       "icon_id": "17204027",
       "name": "减号",
       "font_class": "reduce",
