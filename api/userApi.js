@@ -77,7 +77,8 @@ const userApi = {
         const params = {
             url: '/userConsign/del',
             method: 'post',
-            data: data
+            data: data,
+			isFrom:true
         }
         return xhr.request(params)
     },
@@ -104,7 +105,8 @@ const userApi = {
         const params = {
             url: '/userConsign/changeDefaultAddress',
             method: 'post',
-            data: data
+            data: data,
+			isFrom:true
         }
         return xhr.request(params)
     },

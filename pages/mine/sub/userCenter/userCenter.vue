@@ -8,7 +8,7 @@
 		</view>
 		<view class="nickName">
 			<view class="msg">昵称</view>
-			<view class="pic">Frank</view>
+			<input type="text"  placeholder="输入昵称" v-model="name" class="pic" />
 			<i class="icon icon-to"></i>
 		</view>
 		<view class="sex">
@@ -23,7 +23,7 @@
 		</view>
 		<view class="phone">
 			<view class="msg">手机号</view>
-			<view class="pic">15000661359</view>
+			<view class="pic">{{this.tel}}</view>
 			<i class="icon icon-to"></i>
 		</view>
 		<view class="save" @tap="logOut()">退出登录</view>
@@ -31,21 +31,41 @@
 </template>
 
 <script>
+	import userApi from "@/api/userApi.js"
 	export default {
+		onLoad() {
+			console.log(this.$Route.query.obj)
+			this.infoList = this.$Route.query.obj
+			this.name = this.infoList.nickName
+			this.tel = this.infoList.cellPhone
+			
+		},
 		data() {
 			return {
-
+				infoList:[],
+				tel:'',
+				name:'',
 			};
 		},
-		methods:{
-			logOut(){
-				
+		methods: {
+			logOut() {
+				// 退出登录
+				userApi
+					.logOutNow()
 			}
 		}
 	}
 </script>
 
 <style lang="scss">
+	.pic{
+		display: flex;
+		flex-direction: row;
+		font-size: 38rpx;
+		height: 100rpx;
+		text-align: left;
+		line-height: 100rpx;
+	}
 	.footage,
 	.nickName,
 	.sex,
@@ -58,12 +78,12 @@
 		height: 100rpx;
 		text-align: left;
 		line-height: 100rpx;
-		
 		.msg {
 			width: 80%;
 			margin-left: 25rpx;
 		}
-		.icon-to{
+
+		.icon-to {
 			margin-right: 25rpx;
 		}
 	}
