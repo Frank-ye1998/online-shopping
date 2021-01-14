@@ -43,7 +43,9 @@
             /* ios打包配置 */
             "ios" : {},
             /* SDK配置 */
-            "sdkConfigs" : {}
+            "sdkConfigs" : {
+                "maps" : {}
+            }
         }
     },
     /* 快应用特有相关 */
@@ -70,7 +72,7 @@
     },
     "h5" : {
         "router" : {
-            "mode" : "hash"
+            "mode" : "history"
         },
         "devServer" : {
             "disableHostCheck" : true,
@@ -129,6 +131,13 @@
         "optimization" : {
             "treeShaking" : {
                 "enable" : true
+            }
+        },
+        "sdkConfigs" : {
+            "maps" : {
+                "qqmap" : {
+                    "key" : "TAABZ-4MZC6-ZLCSK-EUWXZ-CBJ6H-O6FIR"
+                }
             }
         }
     }

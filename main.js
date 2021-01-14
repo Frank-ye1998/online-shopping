@@ -1,20 +1,28 @@
+import config from "@/config.js"
 import Vue from 'vue'
 import App from './App'
 import store from './store'
+
 //请求器
-import xhr from "./api/xhr.js";
-Vue.prototype.$request = xhr.request;
+import xhr from "./api/xhr.js"
+Vue.prototype.$request = xhr.request
+
 //路由守卫
 import {
 	router,
 	RouterMount
 } from './router/router.js'
 Vue.use(router)
+
+//JSONP
+import { VueJsonp } from 'vue-jsonp'
+Vue.use(VueJsonp)
+
 //全局组件
-import imgView from './components/img-view/img-view.vue';
-Vue.component('img-view', imgView);
-import stepper from './components/stepper/stepper.vue';
-Vue.component('stepper', stepper);
+import imgView from './components/img-view/img-view.vue'
+Vue.component('img-view', imgView)
+import stepper from './components/stepper/stepper.vue'
+Vue.component('stepper', stepper)
 
 
 Vue.config.productionTip = false

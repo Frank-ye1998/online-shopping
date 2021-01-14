@@ -8,6 +8,11 @@
     box-sizing: border-box;
 }
 
+//隐藏地图logo
+.csssprite {
+    display: none !important;
+}
+
 //主题色
 $color-green: #3cb963;
 $color-green-transparent: #e3f8e9;

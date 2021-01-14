@@ -31,6 +31,10 @@ export default {
       phone: 17696769527,
     };
   },
+	  
+  onLoad(){
+	
+  },
   methods: {
     //页面code（LOGIN_PAGE;REGISTER_PAGE）
     registered: function () {
