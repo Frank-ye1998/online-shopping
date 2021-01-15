@@ -34,7 +34,7 @@
 					</scroll-view>
 				</view>
 				<view class="query-box">
-					特惠专区
+					豆制品
 				</view>
 				<view class="content">
 					<!-- 右侧商品主内容 -->
@@ -102,13 +102,18 @@
 			changeType(index) {
 				// this.$store.commit('setIndex', index)
 				console.log(index)
-				this.index = index
+				this.index = index;
+				
 			},
+			//左边点击
 			getItem(index) {
-				this.ificaArr = index
+				this.ificaArr = index;
+				this.leftIndex = index;
 			},
+			//滑动标题点击
 			selecItem(index) {
-				this.seleStatus = index
+				this.seleStatus = index;
+				this.$set(this.ifiArr[this.leftIndex], "typeIndex", index);
 			},
 			takeItem(index) {
 				this.takeArr = index

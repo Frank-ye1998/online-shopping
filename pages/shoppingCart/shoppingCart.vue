@@ -17,40 +17,18 @@
         />
         <view class="goods-info">
           <view class="goods-name">
-            大白菜大白菜大白菜大白菜大大白菜大白菜大白菜大白菜大大白菜大白菜大白菜大白菜大
+            
           </view>
-          <view class="goods-result">热/半糖/大杯</view>
+          <view class="goods-result"></view>
           <view class="goods-price">
-            <view class="last-price"><text class="rmb">¥</text>16</view>
-            <view class="original-price">¥28</view>
+            <view class="last-price"><text class="rmb">¥</text></view>
+            <view class="original-price">¥</view>
           </view>
           <stepper class="stepper" :change="change" :value="0"></stepper>
         </view>
         <view class="hr"></view>
       </view>
-      <view class="list">
-        <radio
-          class="radio"
-          style="transform: scale(0.94)"
-          color="#e04343"
-          :checked="true"
-        />
-        <img-view
-          src="/static/images/shopping-car/caomei.jpg"
-          mode="widthFix"
-          class="img-view"
-        />
-        <view class="goods-info">
-          <view class="goods-name">小白菜</view>
-          <view class="goods-result">热/半糖/大杯</view>
-          <view class="goods-price">
-            <view class="last-price"><text class="rmb">¥</text>16</view>
-            <view class="original-price">¥28</view>
-          </view>
-          <stepper class="stepper" :change="change" :value="0"></stepper>
-        </view>
-        <view class="hr"></view>
-      </view>
+      
     </view>
 
     <view class="viewiding-line">
@@ -222,17 +200,38 @@
 </template>
 
 <script>
+import shopperApi from "@/api/shopperApi.js"
 import imgView from "../../components/img-view/img-view.vue";
 export default {
   components: { imgView },
-  data() {
-    return {};
-  },
-  methods: {
+	 data() {
+		return {
+			carShop:[],
+		};
+	 },
+	methods: {
     change: function (res) {
-      console.log(res);
+      // console.log(res);
     },
-  },
+	getCartInfo:function() {
+	      var md5 = require("md5");
+	      let xx = md5("message");
+	      uni.setStorageSync("clientId", xx);
+	      let yy = uni.getStorage("clientId");
+	      shopperApi
+		  .getCartInfo({
+			  
+		  }).then((res) =>{
+			   this.carShop = res.data.items; //获取购物车中的商品
+			   console.log(this.carShop,'carShopppp');
+		  })
+		  console.log(this.carShop,'res.data.items');
+			
+	    },
+	},
+	onLoad() {
+		this.getCartInfo()
+	}
 };
 </script>
 
