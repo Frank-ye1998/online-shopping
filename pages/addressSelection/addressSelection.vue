@@ -4,7 +4,7 @@
     <!-- 搜索栏 -->
     <view class="search-view">
       <view class="city-name" @tap="pickerShow = true">
-        <text class="text">上海市</text>
+        <text class="text">{{nowCity.city||"定位中"}}</text>
         <i class="icon icon-to"></i>
         <view class="right-border"></view>
       </view>
@@ -55,13 +55,23 @@ export default {
       nearList: [],
       nearSelected: {},
       searchValue: "",
+      nowCity: {},
     };
   },
   methods: {
     //搜索地点
     searchLocation: function () {
       let value = this.searchValue;
-      console.log(value);
+      this.$jsonp("https://apis.map.qq.com/ws/place/v1/search", {
+        keyword: value,
+        boundary: `region(${this.nowCity.city},0)`,
+        filter: `category<>公交站`,
+        key: config.tencentMapKey,
+        output: "jsonp",
+      }).then((res) => {
+        console.log(res);
+        this.nearList = res.data;
+      });
     },
     //选择地点
     nearTap: function (data) {
@@ -81,7 +91,9 @@ export default {
         output: "jsonp",
       })
         .then((res) => {
+          console.log(res);
           this.nearList = res.result.pois;
+          this.nowCity = res.result.ad_info;
         })
         .catch((err) => {
           uni.showToast({
@@ -131,9 +143,16 @@ export default {
         });
       }, 200);
     });
-
+  },
+  mounted() {
+    //关闭address-picker
     uni.$on("addressPickerClose", () => {
       this.pickerShow = false;
+    });
+    //接收城市选择结果
+    uni.$on("citySelected", (data) => {
+      console.log(data);
+      this.nowCity = data;
     });
   },
 };
@@ -239,7 +258,7 @@ page {
     .info {
       font-size: 22rpx;
       color: $color-text2;
-      line-height: 22rpx;
+      line-height: 34rpx;
     }
     &:active {
       background-color: #cecece;
