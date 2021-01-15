@@ -69,7 +69,7 @@ export default {
         key: config.tencentMapKey,
         output: "jsonp",
       }).then((res) => {
-        console.log(res);
+        // console.log(res);
         this.nearList = res.data;
       });
     },
@@ -91,7 +91,7 @@ export default {
         output: "jsonp",
       })
         .then((res) => {
-          console.log(res);
+          
           this.nearList = res.result.pois;
           this.nowCity = res.result.ad_info;
         })
@@ -151,7 +151,7 @@ export default {
     });
     //接收城市选择结果
     uni.$on("citySelected", (data) => {
-      console.log(data);
+      
       this.nowCity = data;
     });
   },

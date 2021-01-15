@@ -29,6 +29,7 @@ export default {
   data() {
     return {
       phone: 17696769527,
+	  token:''
     };
   },
 	  
