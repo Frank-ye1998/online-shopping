@@ -1,8 +1,9 @@
 <template>
-  <view class="address-picker-main">
-    <div class="picker-view">
+  <view class="address-picker-main" @tap="emitClose">
+    <div class="picker-view" @tap.stop="">
       <div class="title">
         请选择所在地区
+        <i @tap="emitClose" class="icon icon-close"></i>
       </div>
       <div class="level-bar">
         <div @tap="levelTap('province_list')" class="province level-sub">
@@ -82,7 +83,10 @@ export default {
         this.level = "county_list";
         this.cityName = sub;
       } else if (index === "county_list") {
-        this.countyName = sub;
+		this.countyName = sub;
+		setTimeout(()=>{
+			this.emitClose();
+		},240)
       }
     },
 
@@ -97,7 +101,6 @@ export default {
         }
       });
       this.cityList = obj;
-      console.log(obj);
     },
     //获取县列表
     getCountyList: function () {
@@ -113,6 +116,10 @@ export default {
       this.countyList = obj;
       console.log(obj);
     },
+
+    emitClose: function () {
+		uni.$emit('addressPickerClose')
+	},
 
     //地区编码提取
     getSubCode: function (level, str) {
@@ -133,7 +140,6 @@ export default {
   created() {
     this.area = area;
     this.getCityList();
-    console.log(this.area);
   },
 };
 </script>
@@ -150,7 +156,10 @@ export default {
   height: 900rpx;
   background-color: #fff;
   border-radius: 24rpx 24rpx 0 0;
+  animation: show-picker 0.3s ease-out;
+  animation-fill-mode: forwards;
   .title {
+    position: relative;
     @include flexCenter;
     width: 100%;
     height: 88rpx;
@@ -158,6 +167,16 @@ export default {
     color: #000;
     font-weight: 700;
     border-bottom: 1px solid $color-page;
+    .icon-close {
+      @include flexCenter;
+      position: absolute;
+      top: 0;
+      right: 3%;
+      width: 80rpx;
+      height: 100%;
+      color: #000;
+      font-weight: 700;
+    }
   }
   .level-bar {
     display: flex;
@@ -206,6 +225,16 @@ export default {
         color: $color-green;
       }
     }
+  }
+}
+
+@keyframes show-picker {
+  0% {
+    transform: translateY(100%);
+  }
+
+  100% {
+    transform: translateY(0%);
   }
 }
 </style>
