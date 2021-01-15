@@ -1,8 +1,5 @@
 {
 	"pages": [{
-			"path": "pages/addressSelection/addressSelection",
-			"name": "addressSelection"
-		}, {
 			"path": "pages/index/index",
 			"name": "index"
 		}, {
@@ -43,9 +40,12 @@
 		{
 			"path": "pages/login/mobileLogin/mobileLogin",
 			"name": "mobileLogin"
+		},
+		{
+			"path": "pages/addressSelection/addressSelection",
+			"name": "addressSelection"
 		}
-
-    ],
+	],
 	"globalStyle": {
 		"navigationStyle": "custom",
 		"backgroundColor": "#F8F8F8"
