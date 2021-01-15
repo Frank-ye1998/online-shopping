@@ -35,7 +35,6 @@
 			"path": "pages/login/loginindex/loginindex",
 			"name": "loginindex"
 		},
-
 		{
 			"path": "pages/shoppingCart/sub/detail/detail",
 			"name": "detail"
@@ -43,9 +42,12 @@
 		{
 			"path": "pages/login/mobileLogin/mobileLogin",
 			"name": "mobileLogin"
+		},
+		{
+			"path": "pages/mine/sub/myOrder/orderDetail/orderDetail",
+			"name": "orderDetail"
 		}
-
-    ],
+	],
 	"globalStyle": {
 		"navigationStyle": "custom",
 		"backgroundColor": "#F8F8F8"
