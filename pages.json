@@ -1,8 +1,5 @@
 {
 	"pages": [{
-			"path": "pages/addressSelection/addressSelection",
-			"name": "addressSelection"
-		}, {
 			"path": "pages/index/index",
 			"name": "index"
 		}, {
@@ -46,6 +43,9 @@
 		{
 			"path": "pages/mine/sub/myOrder/orderDetail/orderDetail",
 			"name": "orderDetail"
+		},{
+			"path": "pages/addressSelection/addressSelection",
+			"name": "addressSelection"
 		}
 	],
 	"globalStyle": {

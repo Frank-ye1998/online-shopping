@@ -4,11 +4,7 @@
     <view class="">
       <view class="deta-mess">
         <view class="detail-img">
-          <img-view
-            :src="`http://10.1.44.108:9010/images/${detailData.mainImg}`"
-            mode="widthFix"
-            class="details-imgs"
-          />
+          <img-view :src="`http://10.1.44.108:9010/images/${detailData.mainImg}`" mode="widthFix" class="details-imgs" />
         </view>
       </view>
       <view class="detail-con">
@@ -18,23 +14,14 @@
     </view>
     <!-- 规格 -->
     <view class="choice-commodity">
-      <view
-        class="commod"
-        v-for="(item, index) in detailData.ptSpuAttrs"
-        :key="index"
-      >
+      <view class="commod" v-for="(item, index) in detailData.ptSpuAttrs" :key="index">
         <view class="font-left">
           {{ item.name }}
         </view>
-        <view
-          v-for="(sub, idx) in item.ptSpuAttrValues"
-          :key="idx"
-          :class="[
+        <view v-for="(sub, idx) in item.ptSpuAttrValues" :key="idx" :class="[
             'font-right',
             item.selectedCode === sub.skuSpliceCode ? 'font-right-select' : '',
-          ]"
-          @tap="selectItem(item, sub.skuSpliceCode)"
-        >
+          ]" @tap="selectItem(item, sub.skuSpliceCode)">
           {{ sub.value }}
         </view>
       </view>
@@ -44,22 +31,21 @@
       <view class="price">
         <view class="calcula-price"> ￥{{ detailData.price }} </view>
         <view class="add-class">
-          <view class="calcula-cli">
-            <view class="sub">-</view>
-            <text>1</text>
-            <view class="add">+</view>
-          </view>
+          <stepper></stepper>
           <view class="add-cart" @tap="clickAddCart"> 加入购物车 </view>
         </view>
       </view>
     </view>
+	<div class="calculation-plc"></div>
   </view>
 </template>
 
 <script>
 import productApi from "@/api/productApi.js";
 import shopperApi from "@/api/shopperApi.js";
+import stepper from '../../../../components/stepper/stepper.vue';
 export default {
+  components: { stepper },
   data() {
     return {
       spuAtt: 0,
@@ -134,11 +120,11 @@ export default {
         totalOriginPrice: lastItem.originPrice,
         totalPePrice: 0,
         totalPrice: lastItem.price,
-
         item: {
-          badgeImg:lastItem.badgeImg,
-          buyLimit:lastItem.buyLimit,
-          canBookingMsg:lastItem.canBookingMsg,
+          specsValues: lastItem.specsValues,
+          badgeImg: lastItem.badgeImg,
+          buyLimit: lastItem.buyLimit,
+          canBookingMsg: lastItem.canBookingMsg,
           countPrice: lastItem.price,
           height: lastItem.height,
           isBooking: lastItem.isBooking,
@@ -153,8 +139,8 @@ export default {
           originPrice: lastItem.originPrice,
           presaleDeliveryDateDisplay: lastItem.presaleDeliveryDateDisplay,
           price: lastItem.price,
-          promotionId: "",//``
-          promotionPrice: "",//``
+          promotionId: "", //``
+          promotionPrice: "", //``
           quantity: 1,
           roughWeight: lastItem.roughWeight,
           salePointMsg: lastItem.salePointMsg,
@@ -164,47 +150,22 @@ export default {
           skuId: 11352,
           skuName: lastItem.name,
           smallImage: lastItem.smallImage,
-          specsValues: lastItem.lastItem,
           spuType: "",
           vipPrice: lastItem.vipPrice,
           width: lastItem.width,
         },
       };
-      // obj.item = lastItem;
-      // obj.spuType = 1;
-      // obj.skuId = lastItem.skuId;
-      // obj.skuCode = code;
-      // obj.skuName = lastItem.name;
-      // obj.specsValues = code;
-      // obj.badgeImg = lastItem.badgeImg;
-      // obj.smallImage = lastItem.smallImage;
-      // obj.originPrice = lastItem.originPrice;
-      // obj.price = lastItem.price;
-      // obj.vipPrice = lastItem.vipPrice;
-      // obj.isGift = lastItem.isGift;
-      // obj.canBookingMsg = lastItem.canBookingMsg;
-      // obj.isBooking = lastItem.isBooking;
-      // obj.isPresale = lastItem.isPresale;
-      // obj.buyLimit = lastItem.buyLimit;
-      // obj.isPromotion = lastItem.isPromotion;
-      // obj.markDiscount = lastItem.markDiscount;
-      // obj.markNew = lastItem.markNew;
-      // obj.presaleDeliveryDateDisplay = lastItem.presaleDeliveryDateDisplay;
-      // obj.length = lastItem.length;
-      // obj.width = lastItem.width;
-      // obj.height = lastItem.height;
-      // obj.roughWeight = lastItem.roughWeight;
-      // obj.saleUnit = lastItem.saleUnit;
-      // obj.minimumOrderQuantity = lastItem.minimumOrderQuantity;
-      // obj.isInvoice = lastItem.isInvoice;
-      // obj.salePointMsg = lastItem.subtitle;
-      // obj.countPrice = lastItem.price;
-      // obj.quantity = 1;
 
       shopperApi
         .addCart(obj)
         .then((res) => {
           console.log(res);
+          uni.showToast({
+            title: "添加成功",
+          });
+          setTimeout(() => {
+            this.$Router.back(1);
+          }, 500);
         })
         .catch((err) => {
           console.log(err);
@@ -256,11 +217,12 @@ page {
   .detail-con {
     width: 95%;
     height: 150rpx;
-    background: $color-green-transparent;
+    background: #fff;
     margin-left: 2.5%;
     line-height: 65rpx;
     padding-left: 30rpx;
     margin-top: 20rpx;
+    border-radius: 18rpx;
 
     .con-name {
       font-size: 39rpx;
@@ -277,7 +239,7 @@ page {
     width: 95%;
     background: #fff;
     margin: 20rpx auto 0;
-    border-radius: 40rpx;
+    border-radius: 18rpx;
     padding: 12rpx;
 
     .commod {
@@ -298,7 +260,7 @@ page {
       .font-right {
         width: 130rpx;
         height: 60rpx;
-        border: solid 2rpx $color-text6;
+        border: solid 1px $color-text3;
         text-align: center;
         line-height: 60rpx;
         border-radius: 40rpx;
@@ -311,27 +273,32 @@ page {
     }
 
     .font-right-select {
-      background: $color-text6;
+      border: solid 1px $color-green !important;
+      background-color: $color-green-transparent;
     }
   }
 
   .default {
     width: 95%;
     height: 100rpx;
-    background-color: $color-green-transparent;
+    background-color: #fff;
     margin-top: 10rpx;
     margin-left: 2%;
     line-height: 100rpx;
     padding-left: 20rpx;
     color: $color-text2;
+    border-radius: 18rpx;
   }
 
   .calculation {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
     width: 100%;
     height: 160rpx;
-    display: flex;
     flex-direction: row;
-    background: $color-green-transparent;
+    background: #fff;
     margin-top: 20rpx;
     align-items: center;
 
@@ -398,6 +365,10 @@ page {
         }
       }
     }
+  }
+  .calculation-plc {
+	  width: 100%;
+	  height: 160rpx;
   }
 }
 </style>

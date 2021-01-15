@@ -38,7 +38,7 @@
 		.img {
 			@include absCenter;
 			height: 100%;
-			border-radius: 40rpx;
+			border-radius: 22rpx;
 		}
 		
 	}
