@@ -1,16 +1,19 @@
 <template>
   <view>
-    <view class="user-top" >
-      <view class="avatar">
-        <image src="/static/images/mine/avatar.jpg" mode="widthFix"></image>
-      </view>
-	  <view class="phone" v-if="this.token==null" @tap="goto('mobileLogin')">点击登录</view>
-      <view class="phone" v-else @tap="goDetail()">手机号：{{this.userInfo.cellPhone}}</view>
-      <view class="right">
-        <i class="icon icon-to"></i>
-      </view>
+    <view class="user-top">
+      <div class="top-content">
+        <view class="avatar">
+          <image src="/static/images/mine/avatar.jpg" mode="widthFix"></image>
+        </view>
+        <view class="phone" v-if="this.token==null" @tap="goto('mobileLogin')">点击登录</view>
+        <view class="phone" v-else @tap="goDetail()">手机号：{{this.userInfo.cellPhone}}</view>
+        <view class="right">
+          <i class="icon icon-to"></i>
+        </view>
+      </div>
+      <div class="top-background"></div>
+
     </view>
-    <view class="top-bg"></view>
 
     <view class="list-order list">
       <view class="content" @tap="goto('myOrder')">
@@ -71,32 +74,28 @@ export default {
   data() {
     return {
       scrollTop: 0,
-	  userInfo:[],
-	  token:'',
+      userInfo: [],
+      token: "",
     };
   },
 
-  methods:{
-	  toLogin:function(){
-		  this.$Router.push({name:'mobileLogin'})
-	  },
-	  goto(name){
-		  this.$router.push({name})
-	  },
-	  goDetail(){
-		  let obj = this.userInfo
-		  this.$Router.push({name:'userCenter',params:{obj}});
-	  },
-	  getSessionId(){
-	  	// this.token = uni.getStorage('sessionId')
-	  },
+  methods: {
+    toLogin: function () {
+      this.$Router.push({ name: "mobileLogin" });
+    },
+    goto(name) {
+      this.$router.push({ name });
+    },
+    goDetail() {
+      let obj = this.userInfo;
+      this.$Router.push({ name: "userCenter", params: { obj } });
+    },
+    getSessionId() {},
   },
   onLoad() {
-	// this.getSessionId();
-	// console.log(uni.getStorage('sessionId'))
     userApi.getUserInfo().then((res) => {
-      this.userInfo = res.data
-	  console.log(this.userInfo)
+      this.userInfo = res.data;
+      console.log(this.userInfo);
     });
   },
 };
@@ -108,39 +107,46 @@ page {
 }
 
 .user-top {
-  @include flexVtCenter;
-  width: 100%;
-  height: 220rpx;
-  background-color: $color-red;
-  padding: 0 24rpx;
-  color: #fff;
-
-  .avatar {
+   position: relative;
+  .top-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(left, #01d79a 0%, #0dcf37 100%);
+    opacity: 0.68;
+  }
+  .top-content {
     position: relative;
-    width: 140rpx;
-    height: 140rpx;
-    overflow: hidden;
-    border-radius: 50%;
-    margin-right: 34rpx;
+    z-index: 10;
+    @include flexVtCenter;
+    width: 100%;
+    height: 260rpx;
+    padding: 0 24rpx;
+    color: #fff;
+    padding-bottom: 40rpx;
+    .avatar {
+      position: relative;
+      width: 140rpx;
+      height: 140rpx;
+      overflow: hidden;
+      border-radius: 50%;
+      margin-right: 34rpx;
+      image {
+        @include absCenter;
+        width: 100%;
+        height: 100%;
+      }
+    }
 
-    image {
-      @include absCenter;
-      width: 100%;
-      height: 100%;
+    .right {
+      margin-left: auto;
+      font-size: 28rpx;
     }
   }
-
-  .right {
-    margin-left: auto;
-    font-size: 28rpx;
-  }
 }
 
-.top-bg {
-  width: 100%;
-  height: 40rpx;
-  background-color: $color-red;
-}
 .list {
   position: relative;
   width: 94%;
@@ -158,7 +164,7 @@ page {
       margin-left: 16rpx;
     }
     .icon:first-of-type {
-      color: $color-red;
+      color: $color-green;
       font-size: 44rpx;
     }
     .icon:last-of-type {
@@ -179,7 +185,7 @@ page {
 
 .list-order {
   height: 260rpx;
-  margin-top: -40rpx;
+  margin-top: -48rpx;
 }
 
 .btn-view {

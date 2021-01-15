@@ -79,7 +79,9 @@
             <text class="name-title">{{item.names}}</text>
             <view class="pri">
               <text class="price-t">￥{{item.price}}</text>
-              <view type="default" class="btn-car">+</view>
+              <view class="btn-car">
+                <i class="icon icon-cart-add"></i>
+              </view>
             </view>
           </view>
         </view>
@@ -598,6 +600,7 @@ page {
         }
 
         .pri {
+          position: relative;
           display: flex;
           width: 100%;
           height: 80rpx;
@@ -615,20 +618,19 @@ page {
           }
 
           .btn-car {
+            @include flexCenter;
+            position: absolute;
+            bottom: 12rpx;
+            right: 18rpx;
             width: 50rpx;
             height: 50rpx;
-            background: $color-green;
             border-radius: 50%;
-            position: absolute;
-            right: 10rpx;
-            @include flexCenter;
             color: #fff;
-            text-align: center;
-            line-height: 70rpx;
-            font-size: 45rpx;
+            @include btnGreen-gradient-top;
 
-            .shopping-car {
-              font-size: 38rpx;
+            .icon-cart-add {
+              font-size: 30rpx;
+              color: #fff;
             }
           }
         }
