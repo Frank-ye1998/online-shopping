@@ -1,10 +1,11 @@
 <template>
   <view>
-    <view class="user-top" @tap="goDetail()">
+    <view class="user-top" >
       <view class="avatar">
         <image src="/static/images/mine/avatar.jpg" mode="widthFix"></image>
       </view>
-      <view class="phone">手机号：{{this.userInfo.cellPhone}}</view>
+	  <view class="phone" v-if="this.token==null" @tap="goto('mobileLogin')">点击登录</view>
+      <view class="phone" v-else @tap="goDetail()">手机号：{{this.userInfo.cellPhone}}</view>
       <view class="right">
         <i class="icon icon-to"></i>
       </view>
@@ -70,7 +71,8 @@ export default {
   data() {
     return {
       scrollTop: 0,
-	  userInfo:[]
+	  userInfo:[],
+	  token:'',
     };
   },
 
@@ -84,9 +86,14 @@ export default {
 	  goDetail(){
 		  let obj = this.userInfo
 		  this.$Router.push({name:'userCenter',params:{obj}});
-	  }
+	  },
+	  getSessionId(){
+	  	// this.token = uni.getStorage('sessionId')
+	  },
   },
   onLoad() {
+	// this.getSessionId();
+	// console.log(uni.getStorage('sessionId'))
     userApi.getUserInfo().then((res) => {
       this.userInfo = res.data
 	  console.log(this.userInfo)

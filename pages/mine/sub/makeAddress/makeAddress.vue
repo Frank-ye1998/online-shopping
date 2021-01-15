@@ -39,6 +39,23 @@
 <script>
 	import userApi from "@/api/userApi.js"
 	export default {
+		created() {
+			uni.$on('locationSelected', (data) => {
+				this.base = data.address;
+				this.adInfo = data.ad_info
+				this.provinceName = this.adInfo.province
+				this.cityName = this.adInfo.city
+				this.countyName = this.adInfo.district
+				this.lat = data.location.lat
+				this.lng = data.location.lng
+				this.code = this.adInfo.adcode
+				var n = this.code.substr(0,2)
+				var m = this.code.substr(0,4)
+				this.provinceId = n+"0000"
+				this.cityId = m+"00"
+				
+			})
+		},
 		onLoad: function(option) { //option为object类型，会序列化上个页面传递的参数
 			let receive = this.$Route.query.item; //打印出上个页面传递的参数。
 			if (receive) {
@@ -52,6 +69,7 @@
 				this.checkId = receive.creator
 				this.checked = receive.isDefault
 			}
+
 		},
 		data() {
 			return {
@@ -63,34 +81,50 @@
 				base: '',
 				detail: '',
 				post: '',
-				addressId:''
+				addressId: '',
+				mapLocation: '',
+				
+				adInfo:[],
+				provinceName:'',
+				cityName: '',
+				countyName: '',
+				provinceId:'',
+				cityId: '',
+				countyId: '',
+				storeId: '',
+				lng: '',
+				lat: '',
+				code:''
 			};
 		},
 		methods: {
 			gotoMap() {
 				// 前往地图
+				this.$Router.push({
+					name: 'addressSelection'
+				})
 			},
 			onSave() {
 				if (this.checkId !== 0) {
 					// 上一层有传参数，代表是编辑页面，调用编辑地址接口
 					userApi
 						.editAddress({
-							id:this.addressId,
+							id: this.addressId,
 							consignName: this.name,
 							consignTel: this.tel,
 							baseAddress: this.base,
 							detailAddress: this.detail,
 							postcode: this.post,
 							isDefault: 1,
-							provinceName: "湖南省",
-							cityName: "长沙市",
-							countyName: "雨花区",
-							provinceId: 430000,
-							cityId: 430100,
-							countyId: 430111,
+							provinceName: this.provinceName,
+							cityName: this.cityName,
+							countyName: this.countyName,
+							provinceId: this.provinceId,
+							cityId: this.cityId,
+							countyId: this.code,
 							storeId: 96000,
-							lng: "1218208.12121",
-							lat: "1212808.33231"
+							lng: this.lng,
+							lat: this.lat
 						})
 				} else {
 					// 否则调添加地址接口
@@ -102,15 +136,15 @@
 							detailAddress: this.detail,
 							postcode: this.post,
 							isDefault: this.checked,
-							provinceName: "湖南省",
-							cityName: "长沙市",
-							countyName: "雨花区",
-							provinceId: 430000,
-							cityId: 430100,
-							countyId: 430111,
+							provinceName: this.provinceName,
+							cityName: this.cityName,
+							countyName: this.countyName,
+							provinceId: this.provinceId,
+							cityId: this.cityId,
+							countyId: this.code,
 							storeId: 96000,
-							lng: "1218208.12121",
-							lat: "1212808.33231"
+							lng: this.lng,
+							lat: this.lat
 						})
 
 				}
@@ -121,17 +155,17 @@
 			// 删除地址接口
 			onDelete() {
 				uni.showLoading({
-				  title: "请稍等",
-				  mask: true,
+					title: "请稍等",
+					mask: true,
 				});
 				//调用删除地址接口
 				userApi
 					.deleteAddress({
-						id:this.$Route.query.item.id
+						id: this.$Route.query.item.id
 					})
 				uni.showToast({
-				  title: "删除成功",
-				  icon: "none",
+					title: "删除成功",
+					icon: "none",
 				});
 				this.$Router.push({
 					name: 'address'
@@ -146,9 +180,9 @@
 					this.isDefault = 1; //1为默认地址
 					// 此处调用修改默认地址接口
 					userApi
-					.changeDefaultAddress({
-						id:this.$Route.query.item.id
-					})
+						.changeDefaultAddress({
+							id: this.$Route.query.item.id
+						})
 				} else {
 					this.isDefault = 0;
 				}

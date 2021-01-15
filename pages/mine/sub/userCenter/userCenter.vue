@@ -26,6 +26,7 @@
 			<view class="pic">{{this.tel}}</view>
 			<i class="icon icon-to"></i>
 		</view>
+		<view class="change" @tap="chengeUserInfo()">确认修改</view>
 		<view class="save" @tap="logOut()">退出登录</view>
 	</view>
 </template>
@@ -87,11 +88,17 @@
 			margin-right: 25rpx;
 		}
 	}
-
+	.change{
+		height: 90rpx;
+		width: 620rpx;
+		@include btnRed margin-left: 60rpx;
+		margin-top: 60rpx;
+		
+	}
 	.save {
 		height: 90rpx;
 		width: 620rpx;
 		@include btnRed margin-left: 60rpx;
-		margin-top: 120rpx;
+		margin-top: 60rpx;
 	}
 </style>

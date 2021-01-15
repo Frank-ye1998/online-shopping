@@ -6,6 +6,20 @@
   "description": "达美乐",
   "glyphs": [
     {
+      "icon_id": "8721197",
+      "name": "加号",
+      "font_class": "cart-add",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    },
+    {
+      "icon_id": "6204091",
+      "name": "关  闭",
+      "font_class": "guanbi",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
       "icon_id": "11177800",
       "name": "对号",
       "font_class": "check",
