@@ -14,6 +14,7 @@ const request = (Xhrdata) => {
 			sourceName: 'WEB',
 			"content-type": Xhrdata.isFrom ? "application/x-www-form-urlencoded;charset=utf-8" : "application/json;charset=UTF-8",
 			sessionId: Vue.prototype.sessionId,
+			clientId : Vue.prototype.clientId
 		}
 	};
 	return uni.request(parames).then(res => {

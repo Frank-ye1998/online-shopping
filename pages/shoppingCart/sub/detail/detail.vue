@@ -94,23 +94,6 @@
 						});
 						this.detailData = res.data;
 						console.log(this.detailData);
-
-						//  let skucode = "";
-						//  let skuStr = "";
-						// this.detailData.ptSpuAttrs.sort((a, b) => {
-						// 	return a.sort - b.sort;
-						// });
-						//   console.log(this.detailData.ptSpuAttrs);
-						//   this.detailData.ptSpuAttrs.forEach((item) => {
-						// 	skucode += item.skuSpliceCode + item.selectedCode;
-						// 	item.ptSpuAttrValues.forEach((sub) => {
-						// 	  if (sub.skuSpliceCode === item.selectedCode) {
-						// 		skuStr += sub.value + "  ";
-						// 	  }
-						// 	});
-						//   });
-						//   console.log(skuStr, "skustr");
-						//   console.log(this.detailData.skuId+skucode,'skucode');
 					});
 			},
 			//加入购物车接口
@@ -126,103 +109,69 @@
 						lastItem = item;
 					}
 				});
-
-
-
 				console.log(lastItem);
-				let obj = {};
-				obj.spuType = 1;
-				obj.skuId = lastItem.skuId;
-				obj.skuCode = code;
-				obj.skuName = lastItem.name;
-				obj.specsValues = code;
-				obj.badgeImg = lastItem.badgeImg;
-				obj.smallImage = lastItem.smallImage;
-				obj.originPrice = lastItem.originPrice;
-				obj.price = lastItem.price;
-				obj.vipPrice = lastItem.vipPrice;
-				obj.isGift = lastItem.isGift;
-				obj.canBookingMsg = lastItem.canBookingMsg;
-				obj.isBooking = lastItem.isBooking;
-				obj.isPresale = lastItem.isPresale;
-				obj.buyLimit = lastItem.buyLimit;
-				obj.isPromotion = lastItem.isPromotion;
-				obj.markDiscount = lastItem.markDiscount;
-				obj.markNew = lastItem.markNew;
-				obj.presaleDeliveryDateDisplay = lastItem.presaleDeliveryDateDisplay;
-				obj.length = lastItem.length;
-				obj.width = lastItem.width;
-				obj.height = lastItem.height;
-				obj.roughWeight = lastItem.roughWeight;
-				obj.saleUnit = lastItem.saleUnit;
-				obj.minimumOrderQuantity = lastItem.minimumOrderQuantity;
-				obj.isInvoice = lastItem.isInvoice;
-				obj.salePointMsg = lastItem.subtitle;
-				obj.countPrice = lastItem.price;
-				obj.quantity = 1;
+				let obj = {
+					cellPhone: "17696769527",
+					userId: 663983581015375872,
+					cityCode: "shangHai",
+					cityName: "上海市",
+					deliveryFee: 8,
+					loyaltyLevel: "",
+					storeCode: "96000",
+					storeName: "槽宝路店",
+					totalOriginPrice: lastItem.originPrice,
+					totalPePrice: 0,
+					totalPrice: lastItem.price,
+					item: {
+						specsValues: lastItem.specsValues,
+						badgeImg: lastItem.badgeImg,
+						buyLimit: lastItem.buyLimit,
+						canBookingMsg: lastItem.canBookingMsg,
+						countPrice: lastItem.price,
+						height: lastItem.height,
+						isBooking: lastItem.isBooking,
+						isGift: lastItem.isGift,
+						isInvoice: lastItem.isInvoice,
+						isPresale: lastItem.isPresale,
+						isPromotion: lastItem.isPromotion,
+						length: lastItem.length,
+						markDiscount: lastItem.markDiscount,
+						markNew: lastItem.markNew,
+						minimumOrderQuantity: lastItem.minimumOrderQuantity,
+						originPrice: lastItem.originPrice,
+						presaleDeliveryDateDisplay: lastItem.presaleDeliveryDateDisplay,
+						price: lastItem.price,
+						promotionId: "", //``
+						promotionPrice: "", //``
+						quantity: 1,
+						roughWeight: lastItem.roughWeight,
+						salePointMsg: lastItem.salePointMsg,
+						saleUnit: lastItem.saleUnit,
+						shopIngredientVos: [],
+						skuCode: lastItem.code,
+						skuId: 11352,
+						skuName: lastItem.name,
+						smallImage: lastItem.smallImage,
+						spuType: "",
+						vipPrice: lastItem.vipPrice,
+						width: lastItem.width,
+					},
+				};
 
-				shopperApi.addCart(obj).then(res => {
-					console.log(res);
-				}).catch(err => {
-					console.log(err);
-				})
-
-				// let arr2 = [
-				//   "storeCode",
-				//   "storeName",
-				//   "deliveryFee",
-				//   "totalOriginPrice",
-				//   "totalPrice",
-				//   "totalPePrice",
-				//   "cityName",
-				//   "cityCode",
-				//   "loyaltyLevel",
-				//   "item",
-				//   "spuType",
-				//   "skuId",
-				//   "skuCode",
-				//   "skuName",
-				//   "specsValues",
-				//   "badgeImg",
-				//   "smallImage",
-				//   "originPrice",
-				//   "price",
-				//   "vipPrice",
-				//   "isGift",
-				//   "canBookingMsg",
-				//   "isBooking",
-				//   "isPresale",
-				//   "buyLimit",
-				//   "isPromotion",
-				//   "markDiscount",
-				//   "markNew",
-				//   "isCombined",
-				//   "presaleDeliveryDateDisplay",
-				//   "length",
-				//   "width",
-				//   "height",
-				//   "roughWeight",
-				//   "saleUnit",
-				//   "minimumOrderQuantity",
-				//   "isInvoice",
-				//   "salePointMsg",
-				//   "countPrice",
-				//   "quantity",
-				//   "promotionId",
-				//   "promotionPrice",
-				//   "promotionDesc",
-				//   "shopIngredientVos",
-				//   "id",
-				//   "code",
-				//   "name",
-				//   "addPrice",
-				//   "quantity",
-				//   "defaultNum",
-				// ];
-				// let obj = {};
-				// arr2.forEach((item) => {
-				//   obj[item] = item233[item] || "不存在";
-				// });
+				shopperApi
+					.addCart(obj)
+					.then((res) => {
+						console.log(res);
+						uni.showToast({
+							title: '添加成功'
+						});
+						setTimeout(()=>{
+							this.$Router.back(1);
+						},500)
+					})
+					.catch((err) => {
+						console.log(err);
+					});
 			},
 		},
 		onLoad: function() {
@@ -312,7 +261,7 @@
 				.font-right {
 					width: 130rpx;
 					height: 60rpx;
-					border: solid 2rpx $color-text6;
+					border: solid 1px $color-text3;
 					text-align: center;
 					line-height: 60rpx;
 					border-radius: 40rpx;
@@ -325,7 +274,8 @@
 			}
 
 			.font-right-select {
-				background: $color-text6;
+				border: solid 1px $color-green !important;
+				background-color: $color-green-transparent;
 			}
 		}
 

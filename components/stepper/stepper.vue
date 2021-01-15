@@ -13,6 +13,10 @@
 				type: Number,
 				default: 0
 			},
+			info:{
+				type: Object,
+				default: null
+			},
 			change: {
 				type: Function
 			}
@@ -29,7 +33,7 @@
 		},
 		watch: {
 			num(newValue, oldValue) {
-				this.change(newValue);
+				this.change(newValue,this.info);
 			}
 		},
 		methods: {
@@ -53,7 +57,7 @@
 
 		.icon {
 			font-size: 46rpx;
-			color: $color-red;
+			color: $color-green;
 			padding: 4rpx;
 		}
 

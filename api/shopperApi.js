@@ -32,7 +32,7 @@ const shopperApi = {
         const params = {
             url: '/shopper/change/num',
             method: 'post',
-            data: data
+            data: data,
         }
         return xhr.request(params)
     },
