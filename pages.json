@@ -44,7 +44,8 @@
 			"path": "pages/login/mobileLogin/mobileLogin",
 			"name": "mobileLogin"
 		}
-	],
+
+    ],
 	"globalStyle": {
 		"navigationStyle": "custom",
 		"backgroundColor": "#F8F8F8"

@@ -8,7 +8,8 @@ const productApi = {
         const params = {
             url: '/product/categoryProductList?sendWay=${sendWay}',
             method: 'get',
-            data: data
+            data: data,
+			isFrom:true
         }
         return xhr.request(params)
     },
@@ -18,7 +19,8 @@ const productApi = {
         const params = {
             url: '/product/findAttrProduct?id=${id}',
             method: 'get',
-            data: data
+            data: data,
+			isFrom:true
         }
         return xhr.request(params)
     },

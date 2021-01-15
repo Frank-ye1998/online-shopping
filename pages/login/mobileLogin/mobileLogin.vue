@@ -111,6 +111,7 @@ export default {
       uni.hideLoading();
     },
   },
+  
 };
 </script>
 
