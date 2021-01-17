@@ -84,7 +84,7 @@ export default {
       this.$Router.push({ name: "mobileLogin" });
     },
     goto(name) {
-      this.$router.push({ name });
+      this.$Router.push({ name });
     },
     goDetail() {
       let obj = this.userInfo;
@@ -114,7 +114,7 @@ page {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(left, #01d79a 0%, #0dcf37 100%);
+    background: linear-gradient(to right, #01d79a 0%, #0dcf37 100%);
     opacity: 0.68;
   }
   .top-content {

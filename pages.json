@@ -2,7 +2,8 @@
 	"pages": [{
 			"path": "pages/index/index",
 			"name": "index"
-		}, {
+		},
+		{
 			"path": "pages/menu/menu",
 			"name": "menu"
 		}, {
@@ -32,7 +33,6 @@
 			"path": "pages/login/loginindex/loginindex",
 			"name": "loginindex"
 		},
-
 		{
 			"path": "pages/shoppingCart/sub/detail/detail",
 			"name": "detail"
@@ -55,7 +55,7 @@
 		"selectedColor": "#3cb963",
 		"backgroundColor": "#ffffff",
 		"font-size": "20rpx",
-		"borderStyle": "#f3f3fa",
+		"borderStyle": "white",
 		"list": [{
 				"pagePath": "pages/index/index",
 				"text": "首页",

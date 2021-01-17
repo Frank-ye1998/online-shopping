@@ -2,6 +2,13 @@
 import Vue from "vue";
 export default {
   onLaunch: function () {
+	//获取用户设备信息
+	uni.getSystemInfo({
+	    success: function (res) {
+			console.log(res);
+	    }
+	});
+	 
     //获取登录缓存数据
     Vue.prototype.sessionId = uni.getStorageSync("sessionId");
     Vue.prototype.userId = uni.getStorageSync("userId");

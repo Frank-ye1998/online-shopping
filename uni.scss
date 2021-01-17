@@ -78,10 +78,10 @@ $color-page:#f5f5f5;
 
 @mixin btnGreen-gradient-top {
     @include btn;
-    background: linear-gradient(top, #00dd25 0%, #00bf31 100%);
+    background: linear-gradient(to top, #00dd25 0%, #00bf31 100%);
 }
-//btnGreen-gradient
 
+//btnGreen-gradient
 
 @mixin btnRed {
     @include btn;

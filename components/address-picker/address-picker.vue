@@ -1,6 +1,7 @@
 <template>
+
   <view class="address-picker-main" @tap="emitClose">
-    <div class="picker-view" @tap.stop="">
+    <view class="picker-view" @tap.stop="">
       <div class="title">
         请选择所在地区
         <i @tap="emitClose" class="icon icon-close"></i>
@@ -38,8 +39,9 @@
           <i v-if="countyName === sub" class="icon icon-check"></i>
         </div>
       </scroll-view> -->
-    </div>
+    </view>
   </view>
+
 </template>
 
 <script>
