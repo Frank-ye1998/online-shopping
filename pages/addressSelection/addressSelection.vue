@@ -91,7 +91,6 @@ export default {
         output: "jsonp",
       })
         .then((res) => {
-          
           this.nearList = res.result.pois;
           this.nowCity = res.result.ad_info;
         })
@@ -106,42 +105,40 @@ export default {
   created() {
     //加载地图
     this.$nextTick(() => {
-      setTimeout(() => {
-        TencentMap.load(this.$refs.map, {
-          mapKey: config.tencentMapKey,
-        }).then(({ maps }) => {
-          //获取当前定位
-          const nowLatLng = new maps.LatLng(
-            this.$location.lat,
-            this.$location.lng
-          );
+      TencentMap.load(this.$refs.map, {
+        mapKey: config.tencentMapKey,
+      }).then(({ maps }) => {
+        //获取当前定位
+        const nowLatLng = new maps.LatLng(
+          this.$location.lat,
+          this.$location.lng
+        );
 
-          //当前定位逆解析
-          this.getLocationByXy(this.$location);
+        //当前定位逆解析
+        this.getLocationByXy(this.$location);
 
-          //地图初始化参数
-          const myOptions = {
-            zoom: 14,
-            minZoom: 10,
-            backgroundColor: "#a4ebc9",
-            mapTypeControl: false,
-            center: nowLatLng,
-            zoomControl: true,
-            mapTypeId: qq.maps.MapTypeId.ROADMAP,
-          };
-          //添加地图中心点
-          let mapsDom = new maps.Map(TencentMap.elements, myOptions);
-          mapsDom.controls[maps.ControlPosition.CENTER].push(this.$refs.point);
-          setTimeout(() => {
-            this.isLocate = true;
-          }, 500);
-          //监听地图拖动
-          maps.event.addListener(mapsDom, "center_changed", () => {
-            //逆解析地图中心点坐标
-            this.getLocationByXy(mapsDom.getCenter());
-          });
+        //地图初始化参数
+        const myOptions = {
+          zoom: 14,
+          minZoom: 10,
+          backgroundColor: "#a4ebc9",
+          mapTypeControl: false,
+          center: nowLatLng,
+          zoomControl: true,
+          mapTypeId: qq.maps.MapTypeId.ROADMAP,
+        };
+        //添加地图中心点
+        let mapsDom = new maps.Map(TencentMap.elements, myOptions);
+        mapsDom.controls[maps.ControlPosition.CENTER].push(this.$refs.point);
+        setTimeout(() => {
+          this.isLocate = true;
+        }, 500);
+        //监听地图拖动
+        maps.event.addListener(mapsDom, "center_changed", () => {
+          //逆解析地图中心点坐标
+          this.getLocationByXy(mapsDom.getCenter());
         });
-      }, 200);
+      });
     });
   },
   mounted() {
@@ -151,7 +148,6 @@ export default {
     });
     //接收城市选择结果
     uni.$on("citySelected", (data) => {
-      
       this.nowCity = data;
     });
   },
