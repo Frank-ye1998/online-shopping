@@ -47,7 +47,11 @@
 			"path": "pages/addressSelection/addressSelection",
 			"name": "addressSelection"
 		}
-	],
+	    ,{
+            "path" : "pages/menu/sub/Confirm/Confirm",
+            "name" : "Confirm"
+        }
+    ],
 	"globalStyle": {
 		"navigationStyle": "custom",
 		"backgroundColor": "#F8F8F8"

@@ -205,7 +205,7 @@
 	.container {
 		height: 100rpx;
 		margin: 24rpx 24rpx 0 24rpx;
-		background-color: $color-green-transparent;
+		background-color: #fff;
 	}
 
 	.order-content {
