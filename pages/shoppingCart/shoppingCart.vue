@@ -1,10 +1,23 @@
 <template>
 	<view>
-		<!-- <view class="top">购物车</view> -->
+		<view class="top-car">
+			<view class="top-status-plc"></view>
+			<view class="top-car-content">
+				<view class="left">
 
-		<view class="shopping-cart">
-			<view class="all-clear" @tap="clearAll">全部清除</view>
-			<view class="list" v-for="(item) in carShop" :key="item.value">
+				</view>
+				<view class="cars">
+					<view class="car-font">
+						购物车
+					</view>
+					<view class="local">配送至:徐汇区日月光中心</view>
+				</view>
+				<view class="edits" @tap="toEdit()">{{ isEdit?'完成':'编辑' }}</view>
+			</view>
+		</view>
+
+		<view class="shopping-cart"  v-if="isLoad && carShop.length">
+			<view class="list" v-for="(item,index) in carShop" :key="index">
 				<radio class="radio" style="transform: scale(0.94)" color="#00C130" :checked="true" />
 				<img-view src="/static/images/home/shop-2.png" mode="widthFix" class="img-view"></img-view>
 				<!-- <img-view :src="`http://10.1.44.108:9003/images/${item.smallImage}`" mode="widthFix" class="conimgs"/> -->
@@ -21,6 +34,9 @@
 				</view>
 				<view class="hr"></view>
 			</view>
+		</view>
+		<view class="car-img" v-if="isLoad && !carShop.length">
+			<image src="../../static/images/car/car.png" mode="" class="imgscar"></image>
 		</view>
 
 		<view class="viewiding-line">
@@ -132,10 +148,18 @@
 				</view>
 			</view>
 		</view>
-
-		<view class="to-pay">
+		
+		<view class=" compiler" v-if="isShow">
 			<view class="select-all">
-				<radio style="transform: scale(0.94)" color="#00C130" v-model="checked" @change="changeAllChecked()" />全选
+				<radio style="transform: scale(0.94)" color="#00C130" />全选
+			</view>
+			<view class="delete" @tap="clearAll">
+				删除
+			</view>
+		</view>
+		<view class="to-pay" v-else>
+			<view class="select-all">
+				<radio style="transform: scale(0.94)" color="#00C130"/>全选
 			</view>
 			<view class="price-data">
 				<text space="nbsp" class="text-1">不含运费 合计:<text class="pay-num">¥66</text></text>
@@ -143,6 +167,7 @@
 			</view>
 			<view class="to-btn">去结算(9)</view>
 		</view>
+		
 		<view class="to-pay-plc"></view>
 	</view>
 </template>
@@ -156,10 +181,14 @@
 		},
 		data() {
 			return {
+				isLoad:false,
+				isShow:false,
 				carShop: [],
+				
 			};
 		},
 		methods: {
+			
 			change: function(num, info) {
 				//修改购物车接口
 				if (num <= 0) {
@@ -193,13 +222,13 @@
 				shopperApi
 					.getCartInfo({}).then((res) => {
 						this.carShop = res.data.items; //获取购物车中的商品
+						this.isLoad = true;
 						// console.log(this.carShop, "carShopppp");
 					});
 				// console.log(this.carShop, "res.data.items");
 			},
 			//清除全部接口
 			clearAll: function() {
-
 				shopperApi
 					.clearCartInfo({
 
@@ -208,7 +237,9 @@
 						// console.log(res, ccccccc);
 					})
 			},
-
+			toEdit: function() {
+				this.isShow = !this.isShow
+			}
 		},
 		onLoad() {
 
@@ -225,16 +256,70 @@
 		background-color: $color-page;
 	}
 
-	.top {
-		@include flexVtCenter;
+	.top-car {
+		// @include flexVtCenter;
 		width: 100%;
-		height: 80rpx;
-		background-color: #fff;
-		padding: 0 18rpx;
+		height: calc(100rpx + var(--status-bar-height));
+		// padding: 0 18rpx;
 		font-size: 36rpx;
 		color: $color-text1;
+		line-height: 80rpx;
+		justify-content: space-between;
+		.top-status-plc {
+			width: 100%;
+			height: var(--status-bar-height);
+		}
+		.top-car-content{
+			width: 100%;
+			height: 100rpx;
+			display: flex;
+			flex-direction: row;
+			.left {
+				width: 30%;
+				height: 100%;
+			}
+			.cars {
+				width: 40%;
+				height: 100%;
+				text-align: center;		
+				.car-font {
+					width: 100%;
+					height: 60rpx;
+					font-size: 35rpx;
+					line-height: 60rpx;
+				}
+						
+				.local {
+					width: 100%;
+					height: 50rpx;
+					font-size: 20rpx;
+					line-height: 20rpx;
+				}
+			}
+						
+			.edits {
+				width: 30%;
+				height: 100%;
+				text-align: center;
+				font-size: 30rpx;
+			}
+			
+			
+		}
+		
 	}
-
+	.car-img{
+		width: 100%;
+		height: 400rpx;
+		background: #FFFFFF;
+		
+		.imgscar{
+			width: 320rpx;
+			height: 342rpx;
+			display: block;
+			margin: 0 auto;
+		}
+	}
 	.shopping-cart {
 		width: 94.8%;
 		margin: 20rpx auto;
@@ -451,6 +536,43 @@
 		}
 	}
 
+	//删除
+	.compiler {
+		@include flexVtCenter;
+		position: fixed;
+		bottom: var(--window-bottom);
+		left: 0;
+		width: 100%;
+		height: 104rpx;
+		background-color: #fff;
+		padding: 0 28rpx;
+		border-top: 1px solid $color-page;
+		display: flex;
+		justify-content: space-between;
+
+		.select-all {
+			@include flexVtCenter;
+			font-size: 26rpx;
+			color: $color-text1;
+		}
+
+		.delete {
+			width: 120rpx;
+			height: 60rpx;
+			border: solid 1rpx #969896;
+			text-align: center;
+			line-height: 60rpx;
+			border-radius: 40rpx;
+			font-size: 28rpx;
+			margin-right: 30rpx;
+		}
+	}
+
+	.to-pay-plc {
+		width: 100%;
+		height: 120rpx;
+	}
+
 	.to-pay {
 		@include flexVtCenter;
 		position: fixed;
@@ -461,7 +583,6 @@
 		background-color: #fff;
 		padding: 0 28rpx;
 		border-top: 1px solid $color-page;
-
 		.select-all {
 			@include flexVtCenter;
 			font-size: 26rpx;

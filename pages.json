@@ -1,27 +1,34 @@
 {
-	"pages": [{
+	"pages": [
+		{
 			"path": "pages/index/index",
 			"name": "index"
 		},
 		{
 			"path": "pages/menu/menu",
 			"name": "menu"
-		}, {
+		},
+		{
 			"path": "pages/shoppingCart/shoppingCart",
 			"name": "shoppingCart"
-		}, {
+		},
+		{
 			"path": "pages/mine/mine",
 			"name": "mine"
-		}, {
+		},
+		{
 			"path": "pages/mine/sub/address/address",
 			"name": "address"
-		}, {
+		},
+		{
 			"path": "pages/mine/sub/makeAddress/makeAddress",
 			"name": "makeAddress"
-		}, {
+		},
+		{
 			"path": "pages/mine/sub/coupon/coupon",
 			"name": "coupon"
-		}, {
+		},
+		{
 			"path": "pages/mine/sub/myOrder/myOrder",
 			"name": "myOrder"
 		},
@@ -44,7 +51,8 @@
 		{
 			"path": "pages/mine/sub/myOrder/orderDetail/orderDetail",
 			"name": "orderDetail"
-		}, {
+		},
+		{
 			"path": "pages/addressSelection/addressSelection",
 			"name": "addressSelection"
 		},
@@ -54,7 +62,8 @@
 		}, {
 			"path": "pages/member/member",
 			"name": "member"
-		}, {
+		},
+		{
 			"path": "pages/menu/sub/Confirm/Confirm",
 			"name": "Confirm"
 		}
