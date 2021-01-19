@@ -39,7 +39,7 @@
           <!-- 右侧商品主内容 -->
           <view class="content-query" @tap="getdetailShops(item.id)" v-for="(item,index) in foodData" :key="index">
             <view class="con-img">
-              <img-view :src="`http://10.1.44.108:9010/images/${item.mainImg}`" mode="widthFix" class="conimgs" />
+              <img-view :src="`http://10.1.44.113:9010/images/${item.mainImg}`" mode="widthFix" class="conimgs" />
             </view>
             <view class="con-information">
               <view class="title">{{item.name}}</view>

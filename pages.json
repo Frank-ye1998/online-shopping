@@ -45,7 +45,11 @@
 			"path": "pages/addressSelection/addressSelection",
 			"name": "addressSelection"
 		}
-	],
+	    ,{
+            "path" : "pages/member/member",
+			"name": "member"
+		}
+    ],
 	"globalStyle": {
 		"navigationStyle": "custom",
 		"backgroundColor": "#F8F8F8"
