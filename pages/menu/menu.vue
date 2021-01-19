@@ -39,7 +39,7 @@
           <!-- 右侧商品主内容 -->
           <view class="content-query" @tap="getdetailShops(item.id)" v-for="(item,index) in foodData" :key="index">
             <view class="con-img">
-              <img-view :src="`http://10.1.44.108:9010/images/${item.mainImg}`" mode="widthFix" class="conimgs" />
+              <img-view :src="`http://10.1.44.113:9010/images/${item.mainImg}`" mode="widthFix" class="conimgs" />
             </view>
             <view class="con-information">
               <view class="title">{{item.name}}</view>
@@ -72,7 +72,7 @@ import listMock from "@/static/mock/list.json";
 export default {
   data() {
     return {
-      index: this.$store.getters.ChangeType,
+      index: 1,
       takeArr: [
         {
           mess: "自提",
@@ -101,7 +101,8 @@ export default {
     },
     changeType(index) {
       // this.$store.commit('setIndex', index)
-      console.log(index);
+	  this.$Router.push({name:'Confirm',params:{index}})
+      // console.log(index);
       this.index = index;
     },
     getItem(index) {

@@ -4,7 +4,7 @@
 
 		<view class="shopping-cart">
 			<view class="all-clear" @tap="clearAll">全部清除</view>
-			<view class="list" v-for="(item, index) in carShop" :key="index">
+			<view class="list" v-for="(item) in carShop" :key="item.value">
 				<radio class="radio" style="transform: scale(0.94)" color="#00C130" :checked="true" />
 				<img-view src="/static/images/home/shop-2.png" mode="widthFix" class="img-view"></img-view>
 				<!-- <img-view :src="`http://10.1.44.108:9003/images/${item.smallImage}`" mode="widthFix" class="conimgs"/> -->
@@ -17,7 +17,7 @@
 						<view class="last-price"><text class="rmb">¥{{ item.price }}</text></view>
 						<view class="original-price" v-if="item.price !== item.originPrice">¥{{ item.originPrice }}</view>
 					</view>
-					<stepper class="stepper" :info="item" :change="change" :value="item.quantity">22222</stepper>
+					<stepper class="stepper" :info="item" :change="change" :value="item.quantity"></stepper>
 				</view>
 				<view class="hr"></view>
 			</view>
@@ -135,7 +135,7 @@
 
 		<view class="to-pay">
 			<view class="select-all">
-				<radio style="transform: scale(0.94)" color="#00C130" :checked="true" />全选
+				<radio style="transform: scale(0.94)" color="#00C130" v-model="checked" @change="changeAllChecked()" />全选
 			</view>
 			<view class="price-data">
 				<text space="nbsp" class="text-1">不含运费 合计:<text class="pay-num">¥66</text></text>
@@ -161,17 +161,30 @@
 		},
 		methods: {
 			change: function(num, info) {
+				//修改购物车接口
+				if (num <= 0) {
+					shopperApi
+						.deleteCartInfo({
+							skuCode: info.skuCode,
+						}).then((res) => {
 
-				shopperApi
-					.changeCartInfo({
-						skuCode: info.skuCode,
-						quantity: num
-					}).then((res) => {
-						console.log(res)
-					})
+						})
+				} else {
+					shopperApi
+						.changeCartInfo({
+							skuCode: info.skuCode,
+							quantity: num,
+						}).then((res) => {
+							if (this.quantity <= 0) {
+
+							}
+						})
+				}
+
 
 				// console.log(res);
 			},
+			//查询购物车接口
 			getCartInfo: function() {
 				var md5 = require("md5");
 				let xx = md5("message");
@@ -184,6 +197,7 @@
 					});
 				// console.log(this.carShop, "res.data.items");
 			},
+			//清除全部接口
 			clearAll: function() {
 
 				shopperApi
@@ -193,7 +207,8 @@
 						this.carShop = []
 						// console.log(res, ccccccc);
 					})
-			}
+			},
+
 		},
 		onLoad() {
 

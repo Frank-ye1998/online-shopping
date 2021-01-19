@@ -62,9 +62,6 @@
 				});
 			},
 			onEdit(item) {
-				// 	// path: `/pages/mine/sub/makeAddress/makeAddress?content=${item.creator}&name=${item.name}
-				// 	// &tel=${item.tel}&detail=${item.detailAddress}&postCode=${item.postcode}`
-				// );
 				this.$Router.push({
 					path: '/pages/mine/sub/makeAddress/makeAddress',
 					query: {

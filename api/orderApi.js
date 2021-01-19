@@ -1,9 +1,6 @@
 //请求器
 import xhr from "@/api/xhr.js";
 
-//请求器
-import xhr from "@/api/xhr.js";
-
 const orderApi = {
     
     //查询门店列表
@@ -23,10 +20,10 @@ const orderApi = {
         }
         return xhr.request(params)
     },
-    //查询所有订单
+    //查询订单
     findOrder(data){
         const params = {
-            url: '/order?orderStatus=${orderStatus}',
+            url: '/order',
             method: 'get',
             data: data
         }
