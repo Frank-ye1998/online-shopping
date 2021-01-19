@@ -44,6 +44,10 @@
 		{
 			"path": "pages/addressSelection/addressSelection",
 			"name": "addressSelection"
+		},
+		{
+			"path": "pages/shoppingCart/sub/submitOrder/submitOrder",
+			"name": "submitOrder"
 		}
 	],
 	"globalStyle": {
