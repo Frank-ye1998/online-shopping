@@ -32,7 +32,6 @@
 			"path": "pages/login/loginindex/loginindex",
 			"name": "loginindex"
 		},
-
 		{
 			"path": "pages/shoppingCart/sub/detail/detail",
 			"name": "detail"
@@ -42,13 +41,22 @@
 			"name": "mobileLogin"
 		},
 		{
+			"path": "pages/mine/sub/myOrder/orderDetail/orderDetail",
+			"name": "orderDetail"
+		},{
 			"path": "pages/addressSelection/addressSelection",
 			"name": "addressSelection"
 		}
 	    ,{
+<<<<<<< HEAD
             "path" : "pages/member/member",
 			"name": "member"
 		}
+=======
+            "path" : "pages/menu/sub/Confirm/Confirm",
+            "name" : "Confirm"
+        }
+>>>>>>> 75f85be8b498eb5060b9b90b9ffc9e8e1519a560
     ],
 	"globalStyle": {
 		"navigationStyle": "custom",

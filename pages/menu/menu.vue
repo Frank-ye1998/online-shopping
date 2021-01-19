@@ -72,7 +72,7 @@ import listMock from "@/static/mock/list.json";
 export default {
   data() {
     return {
-      index: this.$store.getters.ChangeType,
+      index: 1,
       takeArr: [
         {
           mess: "自提",
@@ -101,7 +101,8 @@ export default {
     },
     changeType(index) {
       // this.$store.commit('setIndex', index)
-      console.log(index);
+	  this.$Router.push({name:'Confirm',params:{index}})
+      // console.log(index);
       this.index = index;
     },
     getItem(index) {

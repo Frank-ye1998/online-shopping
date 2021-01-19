@@ -7,12 +7,10 @@
 				<view class="change">
 					兑换
 				</view>
-
 			</view>
 			<view class="tabber">
-				<view v-for="(item,index) in arr" :key="index" :class="['cli-font',index===arrStatus?'content-top-select':'']" @tap="getItem(index)">{{item.name}}</view>
-				<!-- <view class="tab1">可用</view>
-				<view class="tab2">不可用</view> -->
+				<view v-for="(item,index) in arr" :key="index" 
+				:class="['cli-font',index===arrStatus?'content-top-select':'']" @tap="getItem(index)">{{item.name}}</view>
 			</view>
 			<view class="box">
 				<view class="box2">
@@ -54,10 +52,14 @@
 	.box1 {
 		display: flex;
 		flex-direction: row;
-		@include flexCenter
+		height: 100rpx;
+		
+		line-height: 100rpx;
+		justify-content: space-between;
+		
 	}
 	.box{
-		margin-top: 50rpx;
+		margin: 50rpx 24rpx 24rpx 24rpx;
 		@include flexCenter;
 		height:200rpx;
 		border: solid 0.5rpx #909090;
@@ -74,7 +76,7 @@
 		border-bottom: solid 2px $color-red;
 	}
 	.cli-font {
-		width: 36%;
+		width: 30%;
 		margin-left: 40rpx;
 		margin-right: 40rpx;
 		height: 80rpx;
@@ -84,11 +86,16 @@
 	}
 
 	.fillIn {
-		width: 660rpx;
+		width: 600rpx;
 		height: 100rpx;
+		margin-left: 24rpx;
 	}
 
 	.change {
 		color: red;
+		margin-right: 24rpx;
+	}
+	.text{
+		margin-left: 24rpx;
 	}
 </style>

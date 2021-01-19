@@ -33,6 +33,7 @@
 	.tab-bar {
 		display: flex;
 		margin-left: 22rpx;
+		margin-top: 24rpx;
 		border-radius: 35rpx;
 		background-color: #d08683;
 		width: 95%;
