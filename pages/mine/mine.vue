@@ -2,11 +2,9 @@
   <view>
     <view class="user-top">
       <div class="top-content">
-        <view class="avatar">
-          <image src="/static/images/mine/avatar.jpg" mode="widthFix"></image>
-        </view>
-        <view class="phone" v-if="this.token==null" @tap="goto('mobileLogin')">点击登录</view>
-        <view class="phone" v-else @tap="goDetail()">手机号：{{this.userInfo.cellPhone}}</view>
+        <img-view src="/static/images/mine/avatar.jpg" class="avatar"></img-view>
+        <view class="phone" v-if="userInfo" @tap="goto('mobileLogin')">点击登录</view>
+        <view class="phone" v-else @tap="goDetail()">手机号：{{userInfo.cellPhone}}</view>
         <view class="right">
           <i class="icon icon-to"></i>
         </view>
@@ -17,7 +15,7 @@
 
     <view class="list-order list">
       <view class="content" @tap="goto('myOrder')">
-        <i class="icon icon-order"></i>
+        <image class="list-icon" src="../../static/images/mine/list-icon1.png"></image>
         <view class="tit">我的订单</view>
         <i class="icon icon-to"></i>
       </view>
@@ -38,28 +36,28 @@
     </view>
     <view class="list">
       <view class="content" @tap="goto('coupon')">
-        <i class="icon icon-coupon"></i>
+        <image class="list-icon" src="../../static/images/mine/list-icon2.png"></image>
         <view class="tit">优惠券</view>
         <i class="icon icon-to"></i>
       </view>
     </view>
     <view class="list">
       <view class="content" @tap="goto('address')">
-        <i class="icon icon-address"></i>
+        <image class="list-icon" src="../../static/images/mine/list-icon3.png"></image>
         <view class="tit">收货地址</view>
         <i class="icon icon-to"></i>
       </view>
     </view>
     <view class="list">
       <view class="content">
-        <i class="icon icon-vip-card"></i>
+        <image class="list-icon" src="../../static/images/mine/list-icon4.png"></image>
         <view class="tit">会员卡</view>
         <i class="icon icon-to"></i>
       </view>
     </view>
     <view class="list">
       <view class="content">
-        <i style="font-size: 34rpx" class="icon icon-phone"></i>
+        <image class="list-icon" style="width:38rpx;height:38rpx;margin-right:6rpx" src="../../static/images/mine/list-icon5.png"></image>
         <view class="tit">联系客服</view>
         <text class="text">客服时间07:00-22:00</text>
         <i class="icon icon-to"></i>
@@ -74,8 +72,7 @@ export default {
   data() {
     return {
       scrollTop: 0,
-      userInfo: [],
-      token: "",
+      userInfo: {},
     };
   },
 
@@ -107,7 +104,7 @@ page {
 }
 
 .user-top {
-   position: relative;
+  position: relative;
   .top-background {
     position: absolute;
     top: 0;
@@ -127,17 +124,10 @@ page {
     color: #fff;
     padding-bottom: 40rpx;
     .avatar {
-      position: relative;
       width: 140rpx;
       height: 140rpx;
-      overflow: hidden;
       border-radius: 50%;
       margin-right: 34rpx;
-      image {
-        @include absCenter;
-        width: 100%;
-        height: 100%;
-      }
     }
 
     .right {
@@ -163,11 +153,17 @@ page {
       color: $color-text1;
       margin-left: 16rpx;
     }
-    .icon:first-of-type {
-      color: $color-green;
-      font-size: 44rpx;
+
+    .list-icon {
+      width: 44rpx;
+      height: 44rpx;
     }
-    .icon:last-of-type {
+
+    // .icon:first-of-type {
+    //   color: $color-green;
+    //   font-size: 44rpx;
+    // }
+    .icon {
       font-size: 34rpx;
       color: $color-text2;
       margin-left: auto;

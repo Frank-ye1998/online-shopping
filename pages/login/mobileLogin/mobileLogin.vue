@@ -29,13 +29,11 @@ export default {
   data() {
     return {
       phone: 17696769527,
-	  token:''
+      token: "",
     };
   },
-	  
-  onLoad(){
-	
-  },
+
+  onLoad() {},
   methods: {
     //页面code（LOGIN_PAGE;REGISTER_PAGE）
     registered: function () {
@@ -112,7 +110,6 @@ export default {
       uni.hideLoading();
     },
   },
-  
 };
 </script>
 
@@ -195,7 +192,8 @@ page {
 .cli-sure {
   width: 96%;
   height: 90rpx;
-  background: $color-text6;
+  background: linear-gradient(to right, #50e1b8 0%, #58dc75 100%);
+
   border-radius: 40rpx;
   text-align: center;
   line-height: 90rpx;

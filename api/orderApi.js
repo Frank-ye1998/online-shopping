@@ -2,9 +2,9 @@
 import xhr from "@/api/xhr.js";
 
 const orderApi = {
-    
+
     //查询门店列表
-    getStoreList(){
+    getStoreList() {
         const params = {
             url: '/order/store/list',
             method: 'get',
@@ -12,7 +12,7 @@ const orderApi = {
         return xhr.request(params)
     },
     //提交订单
-    postOrder(data){
+    postOrder(data) {
         const params = {
             url: '/order',
             method: 'post',
@@ -20,8 +20,17 @@ const orderApi = {
         }
         return xhr.request(params)
     },
+    //订单支付
+    payOrder(data) {
+        const params = {
+            url: '/pay/osInfo',
+            method: 'post',
+            data: data
+        }
+        return xhr.request(params)
+    },
     //查询订单
-    findOrder(data){
+    findOrder(data) {
         const params = {
             url: '/order',
             method: 'get',
@@ -30,7 +39,7 @@ const orderApi = {
         return xhr.request(params)
     },
     //查询订单详情
-    findOrderDetail(data){
+    findOrderDetail(data) {
         const params = {
             url: '/order/detail?id=${id}',
             method: 'get',

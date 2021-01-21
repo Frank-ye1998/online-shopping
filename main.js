@@ -1,4 +1,3 @@
-import config from "@/config.js"
 import Vue from 'vue'
 import App from './App'
 import store from './store'
@@ -11,17 +10,22 @@ Vue.prototype.$request = xhr.request
 import {
 	router,
 	RouterMount
-} from './router/router.js'
+} from '@/router/router.js'
 Vue.use(router)
 
 //JSONP
 import { VueJsonp } from 'vue-jsonp'
 Vue.use(VueJsonp)
 
+//Vconsole
+import Vconsole from 'vconsole'
+let vConsole = new Vconsole()
+Vue.use(vConsole)
+
 //全局组件
-import imgView from './components/img-view/img-view.vue'
+import imgView from '@/components/img-view/img-view.vue'
 Vue.component('img-view', imgView)
-import stepper from './components/stepper/stepper.vue'
+import stepper from '@/components/stepper/stepper.vue'
 Vue.component('stepper', stepper)
 
 

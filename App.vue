@@ -5,7 +5,7 @@ export default {
   mixins: [appMixin],
   watch:{
     loginKey(nv,ov){
-      console.log(nv);
+      console.log('loginKey：',nv);
     }
   },
   onLaunch: function () {

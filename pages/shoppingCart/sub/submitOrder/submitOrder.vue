@@ -1,6 +1,6 @@
 <template>
   <view>
-    <!-- <top-bar pageTitle="确认订单"></top-bar> -->
+    <top-bar pageTitle="确认订单"></top-bar>
     <div class="top">
       立即自取(约15:50可取)
     </div>
@@ -114,7 +114,7 @@
       <div class="text-2">
         实付¥332
       </div>
-      <div class="pay-btn">
+      <div class="pay-btn" @tap="submitOrder">
         去支付
       </div>
     </div>
@@ -125,6 +125,10 @@
 
 <script>
 import wx from "weixin-js-sdk";
+import sha1 from "sha1";
+import shopperApi from "@/api/shopperApi.js";
+import orderApi from "@/api/orderApi.js";
+import weChatApi from "@/api/weChatApi.js";
 import { getNonceStr } from "@/utils/tool.js";
 import receivingMethod from "@/components/receiving-method/receiving-method.vue";
 export default {
@@ -132,41 +136,111 @@ export default {
     "receiving-method": receivingMethod,
   },
   data() {
-    return {};
+    return {
+      shoppingList: [],
+    };
   },
-  created() {
-    console.log(getNonceStr);
-    return;
-    //微信网页SDK初始化
-    let time = parseInt(new Date().getTime() / 1000);
-    let noncestr = getNonceStr();
-    let str = `jsapi_ticket=${
-      res.data.ticket
-    }&noncestr=${noncestr}&timestamp=${time}&url=${
-      location.href.split("#")[0]
-    }`;
-    let signature = sha1(str);
+  methods: {
+    submitOrder: function () {
+      const orderInfo = this.shoppingList;
+      console.log(orderInfo);
+      orderApi
+        .postOrder({
+          remark: "",
+          orderType: "1",
+          activityId: "",
+          orderAmount: orderInfo.totalPrice * 4 + orderInfo.deliveryFee,
+          freightAmount: orderInfo.deliveryFee,
+          activityAmount: orderInfo.totalPrice * 4 + orderInfo.deliveryFee,
+          consignId: "668752322609647616",
+          isNeedInvoice: false,
+          isStartOrdering: true,
+          storeCode: 96531,
+          storeName: "宝城路店",
+          storeTel: "",
+          storeAddress: "宝城路456号（靠近莘朱路）",
+          couponCode: "",
+          invoiceTitle: "",
+          deskNo: "",
+          tablewareAmount: "",
+          plannedDeliverTime: new Date().getTime() + 3600000,
+          paySource: 2,
+        })
+        .then((res) => {
+          console.log(res);
+          //let noncestr = getNonceStr();
+          wx.chooseWXPay({
+            timestamp:res.data.timestamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+            nonceStr: res.data.noncestr, // 支付签名随机串，不长于 32 位
+            package: `prepay_id=res.data.partnerid`, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
+            signType: "SHA1", // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+            paySign: res.data.sign, // 支付签名
+            success: (res) => {
+              alert(JSON.stringify(res));
+              // 支付成功后的回调函数
+            },
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    toPay: function ({ orderNo, payAmount }) {
+      orderApi
+        .payOrder({
+          orderNo: orderNo,
+          payAmount: payAmount,
+          payMethod: 2,
+        })
+        .then((res) => {
+          console.log(res);
+        });
+    },
+    getShoppingList: function () {
+      shopperApi.getCartInfo().then((res) => {
+        console.log('购物车列表',res);
+        this.shoppingList = res.data;
+      });
+    },
+    getStoreList: function () {
+      orderApi.getStoreList().then((res) => {
+        //console.log(res);
+      });
+    },
+  },
+  onLoad() {
+    this.getShoppingList();
+    this.getStoreList();
 
-    // wx.chooseWXPay({
-    //   timestamp: time, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
-    //   nonceStr: noncestr, // 支付签名随机串，不长于 32 位
-    //   package: "", // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
-    //   signType: "", // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
-    //   paySign: "", // 支付签名
-    //   success: function (res) {
-    //     // 支付成功后的回调函数
-    //   },
-    // });
+    //获取ticket
+    weChatApi.getJsApiTicket().then((res) => {
+      //微信JS-SDK初始化
+      let time = parseInt(new Date().getTime() / 1000);
+      let noncestr = getNonceStr();
+      let str = `jsapi_ticket=${
+        res.data
+      }&noncestr=${noncestr}&timestamp=${time}&url=${
+        location.href.split("#")[0]
+      }`;
+      let signature = sha1(str);
 
-    // wx.config({
-    //   debug: false, // 开启调试模式
-    //   appId: "wxc1bdb5fea6bc9e6d",
-    //   timestamp: time, //签名时间戳
-    //   nonceStr: noncestr, //签名随机串
-    //   signature: signature,
-    //   jsApiList: [],
-    //   openTagList: ["wx-open-launch-weapp"],
-    // });
+      wx.config({
+        debug: false,
+        appId: "wxc1bdb5fea6bc9e6d",
+        timestamp: time,
+        nonceStr: noncestr,
+        signature: signature,
+        jsApiList: [],
+        openTagList: ["wx-open-launch-weapp","chooseWXPay"]//小程序跳转按钮、微信支付
+      });
+
+      wx.ready(() => {
+        console.log('微信JS-SDK初始化成功');
+      });
+      wx.error((res) => {
+        console.log('微信JS-SDK初始化失败',res);
+      });
+    });
   },
 };
 </script>
