@@ -3,7 +3,7 @@
     <view class="user-top">
       <div class="top-content">
         <img-view src="/static/images/mine/avatar.jpg" class="avatar"></img-view>
-        <view class="phone" v-if="userInfo" @tap="goto('mobileLogin')">点击登录</view>
+        <view class="phone" v-if="userInfo==null" @tap="goto('mobileLogin')">点击登录</view>
         <view class="phone" v-else @tap="goDetail()">手机号：{{userInfo.cellPhone}}</view>
         <view class="right">
           <i class="icon icon-to"></i>
