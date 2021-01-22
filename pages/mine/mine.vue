@@ -4,7 +4,7 @@
 			<div class="top-content" @tap="goto('mobileLogin')">
 				<template v-if="userInfo.cellPhone">
 					<img-view src="/static/images/mine/avatar.jpg" class="avatar"></img-view>
-					<view class="phone" @tap="goDetail()">手机号：{{userInfo.cellPhone}}</view>
+					<view class="phone">手机号：{{userInfo.cellPhone}}</view>
 				</template>
 				<template v-else>
 					<img-view src="/static/images/mine/avatar-null.png" class="avatar"></img-view>

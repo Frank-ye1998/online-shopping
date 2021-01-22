@@ -2,7 +2,7 @@
 	<view>
 		<view class="top">
 			<warp-bar class="warp-bar"></warp-bar>
-			<view class="take-away">
+<!-- 			<view class="take-away">
 				<view class="away-left">
 					徐汇日月光中心
 				</view>
@@ -12,7 +12,8 @@
 						<view class="btn-right" :class="index === 2 ? 'active' : ''" @click="changeType(2)">外卖</view>
 					</view>
 				</view>
-			</view>
+			</view> -->
+			<receiving-method class="receiving-method"></receiving-method>
 		</view>
 
 		<view class="main">
@@ -74,7 +75,12 @@
 	import productApi from "@/api/productApi.js";
 	import shopperApi from "@/api/shopperApi.js"
 	import listMock from "@/static/mock/list.json";
+	import receivingMethod from "@/components/receiving-method/receiving-method.vue";
+	
 	export default {
+		components: {
+			"receiving-method": receivingMethod,
+		},
 		data() {
 			return {
 				index: 1,
@@ -143,16 +149,20 @@
 						sendWay: "1",
 					})
 					.then((res) => {
+						uni.hideLoading()
 						// console.log(res.data[0].secondPtCategoryProductVos[this.leftIndex].productVos,'eee');
 						this.ifiArr = res.data;
 						this.foodData = this.ifiArr[
 							this.leftIndex
 						].secondPtCategoryProductVos[this.slidetitle].productVos;
 						console.log(this.foodData);
-					});
+					})
 			},
 		},
 		onLoad: function() {
+			uni.showLoading({
+				mask:true
+			})
 			this.getList();
 			//console.log(JSON.parse(listMock));
 		},
@@ -249,7 +259,9 @@
 			}
 		}
 	}
-
+	.receiving-method {
+		margin-top: 8rpx;
+	}
 	.main {
 		position: relative;
 		width: 96%;
@@ -269,10 +281,9 @@
 			overflow-y: scroll;
 
 			.single {
+				@include flexCenter;
 				width: 100%;
-				height: 130rpx;
-				text-align: center;
-				line-height: 130rpx;
+				height: 110rpx;
 				letter-spacing: 4rpx;
 				font-size: 32rpx;
 			}

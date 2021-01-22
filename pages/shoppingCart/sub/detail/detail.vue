@@ -1,26 +1,26 @@
 <template>
-  <view class="detail-main">
-    <view class="back" @tap="goBack()">
-		<i class="icon icon-back"></i>
-	</view>
-    <view class="">
-      <view class="deta-mess">
-        <view class="detail-img">
-          <img-view :src="`http://10.1.44.113:9010/images/${detailData.mainImg}`" mode="widthFix" class="details-imgs" />
-        </view>
-      </view>
-      <view class="detail-con">
-        <view class="con-name">{{ detailData.name }}</view>
-        <view class="con-brief">{{ detailData.description }}</view>
-      </view>
-    </view>
-    <!-- 规格 -->
-    <view class="choice-commodity">
-      <view class="commod" v-for="(item, index) in detailData.ptSpuAttrs" :key="index">
-        <view class="font-left">
-          {{ item.name }}
-        </view>
-        <view v-for="(sub, idx) in item.ptSpuAttrValues" :key="idx" :class="[
+	<view class="detail-main">
+		<view class="back" @tap="goBack()">
+			<i class="icon icon-back"></i>
+		</view>
+		<view class="">
+			<view class="deta-mess">
+				<view class="detail-img">
+					<img-view :src="`http://10.1.44.113:9010/images/${detailData.mainImg}`" mode="widthFix" class="details-imgs" />
+				</view>
+			</view>
+			<view class="detail-con">
+				<view class="con-name">{{ detailData.name }}</view>
+				<view class="con-brief">{{ detailData.description }}</view>
+			</view>
+		</view>
+		<!-- 规格 -->
+		<view class="choice-commodity">
+			<view class="commod" v-for="(item, index) in detailData.ptSpuAttrs" :key="index">
+				<view class="font-left">
+					{{ item.name }}
+				</view>
+				<view v-for="(sub, idx) in item.ptSpuAttrValues" :key="idx" :class="[
             'font-right',
             item.selectedCode === sub.skuSpliceCode ? 'font-right-select' : '',
           ]"
@@ -31,12 +31,10 @@
 		</view>
 		<view class="default"> 超值加购推荐，满足加倍~ </view>
 		<view class="calculation">
-			<view class="price">
-				<view class="calcula-price"> ￥{{ detailData.price }} </view>
-				<view class="add-class">
-					<stepper :value=1 :change="change"></stepper>
-					<view class="add-cart" @tap="clickAddCart"> 加入购物车 </view>
-				</view>
+			<view class="calcula-price"> ￥{{ detailData.price }} </view>
+			<view class="add-class">
+				<stepper :value=1 :change="change"></stepper>
+				<view class="add-cart" @tap="clickAddCart"> 加入购物车 </view>
 			</view>
 		</view>
 		<div class="calculation-plc"></div>
@@ -55,7 +53,7 @@
 			return {
 				spuAtt: 0,
 				detailData: {},
-				commodity: this.$Route.query||11352,
+				commodity: this.$Route.query || 11352,
 				sizeArr: [],
 				comArr: [],
 				skuCode: "",
@@ -79,8 +77,9 @@
 						id: this.commodity.id,
 					})
 					.then((res) => {
+						uni.hideLoading();
 						let defultCode = res.data.skuCode.replace(res.data.skuId, "");
-						
+
 						res.defultCode = defultCode;
 
 						res.data.ptSpuAttrs.forEach((item) => {
@@ -245,6 +244,9 @@
 			},
 		},
 		onLoad: function() {
+			uni.showLoading({
+				mask:true
+			})
 			this.getCommodity();
 		},
 	};
@@ -332,6 +334,8 @@
 					height: 90rpx;
 					text-align: center;
 					line-height: 90rpx;
+					font-size: 32rpx;
+					color: $color-text1;
 				}
 
 				.font-right {
@@ -340,8 +344,10 @@
 					border: solid 1px $color-text3;
 					text-align: center;
 					line-height: 60rpx;
-					border-radius: 40rpx;
+					border-radius:999px;
 					margin-left: 30rpx;
+					font-size: 28rpx;
+					color: $color-text2;
 
 					.size {
 						width: 30%;
@@ -371,80 +377,70 @@
 		}
 
 		.calculation {
-			display: flex;
+			@include flexVtCenter;
 			position: fixed;
 			bottom: 0;
 			left: 0;
 			width: 100%;
 			height: 160rpx;
-			flex-direction: row;
 			background: #fff;
-			margin-top: 20rpx;
-			align-items: center;
+			justify-content: space-between;
+			padding: 0 28rpx;
 
-			.price {
-				width: 100%;
-				height: 100%;
+			.calcula-price {
+				color: $color-red;
+				font-size: 50rpx;
+			}
+
+			.add-class {
 				display: flex;
+				justify-content: flex-start;
 				flex-direction: row;
-				line-height: 100rpx;
-				justify-content: space-around;
+				align-items: center;
 
-				.calcula-price {
-					color: $color-red;
-					font-size: 50rpx;
-					padding-left: 30rpx;
-				}
-
-				.add-class {
-					width: 60%;
+				.calcula-cli {
 					display: flex;
 					flex-direction: row;
+					justify-content: space-around;
+					width: 200rpx;
+					height: 100%;
 					align-items: center;
 
-					.calcula-cli {
-						display: flex;
-						flex-direction: row;
-						justify-content: space-around;
-						width: 200rpx;
-						height: 100%;
-						align-items: center;
-
-						.sub {
-							width: 50rpx;
-							height: 50rpx;
-							background: $color-green;
-							text-align: center;
-							line-height: 50rpx;
-							border-radius: 50%;
-							color: $color-green-transparent;
-						}
-
-						.add {
-							width: 50rpx;
-							height: 50rpx;
-							background: $color-green;
-							line-height: 50rpx;
-							border-radius: 50%;
-							color: $color-green-transparent;
-						}
+					.sub {
+						width: 50rpx;
+						height: 50rpx;
+						background: $color-green;
+						text-align: center;
+						line-height: 50rpx;
+						border-radius: 50%;
+						color: $color-green-transparent;
 					}
 
-					.add-cart {
-						width: 200rpx;
-						height: 80rpx;
+					.add {
+						width: 50rpx;
+						height: 50rpx;
 						background: $color-green;
-						border-radius: 40rpx;
-						text-align: center;
-						line-height: 80rpx;
-						font-size: 28rpx;
+						line-height: 50rpx;
+						border-radius: 50%;
 						color: $color-green-transparent;
-						letter-spacing: 2rpx;
-						font-weight: lighter;
-						margin-left: 20rpx;
 					}
 				}
+
+				.add-cart {
+					width: 200rpx;
+					height: 80rpx;
+					background: $color-green;
+					border-radius: 40rpx;
+					text-align: center;
+					line-height: 80rpx;
+					font-size: 28rpx;
+					color: $color-green-transparent;
+					letter-spacing: 2rpx;
+					font-weight: lighter;
+					margin-left: 20rpx;
+				}
 			}
+
 		}
 
 		.calculation-plc {
