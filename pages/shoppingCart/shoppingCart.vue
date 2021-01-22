@@ -159,7 +159,7 @@
 				删除
 			</view>
 		</view>
-		<view class="to-pay" v-else>
+		<view class="to-pay" @tap="toSubmit" v-else>
 			<view class="select-all">
 				<!-- <radio style="transform: scale(0.94)" color="#00C130"/>全选 -->
 			</view>
@@ -191,6 +191,9 @@
 			};
 		},
 		methods: {
+			toSubmit:function(){
+				this.$Router.push({name:'submitOrder'})
+			},
 			deleteShop:function(){
 				if(this.editAll){
 					//清楚全部商品接口
