@@ -53,6 +53,9 @@
                 </view>
                 <view class="addCar">
                   <i class="icon icon-cart-add"></i>
+				  <view class="num">
+					2
+				  </view>
                 </view>
               </view>
             </view>
@@ -404,11 +407,25 @@ page {
               position: absolute;
               right: 50rpx;
               @include flexCenter;
-
-              .icon-cart-add {
+			.icon-cart-add {
                 color: #fff;
                 font-size: 30rpx;
               }
+			  .num{
+				  @include flexCenter;
+				  width: 34rpx;
+				  height: 34rpx;
+				  position: absolute;
+				  background: $color-red;
+				  border-radius: 50%;
+				  color: #FFFFFF;
+				  font-size: 20rpx;
+				  line-height: 20rpx;
+				  font-weight: lighter;
+				  right: -10rpx;
+				  top: -18rpx;
+				  opacity: 0.8;
+			  }
             }
           }
         }
