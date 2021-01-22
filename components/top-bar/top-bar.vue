@@ -1,11 +1,12 @@
 <template>
 	<view class="top-bar-main">
+		<div class="top-bar-bg"></div>
 		<view class="top-bar">
 			<i @tap="PageBack" class="icon icon-back"></i>
 			<text class="page-title">{{ pageTitle }}</text>
-			<slot></slot>
 		</view>
 		<view class="top-bar-plc"></view>
+		
 	</view>
 </template>
 
@@ -25,6 +26,16 @@
 </script>
 
 <style lang="scss">
+	.top-bar-bg {
+		position: fixed;
+		z-index: 1000;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: var(--status-bar-height);
+		background-color: #fff;
+	}
+
 	.top-bar {
 		display: flex;
 		position: fixed;

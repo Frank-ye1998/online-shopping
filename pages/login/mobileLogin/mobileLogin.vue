@@ -215,7 +215,6 @@
 		letter-spacing: 3rpx;
 		font-size: 24rpx;
 		color: $color-text2;
-
 		.text {
 			color: #a9b1e4;
 		}
