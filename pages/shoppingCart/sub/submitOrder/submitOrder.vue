@@ -124,7 +124,7 @@
 </template>
 
 <script>
-import wx from "weixin-js-sdk";
+import wx from "weixin-js-sdk";//微信支付js-sdk
 import sha1 from "sha1";
 import shopperApi from "@/api/shopperApi.js";
 import orderApi from "@/api/orderApi.js";
@@ -149,9 +149,9 @@ export default {
           remark: "",
           orderType: "1",
           activityId: "",
-          orderAmount: orderInfo.totalPrice * 4 + orderInfo.deliveryFee,
+          orderAmount: orderInfo.totalPrice,
           freightAmount: orderInfo.deliveryFee,
-          activityAmount: orderInfo.totalPrice * 4 + orderInfo.deliveryFee,
+          activityAmount: orderInfo.totalPrice,
           consignId: "668752322609647616",
           isNeedInvoice: false,
           isStartOrdering: true,

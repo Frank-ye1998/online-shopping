@@ -14,13 +14,18 @@ import {
 Vue.use(router)
 
 //JSONP
-import { VueJsonp } from 'vue-jsonp'
+import {
+	VueJsonp
+} from 'vue-jsonp'
 Vue.use(VueJsonp)
 
+// #ifdef H5
 //Vconsole
 import Vconsole from 'vconsole'
 let vConsole = new Vconsole()
 Vue.use(vConsole)
+// #endif
+
 
 //全局组件
 import imgView from '@/components/img-view/img-view.vue'

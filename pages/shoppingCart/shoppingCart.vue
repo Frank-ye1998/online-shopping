@@ -161,7 +161,7 @@
 				删除
 			</view>
 		</view>
-		<view class="to-pay" v-else>
+		<view class="to-pay" @tap="toSubmit" v-else>
 			<view class="select-all">
 				<!-- <radio style="transform: scale(0.94)" color="#00C130"/>全选 -->
 			</view>
@@ -193,18 +193,23 @@
 			};
 		},
 		methods: {
+			toSubmit: function() {
+				this.$Router.push({
+					name: 'submitOrder'
+				})
+			},
 			deleteShop: function() {
 				// 全选按钮为true时执行清空接口
 				if (this.editAll) {
 					uni.showModal({
-						title:"确定要删除吗",
-						showCancel:true,
-						success:(res) =>{
-							if(res.confirm){
+						title: "确定要删除吗",
+						showCancel: true,
+						success: (res) => {
+							if (res.confirm) {
 								//清楚全部商品接口
 								shopperApi
 									.clearCartInfo({
-								
+
 									}).then((res) => {
 										this.carShop = []
 										this.editAll = false
@@ -213,7 +218,7 @@
 							}
 						}
 					})
-					
+
 				} else { //否则执行删除接口
 					let str = "";
 					let arr = [];
@@ -226,10 +231,10 @@
 					})
 					str = str.substring(0, str.length - 1);
 					uni.showModal({
-						title:"确定要删除吗",
-						showCancel:true,
-						success:(res) =>{
-							if(res.confirm){
+						title: "确定要删除吗",
+						showCancel: true,
+						success: (res) => {
+							if (res.confirm) {
 								shopperApi
 									.deleteCartInfo({
 										skuCodes: str,
@@ -242,7 +247,7 @@
 							}
 						}
 					})
-					
+
 				}
 			},
 			//全选按钮
@@ -280,7 +285,7 @@
 					uni.showModal({
 						title: '确定要删除吗',
 						showCancel: true,
-						success: (res)=> {
+						success: (res) => {
 							if (res.confirm) {
 								shopperApi
 									.deleteCartInfo({
@@ -289,7 +294,7 @@
 										uni.showToast({
 											title: "删除成功",
 										});
-										this.carShop.splice(this.thatIndex,1)
+										this.carShop.splice(this.thatIndex, 1)
 									})
 							}
 						}
@@ -405,7 +410,7 @@
 	.car-img {
 		width: 100%;
 		height: 400rpx;
-		background: #FFFFFF;
+		background: #ffffff;
 
 		.imgscar {
 			width: 320rpx;
