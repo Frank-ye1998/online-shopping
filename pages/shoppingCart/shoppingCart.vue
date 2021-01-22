@@ -15,10 +15,9 @@
 				<view class="edits" @tap="isEdit = !isEdit">{{ isEdit?'完成':'编辑' }}</view>
 			</view>
 		</view>
-
 		<view class="shopping-cart" v-if="isLoad && carShop.length">
-			<view class="list" v-for="(item,index) in carShop" :key="index">
-				<radio class="radio" style="transform: scale(0.94)" color="#00C130" v-if="isEdit" :checked="item.check" @tap="singCheck(item)"/>
+			<view class="list" @tap="thatIndex = index" v-for="(item,index) in carShop" :key="index">
+				<radio class="radio" style="transform: scale(0.94)" color="#00C130" v-if="isEdit" :checked="item.check" @tap="singCheck(item)" />
 				<img-view src="/static/images/home/shop-2.png" mode="widthFix" class="img-view"></img-view>
 				<!-- <img-view :src="`http://10.1.44.108:9003/images/${item.smallImage}`" mode="widthFix" class="conimgs"/> -->
 				<view class="goods-info">
@@ -153,7 +152,7 @@
 
 		<view class=" compiler" v-if="isEdit">
 			<view class="select-all">
-				<radio style="transform: scale(0.94)" :checked="editAll" color="#00C130" @tap="checkAll()"/>全选
+				<radio style="transform: scale(0.94)" :checked="editAll" color="#00C130" @tap="checkAll()" />全选
 			</view>
 			<view class="delete" @tap="deleteShop()">
 				删除
@@ -186,44 +185,91 @@
 				isLoad: false,
 				carShop: [],
 				isEdit: false,
-				editAll:false,
-				
+				editAll: false,
+				thatIndex: -1
 			};
 		},
 		methods: {
-			toSubmit:function(){
-				this.$Router.push({name:'submitOrder'})
+			toSubmit: function() {
+				this.$Router.push({
+					name: 'submitOrder'
+				})
 			},
-			deleteShop:function(){
-				if(this.editAll){
-					//清楚全部商品接口
-					shopperApi
-						.clearCartInfo({
-										
-						}).then((res) => {
-							this.carShop = []
-							this.editAll = false
-							// console.log(res, ccccccc);
-						})
+			deleteShop: function() {
+				// 全选按钮为true时执行清空接口
+				if (this.editAll) {
+					uni.showModal({
+						title: "确定要删除吗",
+						showCancel: true,
+						success: (res) => {
+							if (res.confirm) {
+								//清楚全部商品接口
+								shopperApi
+									.clearCartInfo({
+
+									}).then((res) => {
+										this.carShop = []
+										this.editAll = false
+										// console.log(res, ccccccc);
+									})
+							}
+						}
+					})
+
+				} else { //否则执行删除接口
+					let str = "";
+					let arr = [];
+					this.carShop.forEach((item) => {
+						if (item.check) {
+							str += item.skuCode + ","
+						} else {
+							arr.push(item)
+						}
+					})
+					str = str.substring(0, str.length - 1);
+					uni.showModal({
+						title: "确定要删除吗",
+						showCancel: true,
+						success: (res) => {
+							if (res.confirm) {
+								shopperApi
+									.deleteCartInfo({
+										skuCodes: str,
+									}).then((res) => {
+										uni.showToast({
+											title: "删除成功",
+										});
+										this.carShop = arr;
+									})
+							}
+						}
+					})
+
 				}
 			},
-			checkAll:function(){
+			//全选按钮
+			checkAll: function() {
+				//切换全选选中状态
 				this.editAll = !this.editAll
-				if(this.editAll){
-					this.carShop.forEach((item) =>{
-						this.$set(item,'check',true)
+				//为true时
+				if (this.editAll) {
+					//遍历商品下每一个item 并修改它们的属性值check为true
+					this.carShop.forEach((item) => {
+						this.$set(item, 'check', true)
 					})
-				}else {
-					this.carShop.forEach((item) =>{
-						this.$set(item,'check',false)
+				} else {
+					this.carShop.forEach((item) => {
+						this.$set(item, 'check', false)
 					})
 				}
 			},
-			singCheck:function(item){
-				this.$set(item,'check',!item.check)
+			//点击每一个商品的radio
+			singCheck: function(item) {
+				//切换每一个商品的radio状态
+				this.$set(item, 'check', !item.check)
 				let status = true;
-				this.carShop.forEach((item) =>{
-					if(!item.check){
+				this.carShop.forEach((item) => {
+					if (!item.check) {
 						status = false;
 					}
 				})
@@ -231,25 +277,33 @@
 				console.log(status);
 			},
 			change: function(num, info) {
-				console.log(num,'nummmmmmm');
+				//删除接口
 				if (num < 1) {
-					shopperApi
-						.deleteCartInfo({
-							skuCode: info.skuCode,
-						}).then((res) => {
-							if (num < 1) {
-								uni.showToast({
-								  title: "删除成功",
-								});
+					uni.showModal({
+						title: '确定要删除吗',
+						showCancel: true,
+						success: (res) => {
+							if (res.confirm) {
+								shopperApi
+									.deleteCartInfo({
+										skuCodes: info.skuCode,
+									}).then((res) => {
+										uni.showToast({
+											title: "删除成功",
+										});
+										this.carShop.splice(this.thatIndex, 1)
+									})
 							}
-						})
+						}
+					});
 				} else {
+					//修改购物车
 					shopperApi
 						.changeCartInfo({
 							skuCode: info.skuCode,
 							quantity: num,
 						}).then((res) => {
-							
+
 						})
 				}
 
@@ -270,8 +324,8 @@
 					});
 				// console.log(this.carShop, "res.data.items");
 			},
-			
-			
+
+
 		},
 		onLoad() {
 
@@ -340,16 +394,13 @@
 				text-align: center;
 				font-size: 30rpx;
 			}
-
-
 		}
-
 	}
 
 	.car-img {
 		width: 100%;
 		height: 400rpx;
-		background: #FFFFFF;
+		background: #ffffff;
 
 		.imgscar {
 			width: 320rpx;
