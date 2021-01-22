@@ -15,7 +15,6 @@ export default {
         this.setDeviceInfo(info);
       },
     });
-
     //获取登录缓存数据
     Vue.prototype.sessionId = uni.getStorageSync("sessionId");
     Vue.prototype.userId = uni.getStorageSync("userId");

@@ -26,8 +26,8 @@ const request = (Xhrdata) => {
 		dataType: 'json',
 		header: {
 			//渠道名称（WAP;WEB;ANDROID;IOS;WECHAT）
-			source: 3,
-			sourceName: 'ANDROID',
+			source: 1,
+			sourceName: 'WAP',
 			"content-type": Xhrdata.isFrom ? "application/x-www-form-urlencoded;charset=utf-8" : "application/json;charset=UTF-8",
 			sessionId: Vue.prototype.sessionId,
 			clientId: clientId

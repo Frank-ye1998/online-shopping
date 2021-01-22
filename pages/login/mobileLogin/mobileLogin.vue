@@ -32,12 +32,16 @@
 				token: ''
 			};
 		},
-
+		onShow(){
+			setTimeout(()=>{
+				uni.hideLoading()
+			},1000)
+		},
 		onLoad() {
-
+			
 		},
 		methods: {
-			//页面code（LOGIN_PAGE;REGISTER_PAGE）
+			//页面code（LOGIN_PAGE;REGISTER_PAGE）1
 			registered: function() {
 				if (!this.phone) {
 					uni.showToast({

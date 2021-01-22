@@ -1,249 +1,308 @@
 <template>
-	<view>
-		<top-bar :pageTitle="pageTitle"></top-bar>
-		<view class="wrap">
-			<view class="box1">
-				<view class="title">收货人</view>
-				<input type="text" value="" placeholder="请输入收货人的姓名" v-model="name" class="rece-name" />
-			</view>
-			<view class="box1">
-				<view class="cell">手机号</view>
-				<input type="text" value="" placeholder="请填写收货人的手机号" v-model="tel" class="cell2" />
-			</view>
-			<view class="box1">
-				<view class="rece">收货地址</view>
-				<input type="text" value="" placeholder="点击选择收货地址" v-model="base" @tap="gotoMap()" class="receive" />
-				<i class="icon icon-to"></i>
-			</view>
-			<view class="box1">
-				<view class="detailAddress">详细地址</view>
-				<input type="text" value="" placeholder="详细地址" v-model="detail" class="detail" />
-			</view>
-			<view class="box1">
-				<view class="postCode">邮政编码</view>
-				<input type="text" value="" placeholder="请输入邮政编码" v-model="post" class="detail" />
-			</view>
-			<view class="box1">
-				<view class="def">
-					设为默认地址
-				</view>
-				<label class="radio">
-					<radio :checked="checked" @tap="onClick" class="radio" color="#C02D2E" />默认</label>
-			</view>
-			<view class="save" @tap="onSave()">保存并使用</view>
-			<view class="delete" @tap="onDelete()" v-show="this.$Route.query.item">删除地址</view>
-		</view>
-	</view>
+  <view>
+    <top-bar :pageTitle="pageTitle"></top-bar>
+    <div class="main">
+      <div class="input-list">
+        <div class="tit">
+          联系人
+        </div>
+        <input v-model="address.name" placeholder-class="plc" placeholder="请输入联系人姓名" class="input" maxlength="8" type="text" />
+      </div>
+      <div class="input-list">
+        <div class="tit">
+          手机号
+        </div>
+        <input v-model="address.tel" placeholder-class="plc" placeholder="请输入手机号" class="input" type="number" maxlength="11" />
+      </div>
+      <div class="input-list">
+        <div class="tit">
+          地址
+        </div>
+        <view class="location-view" @tap="toMap()">
+          <div v-if="address.address">{{address.address}}</div>
+          <div v-else-if="address.map">{{address.map.address}}</div>
+          <div v-else class="plc">点击选择地址</div>
+        </view>
+        <view class="icon icon-to"></view>
+      </div>
+      <div class="input-list">
+        <div class="tit">
+          门牌号
+        </div>
+        <input v-model="address.detailAddress" placeholder-class="plc" placeholder="请输入门牌号" class="input" type="text" />
+      </div>
+      <div class="input-list">
+        <div class="tit">
+          默认地址
+        </div>
+        <switch class="switch" :checked="address.isDefault" color="#08BF30" />
+      </div>
+    </div>
+
+    <div class="bottom-btns">
+      <div class="btn delete" @tap="deleteAddress()">
+        删除
+      </div>
+      <div class="btn save" @tap="savaAddress()">
+        保存
+      </div>
+    </div>
+    <div class="bottom-btns-plc"></div>
+  </view>
 </template>
 
 <script>
-	import userApi from "@/api/userApi.js"
-	export default {
-		created() {
-			uni.$on('locationSelected', (data) => {
-				this.base = data.address;
-				this.adInfo = data.ad_info
-				this.provinceName = this.adInfo.province
-				this.cityName = this.adInfo.city
-				this.countyName = this.adInfo.district
-				this.lat = data.location.lat
-				this.lng = data.location.lng
-				this.code = this.adInfo.adcode
-				var n = this.code.substr(0,2)
-				var m = this.code.substr(0,4)
-				this.provinceId = n+"0000"
-				this.cityId = m+"00"
-				
-			})
-		},
-		onLoad: function(option) { //option为object类型，会序列化上个页面传递的参数
-			let receive = this.$Route.query.item; //打印出上个页面传递的参数。
-			if (receive) {
-				this.pageTitle = "编辑地址"
-				this.addressId = receive.id
-				this.name = receive.name
-				this.tel = receive.tel
-				this.base = receive.address
-				this.detail = receive.detailAddress
-				this.post = receive.postcode
-				this.checkId = receive.creator
-				this.checked = receive.isDefault
-			}
+import userApi from "@/api/userApi.js"
+export default {
+  data() {
+    return {
+      pageTitle: '',
+      address: {},
+      isEdit: false
+    };
+  },
+  methods: {
+    savaAddress: function () {
+      let obj = this.getRequestData();
+      obj.isDefault = false;
+      obj.storeId = 96531;
+      uni.showLoading({
+        mask: true
+      })
+      userApi.addAddress(obj).then(res => {
+        if (res.successCode === '00') {
+          uni.hideLoading();
+          uni.showToast({
+            title: "添加成功",
+            mask: true,
+            duration: 1200
+          })
+          uni.$emit('addressChange')
+          setTimeout(() => {
+            this.$Router.back(1)
+          }, 1200)
+        }
+      })
+    },
 
-		},
-		data() {
-			return {
-				pageTitle: "添加地址",
-				checked: false,
-				checkId: 0,
-				name: '',
-				tel: '',
-				base: '',
-				detail: '',
-				post: '',
-				addressId: '',
-				mapLocation: '',
-				
-				adInfo:[],
-				provinceName:'',
-				cityName: '',
-				countyName: '',
-				provinceId:'',
-				cityId: '',
-				countyId: '',
-				storeId: '',
-				lng: '',
-				lat: '',
-				code:''
-			};
-		},
-		methods: {
-			gotoMap() {
-				// 前往地图
-				this.$Router.push({
-					name: 'addressSelection'
-				})
-			},
-			onSave() {
-				if (this.checkId !== 0) {
-					// 上一层有传参数，代表是编辑页面，调用编辑地址接口
-					userApi
-						.editAddress({
-							id: this.addressId,
-							consignName: this.name,
-							consignTel: this.tel,
-							baseAddress: this.base,
-							detailAddress: this.detail,
-							postcode: this.post,
-							isDefault: 1,
-							provinceName: this.provinceName,
-							cityName: this.cityName,
-							countyName: this.countyName,
-							provinceId: this.provinceId,
-							cityId: this.cityId,
-							countyId: this.code,
-							storeId: 96000,
-							lng: this.lng,
-							lat: this.lat
-						})
-				} else {
-					// 否则调添加地址接口
-					userApi
-						.addAddress({
-							consignName: this.name,
-							consignTel: this.tel,
-							baseAddress: this.base,
-							detailAddress: this.detail,
-							postcode: this.post,
-							isDefault: this.checked,
-							provinceName: this.provinceName,
-							cityName: this.cityName,
-							countyName: this.countyName,
-							provinceId: this.provinceId,
-							cityId: this.cityId,
-							countyId: this.code,
-							storeId: 96000,
-							lng: this.lng,
-							lat: this.lat
-						})
-
-				}
-				this.$router.push({
-					name: 'address'
-				})
-			},
-			// 删除地址接口
-			onDelete() {
-				uni.showLoading({
-					title: "请稍等",
-					mask: true,
-				});
-				//调用删除地址接口
-				userApi
-					.deleteAddress({
-						id: this.$Route.query.item.id
-					})
-				uni.showToast({
-					title: "删除成功",
-					icon: "none",
-				});
-				this.$Router.push({
-					name: 'address'
-				})
-			},
-			onClick() {
-				this.checked = !this.checked
-				this.changeDefault()
-			},
-			changeDefault(value) {
-				if ((this.checked = true)) {
-					this.isDefault = 1; //1为默认地址
-					// 此处调用修改默认地址接口
-					userApi
-						.changeDefaultAddress({
-							id: this.$Route.query.item.id
-						})
-				} else {
-					this.isDefault = 0;
-				}
-			},
-
-		},
-	}
+    deleteAddress: function () {
+      uni.showModal({
+        title: "确定要删除此地址吗",
+        showCancel: true,
+        success: res => {
+          if (res.confirm) {
+            console.log('确定删除');
+            uni.showLoading({
+              mask: true
+            });
+            userApi.deleteAddress({
+              id: this.address.id
+            }).then(res => {
+              uni.hideLoading();
+              uni.showToast({
+                title: "删除成功",
+                mask: true,
+                duration: 1200
+              })
+              uni.$emit('addressChange')
+              setTimeout(() => {
+                this.$Router.back(1)
+              }, 1200)
+            })
+          }
+        }
+      })
+    },
+    toMap: function () {
+      this.$Router.push({
+        name: 'addressSelection'
+      })
+    },
+    getRequestData: function () {
+      var status = false;
+      switch (false) {
+        case Boolean(this.address.name):
+          uni.showToast({
+            title: '请输入姓名',
+            icon: 'none'
+          })
+          status = true;
+          break;
+        case Boolean(this.address.tel):
+          uni.showToast({
+            title: '请输入手机号',
+            icon: 'none'
+          })
+          status = true;
+          break;
+        case Boolean(this.address.detailAddress):
+          uni.showToast({
+            title: '请输入详细地址',
+            icon: 'none'
+          })
+          status = true;
+          break;
+      }
+      if (status) return;
+      let obj;
+      if (this.isEdit) {
+        obj = {
+          id: this.address.id,
+          consignName: this.address.name,
+          consignTel: this.address.tel,
+          detailAddress: this.address.detailAddress,
+          postcode: '000000',
+          isDefault: this.address.isDefault,
+          baseAddress: this.address.map ? `${this.address.map.ad_info.province} ${this.address.map.ad_info.city} ${this.address.map.ad_info.district}` : `${this.address.provinceName} ${this.address.cityName} ${this.address.countyName}`,
+          provinceName: this.address.map ? this.address.map.ad_info.province : this.address.provinceName,
+          cityName: this.address.map ? this.address.map.ad_info.city : this.address.cityName,
+          countyName: this.address.map ? this.address.map.ad_info.district : this.address.countyName,
+          provinceId: this.address.map ? (this.address.map.ad_info.adcode.subString(0, 2) + '0000') : this.address.provinceId,
+          cityId: this.address.map ? (this.address.map.ad_info.adcode.subString(0, 4) + '00') : this.address.cityId,
+          countyId: this.address.map ? this.address.map.ad_info.adcode : this.address.countyId,
+          lng: this.address.map ? this.address.map.location.lng : this.address.lng,
+          lat: this.address.map ? this.address.map.location.lat : this.address.lat,
+          storeId: this.address.storeId,
+        }
+      } else {
+        if (!this.address.map) {
+          uni.showToast({
+            title: '请选择地区',
+            icon: 'none'
+          })
+          return
+        }
+        obj = {
+          consignName: this.address.name,
+          consignTel: this.address.tel,
+          detailAddress: this.address.detailAddress,
+          postcode: '000000',
+          isDefault: this.address.isDefault,
+          baseAddress: `${this.address.map.ad_info.province} ${this.address.map.ad_info.city} ${this.address.map.ad_info.district}`,
+          provinceName: this.address.map.ad_info.province,
+          cityName: this.address.map.ad_info.city,
+          countyName: this.address.map.ad_info.district,
+          provinceId: this.address.map.ad_info.adcode.substring(0, 2) + '0000',
+          cityId: this.address.map.ad_info.adcode.substring(0, 4) + '00',
+          countyId: this.address.map.ad_info.adcode,
+          lng: this.address.map.location.lng,
+          lat: this.address.map.location.lat,
+          storeId: this.address.storeId
+        }
+      }
+      return obj;
+    }
+  },
+  onLoad() {
+    this.address = this.$Route.query;
+    if (this.address.address) {
+      this.pageTitle = "编辑地址"
+      this.isEdit = true;
+    } else {
+      this.pageTitle = "新增地址"
+    }
+    uni.$on('locationSelected', res => {
+      this.$set(this.address, 'map', res);
+      console.log(res, '地址选择结果');
+    })
+  },
+}
 </script>
 
 <style lang="scss">
-	.toptxt {
-		color: $color-text1;
-	}
+page {
+  background-color: $color-page;
+}
 
-	.box1 {
-		height: 150rpx;
-		@include flexCenter
-	}
+.main {
+  width: 96%;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 0 18rpx;
+  border-radius: 14rpx;
+  margin: 16rpx auto;
 
-	.title,
-	.rece,
-	.cell,
-	.detailAddress,
-	.postCode {
-		font-size: 38rpx;
-		text-align: left;
-	}
+  .input-list {
+    @include flexVtCenter;
+    width: 100%;
+    height: 106rpx;
+    border-bottom: 1px solid #f0f0f0;
 
-	.detail,
-	.receive,
-	.rece-name,
-	.cell2,
-	.post {
-		height: 100%;
-		margin-left: 75rpx;
-	}
+    &:last-child {
+      border: none;
+    }
 
-	.def {
-		font-size: 38rpx;
-		margin-right: 200rpx;
-	}
+    .tit {
+      width: 140rpx;
+      font-size: 30rpx;
+      color: $color-text2;
+    }
 
-	.radio {
-		margin-left: 75rpx;
-	}
+    .input {
+      width: 68%;
+      height: 100%;
+      font-size: 30rpx;
+      color: $color-text0;
+    }
 
-	.save {
-		height: 90rpx;
-		width: 620rpx;
-		@include btnRed margin-left: 60rpx;
-	}
+    .plc {
+      color: $color-text3;
+    }
 
-	.delete {
-		height: 90rpx;
-		width: 620rpx;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		color: #fff;
-		background-color: #808080;
-		margin-left: 60rpx;
-		margin-top: 30rpx
-	}
+    .location-view {
+      @include flexVtCenter;
+      width: 68%;
+      height: 100%;
+      font-size: 28rpx;
+      line-height: 28rpx;
+      color: $color-text0;
+      overflow-x: scroll;
+      white-space: nowrap;
+    }
+
+    .icon {
+      margin-left: auto;
+      font-size: 28rpx;
+      color: $color-text2;
+    }
+
+    .switch {
+      margin-left: auto;
+      transform: scale(0.86);
+    }
+  }
+}
+
+.bottom-btns {
+  @include flexVtCenter;
+  position: fixed;
+  bottom: 24rpx;
+  left: 0;
+  width: 100%;
+  height: 110rpx;
+  justify-content: space-around;
+  padding: 0 24rpx;
+
+  .btn {
+    @include btn;
+    width: 47%;
+    height: 90rpx;
+    border-radius: 999px;
+    color: $color-text2;
+  }
+
+  .delete {
+    background-color: #fff;
+  }
+
+  .save {
+    background-color: $color-green;
+    color: #fff;
+  }
+}
+
+.bottom-btns-plc {
+  width: 100%;
+  height: 130rpx;
+}
 </style>
