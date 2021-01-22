@@ -1,27 +1,26 @@
 <template>
-	<view class="detail-main">
-		<top-bar pageTitle="详情"></top-bar>
-		<view class="back" @tap="goBack()">
-			<i class="icon icon-back"></i>
-		</view>
-		<view class="">
-			<view class="deta-mess">
-				<view class="detail-img">
-					<!-- <img-view :src="`http://10.1.44.113:9010/images/${detailData.mainImg}`" mode="widthFix" class="details-imgs" /> -->
-				</view>
-			</view>
-			<view class="detail-con">
-				<view class="con-name">{{ detailData.name }}</view>
-				<view class="con-brief">{{ detailData.description }}</view>
-			</view>
-		</view>
-		<!-- 规格 -->
-		<view class="choice-commodity">
-			<view class="commod" v-for="(item, index) in detailData.ptSpuAttrs" :key="index">
-				<view class="font-left">
-					{{ item.name }}
-				</view>
-				<view v-for="(sub, idx) in item.ptSpuAttrValues" :key="idx" :class="[
+  <view class="detail-main">
+    <view class="back" @tap="goBack()">
+		<i class="icon icon-back"></i>
+	</view>
+    <view class="">
+      <view class="deta-mess">
+        <view class="detail-img">
+          <img-view :src="`http://10.1.44.113:9010/images/${detailData.mainImg}`" mode="widthFix" class="details-imgs" />
+        </view>
+      </view>
+      <view class="detail-con">
+        <view class="con-name">{{ detailData.name }}</view>
+        <view class="con-brief">{{ detailData.description }}</view>
+      </view>
+    </view>
+    <!-- 规格 -->
+    <view class="choice-commodity">
+      <view class="commod" v-for="(item, index) in detailData.ptSpuAttrs" :key="index">
+        <view class="font-left">
+          {{ item.name }}
+        </view>
+        <view v-for="(sub, idx) in item.ptSpuAttrValues" :key="idx" :class="[
             'font-right',
             item.selectedCode === sub.skuSpliceCode ? 'font-right-select' : '',
           ]"

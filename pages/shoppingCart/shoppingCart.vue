@@ -1,5 +1,8 @@
 <template>
 	<view>
+		<view class="col">
+			
+		</view>
 		<view class="top-car">
 			<view class="top-status-plc"></view>
 			<view class="top-car-content">
@@ -341,7 +344,10 @@
 	page {
 		background-color: $color-page;
 	}
-
+	.col{
+		width: 100%;
+		height: var(--status-bar-height);
+	}
 	.top-car {
 		// @include flexVtCenter;
 		width: 100%;
@@ -351,7 +357,10 @@
 		color: $color-text1;
 		line-height: 80rpx;
 		justify-content: space-between;
-
+		position: fixed;
+		top: 0;
+		left: 0;
+		z-index: 10;
 		.top-status-plc {
 			width: 100%;
 			height: var(--status-bar-height);
@@ -417,7 +426,8 @@
 		border-radius: 8px;
 		background-color: #fff;
 		position: relative;
-
+		margin-top:calc(100rpx + var(--status-bar-height) + 18rpx);
+		background: #FFFFFF;
 		.all-clear {
 			position: absolute;
 			z-index: 999;
