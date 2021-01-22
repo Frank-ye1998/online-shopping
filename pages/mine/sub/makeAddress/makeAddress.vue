@@ -148,7 +148,7 @@
 						})
 
 				}
-				this.$router.push({
+				this.$Router.push({
 					name: 'address'
 				})
 			},

@@ -99,12 +99,10 @@
 		},
 		methods: {
 			gotoDetail(id) {
+				this.$store.orderId = id
 				this.$Router.push({
-					name: 'orderDetail',
-					params: {
-						id
-					}
-				})
+					name: 'orderDetail'
+				})	
 			},
 			getOrderInfo() {
 				orderApi
@@ -113,7 +111,6 @@
 					})
 					.then((res) => {
 						this.allList = res.data
-						console.log(this.allList)
 					})
 			},
 			fz(e) {

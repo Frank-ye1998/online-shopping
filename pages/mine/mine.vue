@@ -84,7 +84,7 @@ export default {
       this.$Router.push({ name: "mobileLogin" });
     },
     goto(name) {
-      this.$router.push({ name });
+      this.$Router.push({ name });
     },
     goDetail() {
       let obj = this.userInfo;

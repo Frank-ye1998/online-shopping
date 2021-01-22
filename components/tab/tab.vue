@@ -13,7 +13,7 @@
 		props: {
 			tabTitle: Array,
 		},
-
+		
 		data() {
 			return {
 				active: 0,
