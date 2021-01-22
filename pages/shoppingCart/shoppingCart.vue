@@ -12,13 +12,13 @@
 					</view>
 					<view class="local">配送至:徐汇区日月光中心</view>
 				</view>
-				<view class="edits" @tap="toEdit()">{{ isEdit?'完成':'编辑' }}</view>
+				<view class="edits" @tap="isEdit = !isEdit">{{ isEdit?'完成':'编辑' }}</view>
 			</view>
 		</view>
 
-		<view class="shopping-cart"  v-if="isLoad && carShop.length">
+		<view class="shopping-cart" v-if="isLoad && carShop.length">
 			<view class="list" v-for="(item,index) in carShop" :key="index">
-				<radio class="radio" style="transform: scale(0.94)" color="#00C130" :checked="true" />
+				<radio class="radio" style="transform: scale(0.94)" color="#00C130" v-if="isEdit" :checked="item.check" @tap="singCheck(item)"/>
 				<img-view src="/static/images/home/shop-2.png" mode="widthFix" class="img-view"></img-view>
 				<!-- <img-view :src="`http://10.1.44.108:9003/images/${item.smallImage}`" mode="widthFix" class="conimgs"/> -->
 				<view class="goods-info">
@@ -39,127 +39,129 @@
 			<image src="../../static/images/car/car.png" mode="" class="imgscar"></image>
 		</view>
 
-		<view class="viewiding-line">
-			<view class="hr"></view>
-			<view class="point"></view>
-			<view class="text">猜你喜欢</view>
-			<view class="point"></view>
-			<view class="hr"></view>
-		</view>
+		<template v-if="!isEdit">
+			<view class="viewiding-line">
+				<view class="hr"></view>
+				<view class="point"></view>
+				<view class="text">猜你喜欢</view>
+				<view class="point"></view>
+				<view class="hr"></view>
+			</view>
+			<view class="recommend">
+				<view class="list">
+					<img-view class="img-view" mode="widthFix" src="/static/images/shopping-car/caomei.jpg" />
+					<view class="name">大草莓大草莓大草莓大草莓大草莓大草莓</view>
+					<view class="price">
+						<view class="last-price"><text class="rmb">¥</text>99</view>
+						<view class="original-price">¥28</view>
+					</view>
+					<view class="add-btn">
+						<i class="icon icon-shopping-cart"></i>
+					</view>
+				</view>
+				<view class="list">
+					<img-view class="img-view" mode="widthFix" src="/static/images/shopping-car/caomei.jpg" />
+					<view class="name">大草莓大草莓大草莓大草莓大草莓大草莓</view>
+					<view class="price">
+						<view class="last-price"><text class="rmb">¥</text>99</view>
+						<view class="original-price">¥28</view>
+					</view>
+					<view class="add-btn">
+						<i class="icon icon-shopping-cart"></i>
+					</view>
+				</view>
+				<view class="list">
+					<img-view class="img-view" mode="widthFix" src="/static/images/shopping-car/caomei.jpg" />
+					<view class="name">大草莓大草莓大草莓大草莓大草莓大草莓</view>
+					<view class="price">
+						<view class="last-price"><text class="rmb">¥</text>99</view>
+						<view class="original-price">¥28</view>
+					</view>
+					<view class="add-btn">
+						<i class="icon icon-shopping-cart"></i>
+					</view>
+				</view>
+				<view class="list">
+					<img-view class="img-view" mode="widthFix" src="/static/images/shopping-car/caomei.jpg" />
+					<view class="name">大草莓大草莓大草莓大草莓大草莓大草莓</view>
+					<view class="price">
+						<view class="last-price"><text class="rmb">¥</text>99</view>
+						<view class="original-price">¥28</view>
+					</view>
+					<view class="add-btn">
+						<i class="icon icon-shopping-cart"></i>
+					</view>
+				</view>
+				<view class="list">
+					<img-view class="img-view" mode="widthFix" src="/static/images/shopping-car/caomei.jpg" />
+					<view class="name">大草莓大草莓大草莓大草莓大草莓大草莓</view>
+					<view class="price">
+						<view class="last-price"><text class="rmb">¥</text>99</view>
+						<view class="original-price">¥28</view>
+					</view>
+					<view class="add-btn">
+						<i class="icon icon-shopping-cart"></i>
+					</view>
+				</view>
+				<view class="list">
+					<img-view class="img-view" mode="widthFix" src="/static/images/shopping-car/caomei.jpg" />
+					<view class="name">大草莓大草莓大草莓大草莓大草莓大草莓</view>
+					<view class="price">
+						<view class="last-price"><text class="rmb">¥</text>99</view>
+						<view class="original-price">¥28</view>
+					</view>
+					<view class="add-btn">
+						<i class="icon icon-shopping-cart"></i>
+					</view>
+				</view>
+				<view class="list">
+					<img-view class="img-view" mode="widthFix" src="/static/images/shopping-car/caomei.jpg" />
+					<view class="name">大草莓大草莓大草莓大草莓大草莓大草莓大草莓大草莓大草莓大草莓大草莓大草莓</view>
+					<view class="price">
+						<view class="last-price"><text class="rmb">¥</text>99</view>
+						<view class="original-price">¥28</view>
+					</view>
+					<view class="add-btn">
+						<i class="icon icon-shopping-cart"></i>
+					</view>
+				</view>
+				<view class="list">
+					<img-view class="img-view" mode="widthFix" src="/static/images/shopping-car/caomei.jpg" />
+					<view class="name">大草莓大草莓大草莓</view>
+					<view class="price">
+						<view class="last-price"><text class="rmb">¥</text>99</view>
+						<view class="original-price">¥28</view>
+					</view>
+					<view class="add-btn">
+						<i class="icon icon-shopping-cart"></i>
+					</view>
+				</view>
+				<view class="list">
+					<img-view class="img-view" mode="widthFix" src="/static/images/shopping-car/caomei.jpg" />
+					<view class="name">大草莓大草莓大草莓大草莓大草莓大草莓</view>
+					<view class="price">
+						<view class="last-price"><text class="rmb">¥</text>99</view>
+						<view class="original-price">¥28</view>
+					</view>
+					<view class="add-btn">
+						<i class="icon icon-shopping-cart"></i>
+					</view>
+				</view>
+			</view>
 
-		<view class="recommend">
-			<view class="list">
-				<img-view class="img-view" mode="widthFix" src="/static/images/shopping-car/caomei.jpg" />
-				<view class="name">大草莓大草莓大草莓大草莓大草莓大草莓</view>
-				<view class="price">
-					<view class="last-price"><text class="rmb">¥</text>99</view>
-					<view class="original-price">¥28</view>
-				</view>
-				<view class="add-btn">
-					<i class="icon icon-shopping-cart"></i>
-				</view>
-			</view>
-			<view class="list">
-				<img-view class="img-view" mode="widthFix" src="/static/images/shopping-car/caomei.jpg" />
-				<view class="name">大草莓大草莓大草莓大草莓大草莓大草莓</view>
-				<view class="price">
-					<view class="last-price"><text class="rmb">¥</text>99</view>
-					<view class="original-price">¥28</view>
-				</view>
-				<view class="add-btn">
-					<i class="icon icon-shopping-cart"></i>
-				</view>
-			</view>
-			<view class="list">
-				<img-view class="img-view" mode="widthFix" src="/static/images/shopping-car/caomei.jpg" />
-				<view class="name">大草莓大草莓大草莓大草莓大草莓大草莓</view>
-				<view class="price">
-					<view class="last-price"><text class="rmb">¥</text>99</view>
-					<view class="original-price">¥28</view>
-				</view>
-				<view class="add-btn">
-					<i class="icon icon-shopping-cart"></i>
-				</view>
-			</view>
-			<view class="list">
-				<img-view class="img-view" mode="widthFix" src="/static/images/shopping-car/caomei.jpg" />
-				<view class="name">大草莓大草莓大草莓大草莓大草莓大草莓</view>
-				<view class="price">
-					<view class="last-price"><text class="rmb">¥</text>99</view>
-					<view class="original-price">¥28</view>
-				</view>
-				<view class="add-btn">
-					<i class="icon icon-shopping-cart"></i>
-				</view>
-			</view>
-			<view class="list">
-				<img-view class="img-view" mode="widthFix" src="/static/images/shopping-car/caomei.jpg" />
-				<view class="name">大草莓大草莓大草莓大草莓大草莓大草莓</view>
-				<view class="price">
-					<view class="last-price"><text class="rmb">¥</text>99</view>
-					<view class="original-price">¥28</view>
-				</view>
-				<view class="add-btn">
-					<i class="icon icon-shopping-cart"></i>
-				</view>
-			</view>
-			<view class="list">
-				<img-view class="img-view" mode="widthFix" src="/static/images/shopping-car/caomei.jpg" />
-				<view class="name">大草莓大草莓大草莓大草莓大草莓大草莓</view>
-				<view class="price">
-					<view class="last-price"><text class="rmb">¥</text>99</view>
-					<view class="original-price">¥28</view>
-				</view>
-				<view class="add-btn">
-					<i class="icon icon-shopping-cart"></i>
-				</view>
-			</view>
-			<view class="list">
-				<img-view class="img-view" mode="widthFix" src="/static/images/shopping-car/caomei.jpg" />
-				<view class="name">大草莓大草莓大草莓大草莓大草莓大草莓大草莓大草莓大草莓大草莓大草莓大草莓</view>
-				<view class="price">
-					<view class="last-price"><text class="rmb">¥</text>99</view>
-					<view class="original-price">¥28</view>
-				</view>
-				<view class="add-btn">
-					<i class="icon icon-shopping-cart"></i>
-				</view>
-			</view>
-			<view class="list">
-				<img-view class="img-view" mode="widthFix" src="/static/images/shopping-car/caomei.jpg" />
-				<view class="name">大草莓大草莓大草莓</view>
-				<view class="price">
-					<view class="last-price"><text class="rmb">¥</text>99</view>
-					<view class="original-price">¥28</view>
-				</view>
-				<view class="add-btn">
-					<i class="icon icon-shopping-cart"></i>
-				</view>
-			</view>
-			<view class="list">
-				<img-view class="img-view" mode="widthFix" src="/static/images/shopping-car/caomei.jpg" />
-				<view class="name">大草莓大草莓大草莓大草莓大草莓大草莓</view>
-				<view class="price">
-					<view class="last-price"><text class="rmb">¥</text>99</view>
-					<view class="original-price">¥28</view>
-				</view>
-				<view class="add-btn">
-					<i class="icon icon-shopping-cart"></i>
-				</view>
-			</view>
-		</view>
-		
-		<view class=" compiler" v-if="isShow">
+		</template>
+
+		<view class=" compiler" v-if="isEdit">
 			<view class="select-all">
-				<radio style="transform: scale(0.94)" color="#00C130" />全选
+				<radio style="transform: scale(0.94)" :checked="editAll" color="#00C130" @tap="checkAll()"/>全选
 			</view>
-			<view class="delete" @tap="clearAll">
+			<view class="delete" @tap="deleteShop()">
 				删除
 			</view>
 		</view>
 		<view class="to-pay" v-else>
 			<view class="select-all">
-				<radio style="transform: scale(0.94)" color="#00C130"/>全选
+				<!-- <radio style="transform: scale(0.94)" color="#00C130"/>全选 -->
 			</view>
 			<view class="price-data">
 				<text space="nbsp" class="text-1">不含运费 合计:<text class="pay-num">¥66</text></text>
@@ -167,7 +169,7 @@
 			</view>
 			<view class="to-btn">去结算(9)</view>
 		</view>
-		
+
 		<view class="to-pay-plc"></view>
 	</view>
 </template>
@@ -181,22 +183,62 @@
 		},
 		data() {
 			return {
-				isLoad:false,
-				isShow:false,
+				isLoad: false,
 				carShop: [],
+				isEdit: false,
+				editAll:false,
 				
 			};
 		},
 		methods: {
-			
+			deleteShop:function(){
+				if(this.editAll){
+					//清楚全部商品接口
+					shopperApi
+						.clearCartInfo({
+										
+						}).then((res) => {
+							this.carShop = []
+							this.editAll = false
+							// console.log(res, ccccccc);
+						})
+				}
+			},
+			checkAll:function(){
+				this.editAll = !this.editAll
+				if(this.editAll){
+					this.carShop.forEach((item) =>{
+						this.$set(item,'check',true)
+					})
+				}else {
+					this.carShop.forEach((item) =>{
+						this.$set(item,'check',false)
+					})
+				}
+			},
+			singCheck:function(item){
+				this.$set(item,'check',!item.check)
+				let status = true;
+				this.carShop.forEach((item) =>{
+					if(!item.check){
+						status = false;
+					}
+				})
+				this.editAll = status
+				console.log(status);
+			},
 			change: function(num, info) {
-				//修改购物车接口
-				if (num <= 0) {
+				console.log(num,'nummmmmmm');
+				if (num < 1) {
 					shopperApi
 						.deleteCartInfo({
 							skuCode: info.skuCode,
 						}).then((res) => {
-
+							if (num < 1) {
+								uni.showToast({
+								  title: "删除成功",
+								});
+							}
 						})
 				} else {
 					shopperApi
@@ -204,9 +246,7 @@
 							skuCode: info.skuCode,
 							quantity: num,
 						}).then((res) => {
-							if (this.quantity <= 0) {
-
-							}
+							
 						})
 				}
 
@@ -227,19 +267,8 @@
 					});
 				// console.log(this.carShop, "res.data.items");
 			},
-			//清除全部接口
-			clearAll: function() {
-				shopperApi
-					.clearCartInfo({
-
-					}).then((res) => {
-						this.carShop = []
-						// console.log(res, ccccccc);
-					})
-			},
-			toEdit: function() {
-				this.isShow = !this.isShow
-			}
+			
+			
 		},
 		onLoad() {
 
@@ -265,30 +294,35 @@
 		color: $color-text1;
 		line-height: 80rpx;
 		justify-content: space-between;
+
 		.top-status-plc {
 			width: 100%;
 			height: var(--status-bar-height);
 		}
-		.top-car-content{
+
+		.top-car-content {
 			width: 100%;
 			height: 100rpx;
 			display: flex;
 			flex-direction: row;
+
 			.left {
 				width: 30%;
 				height: 100%;
 			}
+
 			.cars {
 				width: 40%;
 				height: 100%;
-				text-align: center;		
+				text-align: center;
+
 				.car-font {
 					width: 100%;
 					height: 60rpx;
 					font-size: 35rpx;
 					line-height: 60rpx;
 				}
-						
+
 				.local {
 					width: 100%;
 					height: 50rpx;
@@ -296,30 +330,32 @@
 					line-height: 20rpx;
 				}
 			}
-						
+
 			.edits {
 				width: 30%;
 				height: 100%;
 				text-align: center;
 				font-size: 30rpx;
 			}
-			
-			
+
+
 		}
-		
+
 	}
-	.car-img{
+
+	.car-img {
 		width: 100%;
 		height: 400rpx;
 		background: #FFFFFF;
-		
-		.imgscar{
+
+		.imgscar {
 			width: 320rpx;
 			height: 342rpx;
 			display: block;
 			margin: 0 auto;
 		}
 	}
+
 	.shopping-cart {
 		width: 94.8%;
 		margin: 20rpx auto;
@@ -583,6 +619,7 @@
 		background-color: #fff;
 		padding: 0 28rpx;
 		border-top: 1px solid $color-page;
+
 		.select-all {
 			@include flexVtCenter;
 			font-size: 26rpx;

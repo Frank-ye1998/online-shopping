@@ -264,6 +264,10 @@ export default {
   },
   onShow() {
     console.log(this.shopArr);
+    uni.setTabBarBadge({
+      index: 2,
+      text: "1",
+    });
     /*
 				页面管理规则：
 				4个tab页面要一直保持打开状态，非特殊情况不要使用replace和replaceAll关闭Tab页面；

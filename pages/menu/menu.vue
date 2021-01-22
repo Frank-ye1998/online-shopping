@@ -68,6 +68,7 @@
 
 <script>
 import productApi from "@/api/productApi.js";
+import shopperApi from "@/api/shopperApi.js"
 import listMock from "@/static/mock/list.json";
 export default {
   data() {
@@ -91,6 +92,20 @@ export default {
     };
   },
   methods: {
+	  
+	  isMulti(item){
+		if(item.isMultiSpec==false){
+			shopperApi
+			.addCart({
+				
+			
+			
+			})
+		}  
+		else{
+			this.getdetailShops(item.id)
+		}
+	  },
     getdetailShops(id) {
       this.$router.push({
         name: "detail",
@@ -107,6 +122,7 @@ export default {
     },
     getItem(index) {
       this.ificaArr = index;
+	
     },
     selecItem(index) {
       this.seleStatus = index;

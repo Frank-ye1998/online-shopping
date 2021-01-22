@@ -1,71 +1,40 @@
 <template>
-	<view>
-		<view class="wrap">
-			<view class="top">
-				<view class="">
-					<top-bar class="box1" page-title="我的订单"></top-bar>
-					<tab :tabTitle="itemsTitle" @fz="fz"></tab>
-				</view>
-				<!-- 全部 -->
-				<view v-if="this.recNum==0 && allLength>0">
-					<view v-for="(item, index) in allList" :key="index" @click="gotoDetail(item.id)">
-						<view class="container">
-							<view class="">{{item.storeName}}</view>
-							<view class="order-content">
-								<view class="">{{item.orderContent}}</view>
-								<i class="icon icon-to"></i>
-							</view>
-						</view>
-					</view>
-				</view>
-				<!-- 待支付 -->
-				<view v-else-if="this.recNum==1 && payLength>0">
-					<view v-for="(item, index) in needPay" :key="index" @click="gotoDetail(item.id)">
-						<view class="container">
-							<view class="">{{item.storeName}}</view>
-							<view class="order-content">
-								<view class="">{{item.orderContent}}</view>
-								<i class="icon icon-to"></i>
-							</view>
-						</view>
-					</view>
-				</view>
-				<!-- 已支付订单 -->
-				<view v-else-if="this.recNum==2 && alreadyLength>0">
-					<view v-for="(item, index) in alreadyPay" :key="index" @click="gotoDetail(item.id)">
-						<view class="container">
-							<view class="">{{item.storeName}}</view>
-							<view class="order-content">
-								<view class="">{{item.orderContent}}</view>
-								<i class="icon icon-to"></i>
-							</view>
-						</view>
-					</view>
-				</view>
-				<!-- 待收货订单 -->
-				<view v-else-if="this.recNum==3 && lengthCount>0">
-					<view v-for="(item, index) in needReceive" :key="index" @click="gotoDetail(item.id)">
-						<view class="container">
-							<view class="">{{item.storeName}}</view>
-							<view class="order-content">
-								<view class="">{{item.orderContent}}</view>
-								<i class="icon icon-to"></i>
-							</view>
-						</view>
-					</view>
-				</view>
+  <view>
+    <swiper-page :tabList="tabList">
+      <template #tabA>
+        <div class="list" v-for="(item,index) in allList" :key="'tabA'+index">
+          {{item.id}}
+          <div class="top">
+            <div class="order-type">
 
-				<view v-else class="noDataPlaceHold">
-					<image src="../../../../static/images/mine/noData.jpeg" class="pic" alt />
-					<text class="desc">暂时没有订单数据哦~</text>
-				</view>
+            </div>
+            <div class="address">
 
-			</view>
-		</view>
-	</view>
-	</view>
+            </div>
+            <div class="order-status">
+
+            </div>
+          </div>
+        </div>
+      </template>
+      <template #tabB>
+        <div class="list">
+          B
+        </div>
+      </template>
+      <template #tabC>
+        <div class="list">
+          C
+        </div>
+      </template>
+      <template #tabD>
+        <div class="list">
+          D
+        </div>
+      </template>
+    </swiper-page>
+  </view>
 </template>
-
 
 <script>
 	import orderApi from "@/api/orderApi.js"
@@ -162,54 +131,53 @@
 			alreadyLength() {
 				return Object.keys(this.alreadyPay).length;
 			}
+import swiperPage from "@/components/swiper-page/swiper-page";
+import orderApi from "@/api/orderApi.js";
 
-		},
-	}
+export default {
+  components: {
+    "swiper-page": swiperPage,
+  },
+  data() {
+    return {
+      tabList: [
+        { name: "全部", id: "tabA" },
+        { name: "待支付", id: "tabB" },
+        { name: "待收货", id: "tabC" },
+        { name: "售后/退款", id: "tabD" },
+      ],
+      allList: [],
+    };
+  },
+  methods: {
+    getList: function (type) {
+      orderApi
+        .findOrder({
+          orderStatus: type,
+        })
+        .then((res) => {
+          console.log(res);
+          switch (type) {
+            case "":
+              this.allList = res.data;
+              break;
+          }
+        });
+    },
+  },
+  onLoad() {
+    this.getList(""); //获取全部订单
+  },
+};
 </script>
 
 <style lang="scss">
-	page {
-		background-color: $color-page;
-	}
-
-	.search-box {
-		display: flex;
-		border: solid 2rpx $color-red;
-		width: 70%;
-		height: 100rpx;
-		border-radius: 50rpx;
-
-	}
-
-	.noDataPlaceHold {
-		width: 100%;
-		height: 100%;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-
-		.desc {
-			color: grey;
-			font-size: 40rpx;
-		}
-	}
-
-	.pic {
-		margin-top: 40rpx;
-	}
-
-	.container {
-		height: 100rpx;
-		margin: 24rpx 24rpx 0 24rpx;
-		background-color: #fff;
-	}
-
-	.order-content {
-		display: flex;
-		justify-content: space-between;
-		font-size: 38rpx;
-	}
-
-	.box1 {}
+.list {
+  width: 96%;
+  height: 340rpx;
+  background-color: #fff;
+  border-radius: 14rpx;
+  margin: 20rpx auto;
+  padding: 0 16rpx;
+}
 </style>

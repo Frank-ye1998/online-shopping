@@ -41,7 +41,8 @@ const shopperApi = {
         const params = {
             url: '/shopper/delete?skuCode=${skuCode}',
             method: 'post',
-            data: data
+            data: data,
+			isFrom:true
         }
         return xhr.request(params)
     },

@@ -57,6 +57,9 @@
 			"name": "addressSelection"
 		},
 		{
+			"path": "pages/shoppingCart/sub/submitOrder/submitOrder",
+			"name": "submitOrder"
+		}, {
 			"path": "pages/member/member",
 			"name": "member"
 		},
@@ -74,9 +77,8 @@
 		"selectedColor": "#3cb963",
 		"backgroundColor": "#ffffff",
 		"font-size": "20rpx",
-		"borderStyle": "#f3f3fa",
-		"list": [
-			{
+		"borderStyle": "white",
+		"list": [{
 				"pagePath": "pages/index/index",
 				"text": "首页",
 				"iconPath": "/static/images/tabBar/tabA-false.png",

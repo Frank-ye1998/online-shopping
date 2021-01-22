@@ -1,24 +1,58 @@
 import config from '../config.js';
 import Vue from "vue";
+import md5 from "md5";
+import {
+	router
+} from '@/router/router.js'
+
+//clientId
+let clientId = uni.getStorageSync("clientId");
+if (!clientId) {
+	clientId = md5(Date.now() + '&:' + (((1 + Math.random()) * 0x10000) | 0));
+	uni.setStorage({
+		key: 'clientId',
+		data: clientId
+	});
+}
+
 //普通请求
 const request = (Xhrdata) => {
 	if (!Xhrdata.data) Xhrdata.data = {};
-	Xhrdata.data.Frank = randomCode(20);
+	//Xhrdata.data.Frank = randomCode(20);
 	let parames = {
 		url: config.domain + Xhrdata.url,
 		method: Xhrdata.method || 'post',
 		data: Xhrdata.data || '',
 		dataType: 'json',
 		header: {
-			source: 2,
-			sourceName: 'WEB',
+			//渠道名称（WAP;WEB;ANDROID;IOS;WECHAT）
+			source: 3,
+			sourceName: 'ANDROID',
 			"content-type": Xhrdata.isFrom ? "application/x-www-form-urlencoded;charset=utf-8" : "application/json;charset=UTF-8",
 			sessionId: Vue.prototype.sessionId,
-			clientId : Vue.prototype.clientId
+			clientId: clientId
 		}
 	};
 	return uni.request(parames).then(res => {
-		return res[1].data;
+		let data = res[1].data;
+		if (data.successCode == -2) {
+			uni.showModal({
+				title: '提示',
+				content: '登录状态过期请重新登录',
+				confirmText: "前往登录",
+				cancelText: '暂不登录',
+				success: (res) => {
+					if (res.confirm) {
+						router.push({
+							name: 'mobileLogin'
+						});
+					}
+				}
+			})
+		}
+
+
+		return data;
 	}).catch(e => {
 		return e;
 	})
