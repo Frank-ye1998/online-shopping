@@ -361,7 +361,6 @@
 		top: 0;
 		left: 0;
 		z-index: 10;
-		background: #0077AA;
 		.top-status-plc {
 			width: 100%;
 			height: var(--status-bar-height);
@@ -428,6 +427,7 @@
 		background-color: #fff;
 		position: relative;
 		margin-top:calc(100rpx + var(--status-bar-height) + 18rpx);
+		background: #FFFFFF;
 		.all-clear {
 			position: absolute;
 			z-index: 999;

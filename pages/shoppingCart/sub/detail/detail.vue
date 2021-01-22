@@ -6,7 +6,7 @@
     <view class="">
       <view class="deta-mess">
         <view class="detail-img">
-          <!-- <img-view :src="`http://10.1.44.113:9010/images/${detailData.mainImg}`" mode="widthFix" class="details-imgs" /> -->
+          <img-view :src="`http://10.1.44.113:9010/images/${detailData.mainImg}`" mode="widthFix" class="details-imgs" />
         </view>
       </view>
       <view class="detail-con">
