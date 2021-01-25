@@ -1,11 +1,18 @@
 //请求器
 import xhr from "@/api/xhr.js";
 
+// #ifdef H5
+const port = "";
+// #endif
+// #ifdef APP-PLUS
+const port = ':9002';
+// #endif
+
 const userApi = {
 	//发送验证码
 	sendCode(data) {
 		const params = {
-			url: '/user/sendCode',
+			url: port + '/user/sendCode',
 			method: 'get',
 			data: data,
 			isFrom: true
@@ -15,7 +22,7 @@ const userApi = {
 	//验证码登录
 	smsLogin(data) {
 		const params = {
-			url: '/user/loginCode',
+			url: port + '/user/loginCode',
 			method: 'post',
 			data: data
 		}
@@ -24,7 +31,7 @@ const userApi = {
 	//注册
 	register(data) {
 		const params = {
-			url: '/user/register',
+			url: port + '/user/register',
 			method: 'post',
 			data: data
 		}
@@ -33,7 +40,7 @@ const userApi = {
 	//账号密码登录
 	pwdLogin(data) {
 		const params = {
-			url: '/user/login/pwd',
+			url: port + '/user/login/pwd',
 			method: 'post',
 			data: data
 		}
@@ -42,7 +49,7 @@ const userApi = {
 	//获取用户信息
 	getUserInfo() {
 		const params = {
-			url: '/user',
+			url: port + '/user',
 			method: 'get'
 		}
 		return xhr.request(params)
@@ -50,7 +57,7 @@ const userApi = {
 	//获取图形验证码
 	getImgCaptcha(data) {
 		const params = {
-			url: '/user/captcha',
+			url: port + '/user/captcha',
 			method: 'post',
 			data: data
 		}
@@ -59,7 +66,7 @@ const userApi = {
 	//退出登录
 	logOutNow() {
 		const params = {
-			url: '/user/logout',
+			url: port + '/user/logout',
 			method: 'get',
 		}
 		return xhr.request(params)
@@ -67,7 +74,7 @@ const userApi = {
 	//查询地址
 	findAddress() {
 		const params = {
-			url: '/userConsign',
+			url: port + '/userConsign',
 			method: 'get'
 		}
 		return xhr.request(params)
@@ -75,7 +82,7 @@ const userApi = {
 	//删除地址
 	deleteAddress(data) {
 		const params = {
-			url: '/userConsign/del',
+			url: port + '/userConsign/del',
 			method: 'post',
 			data: data,
 			isFrom: true
@@ -85,7 +92,7 @@ const userApi = {
 	//添加地址
 	addAddress(data) {
 		const params = {
-			url: '/userConsign',
+			url: port + '/userConsign',
 			method: 'post',
 			data: data
 		}
@@ -94,7 +101,7 @@ const userApi = {
 	//修改地址
 	editAddress(data) {
 		const params = {
-			url: '/userConsign',
+			url: port + '/userConsign',
 			method: 'put',
 			data: data
 		}
@@ -103,7 +110,7 @@ const userApi = {
 	//修改默认地址
 	changeDefaultAddress(data) {
 		const params = {
-			url: '/userConsign/changeDefaultAddress',
+			url: port + '/userConsign/changeDefaultAddress',
 			method: 'post',
 			data: data,
 			isFrom: true
@@ -113,7 +120,7 @@ const userApi = {
 	//修改默认用户信息
 	changeUserInfo(data) {
 		const params = {
-			url: '/user',
+			url: port + '/user',
 			method: 'put',
 			data: data,
 		}

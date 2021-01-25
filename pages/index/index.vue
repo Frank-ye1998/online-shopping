@@ -263,7 +263,6 @@ export default {
     },
   },
   onShow() {
-    console.log(this.shopArr);
     uni.setTabBarBadge({
       index: 2,
       text: "1",

@@ -124,7 +124,12 @@
 </template>
 
 <script>
+	// #ifdef H5
 	import wx from "weixin-js-sdk"; //微信支付js-sdk
+	// #endif
+	import {
+		openWebView
+	} from "@/utils/tool.js";
 	import sha1 from "sha1";
 	import shopperApi from "@/api/shopperApi.js";
 	import orderApi from "@/api/orderApi.js";
@@ -170,18 +175,33 @@
 					})
 					.then((res) => {
 						console.log(res);
-						//let noncestr = getNonceStr();
-						wx.chooseWXPay({
-							timestamp: res.data.timestamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
-							nonceStr: res.data.noncestr, // 支付签名随机串，不长于 32 位
-							package: `prepay_id=res.data.partnerid`, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
-							signType: "SHA1", // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
-							paySign: res.data.sign, // 支付签名
-							success: (res) => {
-								alert(JSON.stringify(res));
-								// 支付成功后的回调函数
-							},
-						});
+						openWebView(res.data.data, "支付")
+						// uni.requestPayment({
+						// 	provider: 'wxpay',
+						// 	orderInfo: JSON.stringify(res.data.data),
+						// 	success: (res) => {
+						// 		console.log(res);
+						// 	},
+						// 	fail: (err) => {
+						// 		console.log(err);
+						// 		uni.showToast({
+						// 			title: '支付失败',
+						// 			position: 'center',
+						// 			duration: 1500
+						// 		});
+						// 	}
+						// });
+
+						// wx.chooseWXPay({
+						// 	timestamp: res.data.timestamp,
+						// 	nonceStr: res.data.noncestr,
+						// 	package: `prepay_id=res.data.partnerid`,
+						// 	signType: "SHA1",
+						// 	paySign: res.data.sign,
+						// 	success: (res) => {
+						// 		alert(JSON.stringify(res));
+						// 	},
+						// });
 					})
 					.catch((err) => {
 						console.log(err);
@@ -216,18 +236,23 @@
 		onLoad() {
 			this.getShoppingList();
 			this.getStoreList();
+			uni.getProvider({
+				service: 'payment',
+				success: res => {
+					//console.log(res);
+				}
+			})
 
+			return
 			//获取ticket
 			weChatApi.getJsApiTicket().then((res) => {
 				//微信JS-SDK初始化
 				let time = parseInt(new Date().getTime() / 1000);
 				let noncestr = getNonceStr();
 				let str =
-					`jsapi_ticket=${
-        res.data
-      }&noncestr=${noncestr}&timestamp=${time}&url=${
-        location.href.split("#")[0]
-      }`;
+					`jsapi_ticket=${res.data
+        }&noncestr=${noncestr}&timestamp=${time}&url=${location.href.split("#")[0]
+        }`;
 				let signature = sha1(str);
 
 				wx.config({

@@ -1,36 +1,25 @@
 <template>
 	<view>
-		<top-bar class="toptxt" pageTitle="我的收货地址"></top-bar>
-		<view class="noData" v-show="this.shippingAddress.length<1">
-			<image src="../../../../static/images/mine/noData.jpeg" mode="" class="no-image"></image>
-			<text class="tip">还没有地址，快去添加吧~</text>
-		</view>
-		<view class="isData" v-model="chosenAddressIndex">
-			<form>
-				<!-- 遍历查询地址接口内的地址列表 -->
-				<view class="wrap" v-for="(item,index) in this.shippingAddress" :key="index">				
-					<view class="left">
-						<view class="address">
-							{{item.address}}
-						</view>
-						<!-- 为了让名字和电话在一行显示再包一个view -->
-						<view class="aa">
-							<view class="name">
-								{{item.name}}
-							</view>
-							<text class="phone">
-								{{item.tel}}
-							</text>
-						</view>
-					</view>
-					<view class="pic">
-						<i class="icon icon-edit" @tap="onEdit(item)"></i>
-					</view>
-				</view>
-				<button form-type="submit" @tap="onAdd()" class="add">新增收货地址</button>
-			</form>
-		</view>
-
+		<top-bar pageTitle="我的地址"></top-bar>
+		<div class="list" @tap="toEdit(item)" v-for="item in addressList" :key="item.id">
+			<div class="content">
+				<div class="address">
+					{{item.address}} {{item.detailAddress}}
+				</div>
+				<div class="info">
+					<div class="type" v-if="item.isDefault">
+						默认地址
+					</div>
+					<div class="text">
+						{{item.name}} {{item.tel}}
+					</div>
+				</div>
+			</div>
+			<i class="icon icon-edit"></i>
+		</div>
+		<div class="bottom-btn" @tap="toEdit(false)">
+			新增地址
+		</div>
 	</view>
 </template>
 
@@ -39,95 +28,94 @@
 	export default {
 		data() {
 			return {
-				chosenAddressIndex: 1,
-				shippingAddress: [],
-				addressId: '',
-				addressIndex: ''
+				addressList: []
 			};
 		},
-		onLoad() {
-			this.getAddress()
-		},
 		methods: {
-			getAddress() {
-				userApi
-					.findAddress()
-					.then((res) => {
-						this.shippingAddress = res.data
-					})
+			getList: function() {
+				userApi.findAddress().then(res => {
+					uni.hideLoading();
+					this.addressList = res.data || [];
+				})
 			},
-			onAdd() {
+			toEdit: function(data) {
 				this.$Router.push({
-					name: 'makeAddress'
-				});
-			},
-			onEdit(item) {
-				this.$Router.push({
-					path: '/pages/mine/sub/makeAddress/makeAddress',
-					query: {
-						item
-					}
-				});
+					name: 'makeAddress',
+					params: data
+				})
 			}
+		},
+		onLoad() {
+			uni.showLoading()
+			this.getList();
+			uni.$on('addressChange',()=>{
+				this.getList();
+			})
 		}
 	}
 </script>
 
 <style lang="scss">
-	.toptxt {
-		color: $color-text1;
+	page {
+		background-color: $color-page;
 	}
 
-	.no-image {
-		display: flex;
-		margin-left: 48rpx;
+	.list {
+		@include flexVtCenter;
+		position: relative;
+		width: 96%;
+		height: 180rpx;
+		background-color: #fff;
+		border-radius: 14rpx;
+		margin: 16rpx auto;
+		padding: 0 22rpx;
+
+		.content {
+			.address {
+				font-size: 28rpx;
+				line-height: 28rpx;
+				color: $color-text0;
+				margin-bottom: 24rpx;
+			}
+
+			.info {
+				@include flexVtCenter;
+
+				.type {
+					display: inline-block;
+					font-size: 22rpx;
+					line-height: 22rpx;
+					color: #fff;
+					padding: 8rpx 16rpx;
+					background-color: $color-text3;
+					border-radius: 4px;
+					margin-right: 16rpx;
+				}
+
+				.text {
+					font-size: 24rpx;
+					color: $color-text2;
+				}
+			}
+		}
+
+		.icon-edit {
+			margin-left: auto;
+			font-size: 34rpx;
+			color: $color-text2;
+		}
 	}
 
-	.tip {
-		margin-left: 120rpx;
-	}
-
-
-
-	.address {
-		font-size: 40rpx;
-		color: $color-text1;
-	}
-
-	.name {
-		font-size: 40rpx;
-		color: $color-text2;
-		margin-right: 20rpx;
-	}
-
-	.phone {
-		font-size: 40rpx;
-		color: $color-text2;
-		display: inline-block;
-	}
-
-	.pic {
-		height: 100rpx;
-		width: 100rpx;
-		@include flexCenter;
-	}
-
-	.aa {
-		display: flex;
-		flex-direction: row;
-	}
-
-	.wrap {
-		margin-left: 40rpx;
-		margin-top: 20rpx;
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between; //一个在最左边，一个在右边
-	}
-
-	.add {
-		margin-top: 100rpx;
-		width: 620rpx;
-		@include btnRed
+	.bottom-btn {
+		@include btn;
+		position: fixed;
+		bottom: 26rpx;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 96%;
+		height: 90rpx;
+		border-radius: 999px;
+		font-size: 32rpx;
+		background-color: $color-green;
 	}
 </style>

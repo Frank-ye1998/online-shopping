@@ -32,12 +32,16 @@
 				token: ''
 			};
 		},
-
+		onShow(){
+			setTimeout(()=>{
+				uni.hideLoading()
+			},1000)
+		},
 		onLoad() {
-
+			
 		},
 		methods: {
-			//页面code（LOGIN_PAGE;REGISTER_PAGE）
+			//页面code（LOGIN_PAGE;REGISTER_PAGE）1
 			registered: function() {
 				if (!this.phone) {
 					uni.showToast({
@@ -147,7 +151,7 @@
 			width: 90%;
 			height: 120rpx;
 			margin: 0 auto;
-			border-bottom: solid 2px $color-text4;
+			border-bottom: solid 1px $color-text3;
 			line-height: 140rpx;
 
 			input {

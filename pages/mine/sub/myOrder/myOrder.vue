@@ -158,7 +158,6 @@
 						orderStatus: type,
 					})
 					.then((res) => {
-						console.log(res);
 						switch (type) {
 							case "":
 								this.listA = res.data;

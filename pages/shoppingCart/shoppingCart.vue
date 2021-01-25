@@ -1,10 +1,12 @@
 <template>
 	<view>
+		<view class="col">
+
+		</view>
 		<view class="top-car">
 			<view class="top-status-plc"></view>
 			<view class="top-car-content">
 				<view class="left">
-
 				</view>
 				<view class="cars">
 					<view class="car-font">
@@ -12,14 +14,13 @@
 					</view>
 					<view class="local">配送至:徐汇区日月光中心</view>
 				</view>
-				<view class="edits" @tap="isEdit = !isEdit">{{ isEdit?'完成':'编辑' }}</view>
+				<view class="edits" v-if="carShop.length" @tap="isEdit = !isEdit">{{ isEdit?'完成':'编辑' }}</view>
 			</view>
 		</view>
 		<view class="shopping-cart" v-if="isLoad && carShop.length">
 			<view class="list" @tap="thatIndex = index" v-for="(item,index) in carShop" :key="index">
 				<radio class="radio" style="transform: scale(0.94)" color="#00C130" v-if="isEdit" :checked="item.check" @tap="singCheck(item)" />
 				<img-view src="/static/images/home/shop-2.png" mode="widthFix" class="img-view"></img-view>
-				<!-- <img-view :src="`http://10.1.44.108:9003/images/${item.smallImage}`" mode="widthFix" class="conimgs"/> -->
 				<view class="goods-info">
 					<view class="goods-name">
 						{{ item.skuName }}
@@ -35,7 +36,8 @@
 			</view>
 		</view>
 		<view class="car-img" v-if="isLoad && !carShop.length">
-			<image src="../../static/images/car/car.png" mode="" class="imgscar"></image>
+			<image src="/static/images/null-img/data-null.png" class="imgscar"></image>
+			<div class="text">购物车空空如也</div>
 		</view>
 
 		<template v-if="!isEdit">
@@ -158,7 +160,7 @@
 				删除
 			</view>
 		</view>
-		<view class="to-pay" @tap="toSubmit" v-else>
+		<view class="to-pay" v-if="carShop.length" @tap="toSubmit" v-else>
 			<view class="select-all">
 				<!-- <radio style="transform: scale(0.94)" color="#00C130"/>全选 -->
 			</view>
@@ -312,17 +314,14 @@
 			},
 			//查询购物车接口
 			getCartInfo: function() {
-				var md5 = require("md5");
-				let xx = md5("message");
-				uni.setStorageSync("clientId", xx);
-				let yy = uni.getStorage("clientId");
+				console.log(999);
 				shopperApi
 					.getCartInfo({}).then((res) => {
-						this.carShop = res.data.items; //获取购物车中的商品
+						if (res.data) {
+							this.carShop = res.data.items; //获取购物车中的商品
+						}
 						this.isLoad = true;
-						// console.log(this.carShop, "carShopppp");
 					});
-				// console.log(this.carShop, "res.data.items");
 			},
 
 
@@ -332,7 +331,6 @@
 		},
 		onShow() {
 			this.getCartInfo();
-
 		}
 	};
 </script>
@@ -340,6 +338,11 @@
 <style lang="scss">
 	page {
 		background-color: $color-page;
+	}
+
+	.col {
+		width: 100%;
+		height: calc(100rpx + var(--status-bar-height));
 	}
 
 	.top-car {
@@ -351,6 +354,11 @@
 		color: $color-text1;
 		line-height: 80rpx;
 		justify-content: space-between;
+		position: fixed;
+		top: 0;
+		left: 0;
+		z-index: 10;
+		background-color: #fff;
 
 		.top-status-plc {
 			width: 100%;
@@ -389,24 +397,33 @@
 			}
 
 			.edits {
+				@include flexCenter;
 				width: 30%;
 				height: 100%;
-				text-align: center;
 				font-size: 30rpx;
+				color: $color-text1;
 			}
 		}
 	}
 
 	.car-img {
+		@include flexCenter;
 		width: 100%;
-		height: 400rpx;
+		height: 486rpx;
 		background: #ffffff;
+		overflow: hidden;
+		flex-flow: column;
 
 		.imgscar {
 			width: 320rpx;
-			height: 342rpx;
+			height: 320rpx;
 			display: block;
-			margin: 0 auto;
+		}
+
+		.text {
+			font-size: 30rpx;
+			color: $color-text2;
+			margin-top: 28rpx;
 		}
 	}
 
@@ -417,6 +434,7 @@
 		border-radius: 8px;
 		background-color: #fff;
 		position: relative;
+		background: #ffffff;
 
 		.all-clear {
 			position: absolute;
