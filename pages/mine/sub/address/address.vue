@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<top-bar class="toptxt">我的收货地址</top-bar>
+		<top-bar class="toptxt" pageTitle="我的收货地址"></top-bar>
 		<view class="noData" v-show="this.shippingAddress.length<1">
 			<image src="../../../../static/images/mine/noData.jpeg" mode="" class="no-image"></image>
 			<text class="tip">还没有地址，快去添加吧~</text>
