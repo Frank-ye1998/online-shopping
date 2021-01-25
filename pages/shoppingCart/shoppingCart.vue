@@ -314,7 +314,6 @@
 			},
 			//查询购物车接口
 			getCartInfo: function() {
-				console.log(999);
 				shopperApi
 					.getCartInfo({}).then((res) => {
 						if (res.data) {

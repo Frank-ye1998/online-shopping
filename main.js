@@ -32,6 +32,8 @@ import imgView from '@/components/img-view/img-view.vue'
 Vue.component('img-view', imgView)
 import stepper from '@/components/stepper/stepper.vue'
 Vue.component('stepper', stepper)
+import topStatusBar from '@/components/top-status-bar/top-status-bar.vue'
+Vue.component('top-status-bar', topStatusBar)
 
 
 Vue.config.productionTip = false
