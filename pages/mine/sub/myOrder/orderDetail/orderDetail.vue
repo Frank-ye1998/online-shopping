@@ -20,22 +20,22 @@
 				</view>
 				<view class="price">￥{{item.skuPrice}}</view>
 			</view>
-			<view class="box3" >
+			<view class="box3">
 				<view class="address">商品总价</view>
 				<view class="address">￥{{orderDetail.activityAmount-orderDetail.freightAmount}}</view>
 			</view>
-			<view class="box4" >
+			<view class="box4">
 				<view class="address">配送费</view>
 				<view class="address">￥{{orderDetail.freightAmount}}</view>
-			</view>	
-			<view class="box4" >
+			</view>
+			<view class="box4">
 				<view class="address">优惠</view>
 				<view class="address">￥{{orderDetail.orderAmount-orderDetail.activityAmount}}</view>
-			</view>	
-			<view class="box4" >
+			</view>
+			<view class="box4">
 				<view class="address">订单总价</view>
 				<view class="address">￥{{orderDetail.orderAmount}}</view>
-			</view>	
+			</view>
 		</view>
 		<view class="query">
 			<view class="button1">
@@ -51,11 +51,7 @@
 <script>
 	import orderApi from "@/api/orderApi.js"
 	export default {
-		  // beforeRouteEnter (to, from, next) {
-		  //   next(vm => {
-		  //     console.log(1111)
-		  //   })
-		  // },
+
 		data() {
 			return {
 				orderDetail: {},
@@ -65,27 +61,27 @@
 				name: '',
 				address: '',
 				storeName: '',
-				pic: ''
+				pic: '',
+				orderId: ''
 			};
 		},
 		onLoad() {
+			this.orderId = this.$store.orderId
 			this.getOrderDetail()
 		},
 		methods: {
 			getOrderDetail() {
 				orderApi
-					.findOrderDetail(this.$Route.query)
+					.findOrderDetail({
+						id: this.orderId
+					})
 					.then((res) => {
 						this.orderDetail = res.data
+						console.log(this.orderDetail)
 					})
 			}
 		},
-		computed:{
-			totalCount(){
-				let obj = this.orderDetail.osProductDtoList
-				console.log(obj)
-			}
-		}
+
 	}
 </script>
 
@@ -113,51 +109,65 @@
 		background-color: #fff;
 		margin: 24rpx 24rpx 0 24rpx;
 	}
-	.box2{
+
+	.box2 {
 		background-color: #fff;
 		margin: 24rpx 24rpx 0 24rpx;
 	}
-	.box3,.box4{
+
+	.box3,
+	.box4 {
 		margin-top: 20rpx;
 		display: flex;
 		justify-content: space-between;
 		background-color: #fff;
 		margin: 24rpx 24rpx 0 24rpx;
 	}
-	.query{
+
+	.query {
 		margin-top: 20rpx;
 		height: 100rpx;
 		display: flex;
-		
+
 		margin: 24rpx 24rpx 0 420rpx;
 	}
-	.button1{
+
+	.button1 {
 		@include btn;
-		width:150rpx;
+		width: 150rpx;
 		height: 60rpx;
-		background-color:$color-green;
+		background-color: $color-green;
 		margin-left: 20rpx;
 		border-radius: 40rpx;
 	}
+
 	.wrap {
 		display: flex;
 		justify-content: space-between;
 	}
-	.img-name{
+
+	.img-name {
 		display: flex;
 	}
+
 	.food-img {
 		width: 292rpx;
 		height: 240rpx;
 	}
-	.sku-name,.price{
+
+	.sku-name,
+	.price {
 		height: 50rpx;
 		line-height: 50rpx;
 	}
-	.store,.sku-name,.price{
+
+	.store,
+	.sku-name,
+	.price {
 		font-size: 40rpx;
 	}
-	.price{
+
+	.price {
 		padding-right: 24rpx;
 	}
 </style>

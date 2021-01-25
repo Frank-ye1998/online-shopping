@@ -1,9 +1,9 @@
 const order = {
 	state: {
-
+		orderId:''
 	},
 	mutations: {
-
+		
 	}
 }
 
