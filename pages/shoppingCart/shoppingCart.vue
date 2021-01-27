@@ -636,9 +636,10 @@
 				height: 58rpx;
 				border-radius: 50%;
 
-				.icon {
-					font-size: 40rpx;
-					//transform: rotate(-4deg);
+				.icon-shopping-cart {
+					color: #fff;
+					font-size: 36rpx;
+					font-weight: lighter;
 				}
 			}
 		}

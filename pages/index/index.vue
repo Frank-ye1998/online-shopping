@@ -43,7 +43,7 @@
           <view class="pri">
             ￥16.2
             <view class="btn-car">
-              <i class="icon icon-cart-add"></i>
+              <i class="icon icon-shopping-cart"></i>
             </view>
           </view>
         </view>
@@ -53,7 +53,7 @@
           <view class="pri">
             ￥16.2
             <view class="btn-car">
-              <i class="icon icon-cart-add"></i>
+              <i class="icon icon-shopping-cart"></i>
             </view>
           </view>
         </view>
@@ -80,7 +80,7 @@
             <view class="pri">
               <text class="price-t">￥{{item.price}}</text>
               <view class="btn-car">
-                <i class="icon icon-cart-add"></i>
+					<i class="icon icon-shopping-cart"></i>
               </view>
             </view>
           </view>
@@ -499,21 +499,20 @@ page {
       }
 
       .btn-car {
-        @include flexCenter;
-        position: absolute;
-        bottom: -8rpx;
-        right: 0;
-        width: 50rpx;
-        height: 50rpx;
-        border-radius: 50%;
-        color: #fff;
-        @include btnGreen-gradient-top;
-
-        .icon-cart-add {
-          font-size: 30rpx;
-          color: #fff;
-        }
-      }
+			@include flexCenter;
+			position: absolute;
+			bottom: -8rpx;
+			right: 0;
+			width: 50rpx;
+			height: 50rpx;
+			border-radius: 50%;
+			@include btnGreen-gradient-top;
+			.icon-shopping-cart {
+				color: #fff;
+				font-size: 36rpx;
+				font-weight: lighter;
+			}
+		}
     }
   }
 }
@@ -630,10 +629,10 @@ page {
             border-radius: 50%;
             color: #fff;
             @include btnGreen-gradient-top;
-
-            .icon-cart-add {
-              font-size: 30rpx;
+			.icon-shopping-cart{
+              font-size: 36rpx;
               color: #fff;
+			  font-weight: lighter;
             }
           }
         }

@@ -54,7 +54,7 @@
 									￥{{item.price}}
 								</view>
 								<view class="addCar">
-									<i class="icon icon-cart-add"></i>
+									<i class="icon icon-shopping-cart"></i>
 									<view class="num">
 										2
 									</view>
@@ -428,10 +428,9 @@
 								position: absolute;
 								right: 50rpx;
 								@include flexCenter;
-
-								.icon-cart-add {
+								.icon-shopping-cart {
 									color: #fff;
-									font-size: 30rpx;
+									font-size: 36rpx;
 								}
 
 								.num {
