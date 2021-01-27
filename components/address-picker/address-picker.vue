@@ -2,42 +2,42 @@
 
   <view class="address-picker-main" @tap="emitClose">
     <view class="picker-view" @tap.stop="">
-      <div class="title">
+      <view class="title">
         请选择所在地区
         <i @tap="emitClose" class="icon icon-close"></i>
-      </div>
-      <div class="level-bar">
-        <div @tap="levelTap('province_list')" class="province level-sub">
+      </view>
+      <view class="level-bar">
+        <view @tap="levelTap('province_list')" class="province level-sub">
           {{provinceName||'请选择'}}
-          <div v-show="level==='province_list'" class="selected-hr"></div>
-        </div>
-        <div v-show="level==='city_list'||level==='county_list'" @tap="levelTap('city_list')" class="city level-sub">
+          <view v-show="level==='province_list'" class="selected-hr"></view>
+        </view>
+        <view v-show="level==='city_list'||level==='county_list'" @tap="levelTap('city_list')" class="city level-sub">
           {{cityName||'请选择'}}
-          <div v-show="level==='city_list'" class="selected-hr"></div>
-        </div>
-        <!-- <div v-show="level==='county_list'" @tap="levelTap('county_list')" class="county level-sub">
-          <div class="selected-hr"></div>
+          <view v-show="level==='city_list'" class="selected-hr"></view>
+        </view>
+        <!-- <view v-show="level==='county_list'" @tap="levelTap('county_list')" class="county level-sub">
+          <view class="selected-hr"></view>
           {{countyName||'请选择'}}
-        </div> -->
-      </div>
+        </view> -->
+      </view>
       <scroll-view v-show="level === 'province_list'" scroll-y="true" class="city-list">
-        <div class="list-sub" v-for="(sub,idx) in area.province_list" @tap="pickerTap('province_list',sub,idx)" :key="idx">
+        <view class="list-sub" v-for="(sub,idx) in area.province_list" @tap="pickerTap('province_list',sub,idx)" :key="idx">
           <text>{{sub}}</text>
           <i v-if="provinceName === sub" class="icon icon-check"></i>
-        </div>
+        </view>
       </scroll-view>
       <scroll-view v-show="level === 'city_list'" scroll-y="true" class="city-list">
-        <div class="list-sub" v-for="(sub,idx) in cityList" @tap="pickerTap('city_list',sub,idx)" :key="idx">
+        <view class="list-sub" v-for="(sub,idx) in cityList" @tap="pickerTap('city_list',sub,idx)" :key="idx">
           <text>{{sub}}</text>
           <i v-if="cityName === sub" class="icon icon-check"></i>
-        </div>
+        </view>
       </scroll-view>
 
       <!-- <scroll-view v-show="level === 'county_list'" scroll-y="true" class="city-list">
-        <div class="list-sub" v-for="(sub,idx) in countyList" @tap="pickerTap('county_list',sub,idx)" :key="idx">
+        <view class="list-sub" v-for="(sub,idx) in countyList" @tap="pickerTap('county_list',sub,idx)" :key="idx">
           <text>{{sub}}</text>
           <i v-if="countyName === sub" class="icon icon-check"></i>
-        </div>
+        </view>
       </scroll-view> -->
     </view>
   </view>

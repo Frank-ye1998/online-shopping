@@ -1,53 +1,53 @@
 <template>
   <view>
     <top-bar :pageTitle="pageTitle"></top-bar>
-    <div class="main">
-      <div class="input-list">
-        <div class="tit">
+    <view class="main">
+      <view class="input-list">
+        <view class="tit">
           联系人
-        </div>
+        </view>
         <input v-model="address.name" placeholder-class="plc" placeholder="请输入联系人姓名" class="input" maxlength="8" type="text" />
-      </div>
-      <div class="input-list">
-        <div class="tit">
+      </view>
+      <view class="input-list">
+        <view class="tit">
           手机号
-        </div>
+        </view>
         <input v-model="address.tel" placeholder-class="plc" placeholder="请输入手机号" class="input" type="number" maxlength="11" />
-      </div>
-      <div class="input-list">
-        <div class="tit">
+      </view>
+      <view class="input-list">
+        <view class="tit">
           地址
-        </div>
+        </view>
         <view class="location-view" @tap="toMap()">
-          <div v-if="address.address">{{address.address}}</div>
-          <div v-else-if="address.map">{{address.map.address}}</div>
-          <div v-else class="plc">点击选择地址</div>
+          <view v-if="address.address">{{address.address}}</view>
+          <view v-else-if="address.map">{{address.map.address}}</view>
+          <view v-else class="plc">点击选择地址</view>
         </view>
         <view class="icon icon-to"></view>
-      </div>
-      <div class="input-list">
-        <div class="tit">
+      </view>
+      <view class="input-list">
+        <view class="tit">
           门牌号
-        </div>
+        </view>
         <input v-model="address.detailAddress" placeholder-class="plc" placeholder="请输入门牌号" class="input" type="text" />
-      </div>
-      <div class="input-list">
-        <div class="tit">
+      </view>
+      <view class="input-list">
+        <view class="tit">
           默认地址
-        </div>
+        </view>
         <switch class="switch" :checked="address.isDefault" color="#08BF30" />
-      </div>
-    </div>
+      </view>
+    </view>
 
-    <div class="bottom-btns">
-      <div class="btn delete" @tap="deleteAddress()">
+    <view class="bottom-btns">
+      <view class="btn delete" @tap="deleteAddress()">
         删除
-      </div>
-      <div class="btn save" @tap="savaAddress()">
+      </view>
+      <view class="btn save" @tap="savaAddress()">
         保存
-      </div>
-    </div>
-    <div class="bottom-btns-plc"></div>
+      </view>
+    </view>
+    <view class="bottom-btns-plc"></view>
   </view>
 </template>
 

@@ -1,7 +1,7 @@
 <template>
 	<view class="top-status-bar-main">
-		<div class="top-status-bar"></div>
-		<div class="top-status-plc"></div>
+		<view class="top-status-bar"></view>
+		<view class="top-status-plc"></view>
 	</view>
 </template>
 

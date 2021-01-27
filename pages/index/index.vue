@@ -1,7 +1,20 @@
 <template>
 	<view class="index-main">
 		<top-status-bar></top-status-bar>
+		<view class="top-location">
+			<div class="left">
+				<i class="icon icon-location"></i>
+				<div class="text-view">
+					{{$locationInfo.formatted_addresses?$locationInfo.formatted_addresses.recommend:'定位中…'}}
+				</div>
+			</div>
+			<!-- <div class="right">
+				<image class="news" src="/static/images/home/icon-news.png"></image>
+			</div> -->
+		</view>
+		<div class="top-location-plc"></div>
 		<top-carousel class="top-carousel"></top-carousel>
+
 		<view class="mation">
 			<view class="mation-left">
 				最快30分钟送达
@@ -69,7 +82,7 @@
 				<view class="content-top">
 					<view v-for="(item,index) in arr" :key="index" :class="['cli-font']" @tap="getItem(index)">
 						{{item.name}}
-						<div v-show="index===arrStatus" class="select-hr"></div>
+						<view v-show="index===arrStatus" class="select-hr"></view>
 					</view>
 				</view>
 				<view class="content-bottom">
@@ -94,8 +107,11 @@
 <script>
 	import userApi from "@/api/userApi.js";
 	import topCarousel from "@/components/top-carousel/top-carousel.vue";
-
+	import {
+		appMixin
+	} from "@/utils/mixin";
 	export default {
+		mixins: [appMixin],
 		components: {
 			'top-carousel': topCarousel
 		},
@@ -295,22 +311,67 @@
 		background-color: $color-page;
 	}
 
+	.top-location {
+		@include flexVtCenter;
+		position: fixed;
+		z-index: 10;
+		top: var(--status-bar-height);
+		left: 50%;
+		transform: translateX(-50%);
+		width: 96%;
+		height: 90rpx;
+		background-color: $color-page;
+
+		.left {
+			@include flexVtCenter;
+			@include ellipsis;
+			width: 78%;
+
+			.icon-location {
+				font-size: 32rpx;
+				color: $color-text2;
+			}
+
+			.text-view {
+				font-size: 30rpx;
+				line-height: 30rpx;
+				margin-left: 8rpx;
+				color: $color-text2;
+			}
+		}
+
+		.right {
+			margin-left: auto;
+
+			.news {
+				width: 40rpx;
+				height: 40rpx;
+			}
+		}
+	}
+
+	.top-location-plc {
+		width: 100%;
+		height: 90rpx;
+	}
+
 	.top-carousel {
 		width: 96%;
 		height: 300rpx;
 		margin: 0 auto;
 	}
 
+
+
 	.mation {
-		width: 78%;
-		height: 70rpx;
-		margin: 0 auto;
-		display: flex;
-		flex-direction: row;
+		@include flexVtCenter;
+		width: 96%;
+		height: 72rpx;
 		justify-content: space-between;
-		line-height: 90rpx;
 		font-size: 22rpx;
 		color: $color-text3;
+		margin: 0 auto;
+		padding: 0 36rpx;
 	}
 
 	.btn {
@@ -330,7 +391,7 @@
 	}
 
 	.food-img {
-		width: 92%;
+		width: 96%;
 		height: 410rpx;
 		display: flex;
 		flex-direction: row;
@@ -339,7 +400,7 @@
 		line-height: 200rpx;
 		padding: 28rpx 0;
 		background: #fff;
-		margin: 20rpx auto;
+		margin: 0 auto;
 		border-radius: 30rpx;
 
 		.font-query {
@@ -365,11 +426,11 @@
 	}
 
 	.vip-save {
-		width: 690rpx;
+		width: 96%;
 		height: 120rpx;
 		background: url("../../static/images/home/back.png") top center no-repeat;
 		background-size: 100% 100%;
-		margin: 48rpx auto 44rpx;
+		margin: 32rpx auto;
 		display: flex;
 		flex-direction: row;
 		position: relative;
@@ -417,9 +478,9 @@
 			@include flexVtCenter;
 			flex-direction: row;
 			position: relative;
-			width: 100%;
+			width: 96%;
 			height: 44rpx;
-			padding: 0 30rpx;
+			margin: 0 auto;
 
 			.lim {
 				font-size: 40rpx;
@@ -457,13 +518,13 @@
 
 		.limit-content {
 			display: flex;
-			width: 92%;
+			width: 96%;
 			flex-flow: row wrap;
 			justify-content: space-between;
-			margin: 36rpx auto 0;
+			margin: 30rpx auto 0;
 			background-color: #fff;
 			border-radius: 30rpx;
-			padding: 30rpx 28rpx 0;
+			padding: 18rpx 22rpx 0;
 
 			.limt-query {
 				position: relative;
@@ -523,9 +584,9 @@
 			@include flexVtCenter;
 			flex-direction: row;
 			position: relative;
-			width: 100%;
+			width: 96%;
 			height: 44rpx;
-			padding: 0 30rpx;
+			margin: 0 auto;
 
 			.reco {
 				font-size: 40rpx;
@@ -536,10 +597,8 @@
 		}
 
 		.recom-content {
-			width: 100%;
-			height: auto;
-			margin: 30rpx 0;
-			padding: 0 24rpx;
+			width: 96%;
+			margin: 30rpx auto;
 
 			.content-top {
 				display: flex;

@@ -37,7 +37,7 @@
 		</view>
 		<view class="car-img" v-if="isLoad && !carShop.length">
 			<image src="/static/images/null-img/data-null.png" class="imgscar"></image>
-			<div class="text">购物车空空如也</div>
+			<view class="text">购物车空空如也</view>
 		</view>
 
 		<template v-if="!isEdit">
@@ -160,7 +160,7 @@
 				删除
 			</view>
 		</view>
-		<view class="to-pay" v-if="carShop.length" @tap="toSubmit" v-else>
+		<view class="to-pay" v-if="carShop.length" @tap="toSubmit">
 			<view class="select-all">
 				<!-- <radio style="transform: scale(0.94)" color="#00C130"/>全选 -->
 			</view>
@@ -178,7 +178,11 @@
 <script>
 	import shopperApi from "@/api/shopperApi.js";
 	import imgView from "../../components/img-view/img-view.vue";
+	import {
+		appMixin
+	} from "@/utils/mixin";
 	export default {
+		mixins: [appMixin],
 		components: {
 			imgView,
 		},
@@ -205,7 +209,7 @@
 						showCancel: true,
 						success: (res) => {
 							if (res.confirm) {
-								//清楚全部商品接口
+								//清除全部商品接口
 								shopperApi
 									.clearCartInfo({
 
@@ -319,6 +323,7 @@
 						if (res.data) {
 							this.carShop = res.data.items; //获取购物车中的商品
 						}
+						uni.hideLoading();
 						this.isLoad = true;
 					});
 			},
@@ -326,7 +331,17 @@
 
 		},
 		onLoad() {
-
+			if (this.$loginKey.sessionId) {
+				if (this.$shoppingCart.isLoad) {
+					this.isLoad = true;
+					this.carShop = this.$shoppingCart.data ? this.$shoppingCart.data.items : [];
+				} else {
+					uni.showLoading();
+					this.getCartInfo();
+				}
+			} else {
+				this.isLoad = true;
+			}
 		},
 		onShow() {
 			this.getCartInfo();

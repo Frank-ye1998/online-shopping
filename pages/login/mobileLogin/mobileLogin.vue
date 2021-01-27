@@ -24,21 +24,24 @@
 <script>
 	import userApi from "@/api/userApi.js";
 	import Vue from "vue";
-
+	import {
+		appMixin
+	} from "@/utils/mixin";
 	export default {
+		mixins: [appMixin],
 		data() {
 			return {
 				phone: 17696769527,
 				token: ''
 			};
 		},
-		onShow(){
-			setTimeout(()=>{
+		onShow() {
+			setTimeout(() => {
 				uni.hideLoading()
-			},1000)
+			}, 1000)
 		},
 		onLoad() {
-			
+
 		},
 		methods: {
 			//页面code（LOGIN_PAGE;REGISTER_PAGE）1
@@ -109,8 +112,10 @@
 					});
 			},
 			saveUserKey: function(data) {
-				Vue.prototype.sessionId = data.sessionId;
-				Vue.prototype.userId = data.userId;
+				this.setLoginKey({
+					sessionId: data.sessionId,
+					userId: data.userId
+				});
 				uni.setStorageSync("sessionId", data.sessionId);
 				uni.setStorageSync("userId", data.userId);
 				uni.hideLoading();
@@ -219,6 +224,7 @@
 		letter-spacing: 3rpx;
 		font-size: 24rpx;
 		color: $color-text2;
+
 		.text {
 			color: #a9b1e4;
 		}

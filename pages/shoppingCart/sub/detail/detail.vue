@@ -37,7 +37,7 @@
 				<view class="add-cart" @tap="clickAddCart"> 加入购物车 </view>
 			</view>
 		</view>
-		<div class="calculation-plc"></div>
+		<view class="calculation-plc"></view>
 	</view>
 </template>
 

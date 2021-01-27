@@ -1,25 +1,25 @@
 <template>
 	<view>
 		<top-bar pageTitle="我的地址"></top-bar>
-		<div class="list" @tap="toEdit(item)" v-for="item in addressList" :key="item.id">
-			<div class="content">
-				<div class="address">
+		<view class="list" @tap="toEdit(item)" v-for="item in addressList" :key="item.id">
+			<view class="content">
+				<view class="address">
 					{{item.address}} {{item.detailAddress}}
-				</div>
-				<div class="info">
-					<div class="type" v-if="item.isDefault">
+				</view>
+				<view class="info">
+					<view class="type" v-if="item.isDefault">
 						默认地址
-					</div>
-					<div class="text">
+					</view>
+					<view class="text">
 						{{item.name}} {{item.tel}}
-					</div>
-				</div>
-			</div>
+					</view>
+				</view>
+			</view>
 			<i class="icon icon-edit"></i>
-		</div>
-		<div class="bottom-btn" @tap="toEdit(false)">
+		</view>
+		<view class="bottom-btn" @tap="toEdit(false)">
 			新增地址
-		</div>
+		</view>
 	</view>
 </template>
 

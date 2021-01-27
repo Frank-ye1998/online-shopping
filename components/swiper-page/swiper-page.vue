@@ -1,12 +1,12 @@
 <template>
   <view class="swiper-page-main">
-    <div class="top-order-type">
-      <div @tap="current = index" :class="['type',index===topStatus?'top-selected':'']" v-for="(item,index) in tabList" :key="index">
+    <view class="top-order-type">
+      <view @tap="current = index" :class="['type',index===topStatus?'top-selected':'']" v-for="(item,index) in tabList" :key="index">
         {{item.name}}
-        <div class="hr"></div>
-      </div>
-    </div>
-    <div class="top-order-type-plc"></div>
+        <view class="hr"></view>
+      </view>
+    </view>
+    <view class="top-order-type-plc"></view>
     <swiper class="swiper-view" @change="swiperChange" :current="current" :duration="200">
       <swiper-item class="swiper-item" v-for="(item,index) in tabList" :key="item.id">
         <scroll-view @scrolltolower="item.toBottom(item.id)" class="item-content" scroll-y="true">

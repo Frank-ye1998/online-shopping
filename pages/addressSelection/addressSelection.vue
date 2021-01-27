@@ -19,28 +19,28 @@
 		<!-- 		<map class="uni-map" id="uniMap" :controls="mapControls" :scale="14" :latitude="locationXy.lat"
 		 :longitude="locationXy.lng"></map> -->
 
-		<div ref="map" class="map"></div>
-		<div v-show="isLocate" ref="point" class="gps-point">
-			<div class="content">
-				<div class="top"></div>
-				<div class="center"></div>
-				<div class="bottom"></div>
-			</div>
-		</div>
+		<view ref="map" class="map"></view>
+		<view v-show="isLocate" ref="point" class="gps-point">
+			<view class="content">
+				<view class="top"></view>
+				<view class="center"></view>
+				<view class="bottom"></view>
+			</view>
+		</view>
 
 
 		<!-- 地图组件 -->
 		<!-- 附近地点列表 -->
 		<scroll-view class="near-list" scroll-y="true">
-			<div class="list" @tap="nearTap(item)" v-for="item in nearList" :key="item.request_id">
-				<div class="name">
+			<view class="list" @tap="nearTap(item)" v-for="item in nearList" :key="item.request_id">
+				<view class="name">
 					{{item.title}}
-				</div>
-				<div class="info">
+				</view>
+				<view class="info">
 					{{item.address}}
-				</div>
+				</view>
 				<i v-if="nearSelected.id===item.id" class="icon icon-check"></i>
-			</div>
+			</view>
 		</scroll-view>
 
 		<!-- 地址选择picker -->
@@ -49,12 +49,16 @@
 </template>
 
 <script>
+	import {
+		appMixin
+	} from "@/utils/mixin";
 	import config from "@/config.js"; //配置文件
 	// #ifdef H5
 	import TencentMap from "@/utils/TencentMap.js"; //地图组件
 	// #endif
 	import AddressPicker from "@/components/address-picker/address-picker"; //地区选择组件
 	export default {
+		mixins: [appMixin],
 		components: {
 			"address-picker": AddressPicker,
 		},
@@ -127,10 +131,6 @@
 			},
 		},
 		created() {
-			// this.locationXy = {
-			// 	lat: this.$location.lat,
-			// 	lng: this.$location.lng
-			// }
 			//加载地图
 			setTimeout(() => {
 				this.$nextTick(() => {
@@ -141,13 +141,13 @@
 					}) => {
 						//获取当前定位
 						const nowLatLng = new maps.LatLng(
-							this.$location.lat,
-							this.$location.lng
+							this.$locationXy.lat,
+							this.$locationXy.lng
 						);
 
 						//当前定位逆解析
-						this.getLocationByXy(this.$location);
-
+						this.getLocationByXy(this.$locationXy);
+						
 						//地图初始化参数
 						const myOptions = {
 							zoom: 14,
@@ -158,6 +158,7 @@
 							zoomControl: true,
 							mapTypeId: qq.maps.MapTypeId.ROADMAP,
 						};
+						console.log(this.$refs.point,'---');
 						//添加地图中心点
 						let mapsDom = new maps.Map(TencentMap.elements, myOptions);
 						mapsDom.controls[maps.ControlPosition.CENTER].push(this.$refs.point);

@@ -64,14 +64,19 @@
 <script>
 	import productApi from "@/api/productApi.js";
 	import shopperApi from "@/api/shopperApi.js"
-	import listMock from "@/static/mock/list.json";
 	import topCarousel from "@/components/top-carousel/top-carousel.vue";
 	import receivingMethod from "@/components/receiving-method/receiving-method.vue";
-
+	import {
+		appMixin
+	} from "@/utils/mixin";
 	export default {
+		mixins: [appMixin],
 		components: {
 			"receiving-method": receivingMethod,
 			'top-carousel': topCarousel
+		},
+		watch: {
+
 		},
 		data() {
 			return {
@@ -93,7 +98,6 @@
 			};
 		},
 		methods: {
-
 			isMulti(item) {
 				if (item.isMultiSpec == false) {
 					shopperApi
@@ -141,20 +145,24 @@
 						sendWay: "1",
 					})
 					.then((res) => {
-						uni.hideLoading()
-						// console.log(res.data[0].secondPtCategoryProductVos[this.leftIndex].productVos,'eee');
-						this.ifiArr = res.data;
-						this.foodData = this.ifiArr[
-							this.leftIndex
-						].secondPtCategoryProductVos[this.slidetitle].productVos;
-						console.log(this.foodData);
+						uni.hideLoading();
+						this.setList(res.data)
 					})
 			},
+			setList: function(data) {
+				this.ifiArr = data;
+				this.foodData = this.ifiArr[
+					this.leftIndex
+				].secondPtCategoryProductVos[this.slidetitle].productVos;
+			}
 		},
 		onLoad: function() {
-			uni.showLoading()
-			this.getList();
-			//console.log(JSON.parse(listMock));
+			if (this.$menuList.isLoad) {
+				this.setList(this.$menuList.data);
+			} else {
+				uni.showLoading()
+				this.getList();
+			}
 		},
 	};
 </script>
