@@ -1,6 +1,6 @@
 <template>
 	<view class="top-bar-main">
-		<div class="top-bar-bg"></div>
+		<view class="top-bar-bg"></view>
 		<view class="top-bar">
 			<i @tap="PageBack" class="icon icon-back"></i>
 			<text class="page-title">{{ pageTitle }}</text>

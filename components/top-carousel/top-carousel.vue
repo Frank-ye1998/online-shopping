@@ -2,13 +2,13 @@
 	<view>
 		<swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="false">
 			<swiper-item class="swiper-item">
-				<image src="../../static/images/warpBar/banner_1.png" mode="heightFix" class="img"></image>
+				<image src="../../static/images/warpBar/banner_1.png" mode="widthFix" class="img"></image>
 			</swiper-item>
 			<swiper-item class="swiper-item">
-				<image src="../../static/images/warpBar/dominobanner.jpg" mode="heightFix" class="img"></image>
+				<image src="../../static/images/warpBar/dominobanner.jpg" mode="widthFix" class="img"></image>
 			</swiper-item>
 			<swiper-item class="swiper-item">
-				<image src="../../static/images/warpBar/doms.jpeg" mode="heightFix" class="img"></image>
+				<image src="../../static/images/warpBar/doms.jpeg" mode="widthFix" class="img"></image>
 			</swiper-item>
 		</swiper>
 
@@ -37,7 +37,7 @@
 		border-radius: 40rpx;
 		.img {
 			@include absCenter;
-			height: 100%;
+			width: 100%;
 			border-radius: 22rpx;
 		}
 		

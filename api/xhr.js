@@ -1,5 +1,5 @@
 import config from '../config.js';
-import Vue from "vue";
+import store from "@/store"
 import md5 from "md5";
 import {
 	router
@@ -29,7 +29,7 @@ const request = (Xhrdata) => {
 			source: 1,
 			sourceName: 'WAP',
 			"content-type": Xhrdata.isFrom ? "application/x-www-form-urlencoded;charset=utf-8" : "application/json;charset=UTF-8",
-			sessionId: Vue.prototype.sessionId,
+			sessionId: store.getters.$loginKey.sessionId,
 			clientId: clientId
 		}
 	};

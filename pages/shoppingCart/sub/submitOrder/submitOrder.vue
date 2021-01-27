@@ -1,124 +1,124 @@
 <template>
 	<view>
 		<top-bar pageTitle="确认订单"></top-bar>
-		<div class="top">
+		<view class="top">
 			立即自取(约15:50可取)
-		</div>
+		</view>
 		<receiving-method class="receiving-method"></receiving-method>
-		<div class="commodity-list view">
-			<div class="tips">系统已为您选择最优折扣方案</div>
-			<div class="list">
+		<view class="commodity-list view">
+			<view class="tips">系统已为您选择最优折扣方案</view>
+			<view class="list">
 				<img-view class="list-img" src="../../../../static/images/home/shop-2.png"></img-view>
-				<div class="info">
-					<div class="text-1">
+				<view class="info">
+					<view class="text-1">
 						大草莓
-					</div>
-					<div class="text-2">
+					</view>
+					<view class="text-2">
 						大/好大一个
-					</div>
-				</div>
-				<div class="quantity">
+					</view>
+				</view>
+				<view class="quantity">
 					x 1
-				</div>
-				<div class="price-view">
-					<div class="new-price">
+				</view>
+				<view class="price-view">
+					<view class="new-price">
 						¥ 66.88
-					</div>
-					<div class="old-price">
+					</view>
+					<view class="old-price">
 						¥ 99.99
-					</div>
-				</div>
-				<div class="discount-tips">
+					</view>
+				</view>
+				<view class="discount-tips">
 					会员优惠
-				</div>
-			</div>
-			<div class="list">
+				</view>
+			</view>
+			<view class="list">
 				<img-view class="list-img" src="../../../../static/images/home/shop-2.png"></img-view>
-				<div class="info">
-					<div class="text-1">
+				<view class="info">
+					<view class="text-1">
 						大草莓
-					</div>
-					<div class="text-2">
+					</view>
+					<view class="text-2">
 						大/好大一个
-					</div>
-				</div>
-				<div class="quantity">
+					</view>
+				</view>
+				<view class="quantity">
 					x 1
-				</div>
-				<div class="price-view">
-					<div class="new-price">
+				</view>
+				<view class="price-view">
+					<view class="new-price">
 						¥ 66.88
-					</div>
-					<div class="old-price">
+					</view>
+					<view class="old-price">
 						¥ 99.99
-					</div>
-				</div>
-				<div class="discount-tips">
+					</view>
+				</view>
+				<view class="discount-tips">
 					会员优惠
-				</div>
-			</div>
-			<div class="all-price">
-				<div class="text-1">
+				</view>
+			</view>
+			<view class="all-price">
+				<view class="text-1">
 					小计
-				</div>
-				<div class="new-price">
+				</view>
+				<view class="new-price">
 					¥122.88
-				</div>
-				<div class="old-price">
+				</view>
+				<view class="old-price">
 					¥188.99
-				</div>
-			</div>
-		</div>
+				</view>
+			</view>
+		</view>
 
-		<div class="pay-type view">
-			<div class="pay-list">
-				<div class="tit">
+		<view class="pay-type view">
+			<view class="pay-list">
+				<view class="tit">
 					选择优惠
-				</div>
-				<div class="right">
-					<div class="text is-true">
+				</view>
+				<view class="right">
+					<view class="text is-true">
 						1个可用
-					</div>
+					</view>
 					<i class="icon icon-to"></i>
-				</div>
-				<div class="hr"></div>
-			</div>
-			<div class="pay-list">
-				<div class="tit">
+				</view>
+				<view class="hr"></view>
+			</view>
+			<view class="pay-list">
+				<view class="tit">
 					支付方式
-				</div>
-				<div class="right">
+				</view>
+				<view class="right">
 					<image class="wx-pay-img" src="/static/images/shopping-car/wx-pay.png"></image>
-					<div class="text pay-text">
+					<view class="text pay-text">
 						微信支付
-					</div>
+					</view>
 					<i class="icon icon-to"></i>
-				</div>
-			</div>
-		</div>
-		<div class="remarks view">
-			<div class="list">
-				<div class="tit">
+				</view>
+			</view>
+		</view>
+		<view class="remarks view">
+			<view class="list">
+				<view class="tit">
 					备注特殊要求
-				</div>
-				<div class="right">
+				</view>
+				<view class="right">
 					<i class="icon icon-to"></i>
-				</div>
-			</div>
-		</div>
+				</view>
+			</view>
+		</view>
 
-		<div class="to-pay-btn">
-			<div class="text-1">
+		<view class="to-pay-btn">
+			<view class="text-1">
 				总价¥998 优惠¥666
-			</div>
-			<div class="text-2">
+			</view>
+			<view class="text-2">
 				实付¥332
-			</div>
-			<div class="pay-btn" @tap="submitOrder">
+			</view>
+			<view class="pay-btn" @tap="submitOrder">
 				去支付
-			</div>
-		</div>
-		<div class="to-pay-btn-plc"></div>
+			</view>
+		</view>
+		<view class="to-pay-btn-plc"></view>
 
 	</view>
 </template>
@@ -175,7 +175,7 @@
 					})
 					.then((res) => {
 						console.log(res);
-						openWebView(res.data.data, "支付")
+						openWebView(res.data.data+'&redirect_url=http://10.1.50.57:8080/', "支付")
 						// uni.requestPayment({
 						// 	provider: 'wxpay',
 						// 	orderInfo: JSON.stringify(res.data.data),

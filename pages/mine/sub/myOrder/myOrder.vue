@@ -1,78 +1,114 @@
 <template>
-  <view>
-    <top-bar pageTitle="我的订单"></top-bar>
+	<view>
+		<top-bar pageTitle="我的订单"></top-bar>
 
-    <swiper-page :tabList="tabList">
-      <template #tab0>
-        <div class="list" v-for="item in listA" :key="item.id">
-          <div class="top">
-            <div class="order-type">
-              外卖
-            </div>
-            <div class="address">
-              徐汇日月光 8楼802
-            </div>
-            <div class="order-status">
-              已完成
-            </div>
-          </div>
-          <div class="content">
-            <img-view class="img-view" src="/static/images/home/shop-2.png"></img-view>
-            <div class="name">大草莓一箱</div>
-            <div class="num">x 1</div>
-          </div>
-          <div class="order-info">
-            <div class="time">2021-01-21 20:44</div>
-            <div class="price">
-              共1件商品 合计：¥ 99.88
-            </div>
-          </div>
-        </div>
+		<swiper-page :tabList="tabList">
+			<template #tab0>
+				<view class="list" v-for="item in listA" :key="item.id">
+					<view class="top">
+						<view class="order-type">
+							外卖
+						</view>
+						<view class="address">
+							{{item.receiveAddress}}
+						</view>
+						<view class="order-status">
+							已完成
+						</view>
+					</view>
+					<scroll-view class="content" scroll-x="true">
+						<img-view v-for="itm in item.osProductDtoList" class="img-view" :src="itm.skuImg" :key="itm.orderId"></img-view>
+					</scroll-view>
+					<view class="order-info">
+						<view class="time">{{timeCv(item.createTime)}}</view>
+						<view class="price">
+							共{{item.osProductDtoList.length}}件商品 合计：¥ {{item.orderAmount}}
+						</view>
+					</view>
+				</view>
+			</template>
+			<template #tab1>
+				<view class="list" v-for="item in listB" :key="item.id">
+					<view class="top">
+						<view class="order-type">
+							外卖
+						</view>
+						<view class="address">
+							{{item.receiveAddress}}
+						</view>
+						<view class="order-status">
+							已完成
+						</view>
+					</view>
+					<scroll-view class="content" scroll-x="true">
+						<img-view v-for="itm in item.osProductDtoList" class="img-view" :src="itm.skuImg" :key="itm.orderId"></img-view>
+					</scroll-view>
+					<view class="order-info">
+						<view class="time">{{timeCv(item.createTime)}}</view>
+						<view class="price">
+							共{{item.osProductDtoList.length}}件商品 合计：¥ {{item.orderAmount}}
+						</view>
+					</view>
+				</view>
+			</template>
+			<template #tab2>
 
-      </template>
-      <template #tab1>
-        <div class="list">
-          <div class="list" v-for="item in testList" :key="item">
-            <div class="top">
-              <div class="order-type">
-                外卖
-              </div>
-              <div class="address">
-                徐汇日月光 8楼802
-              </div>
-              <div class="order-status">
-                已完成
-              </div>
-            </div>
-            <div class="content">
-              <img-view class="img-view" src="/static/images/home/shop-2.png"></img-view>
-              <div class="name">大西瓜一箱</div>
-              <div class="num">x 1</div>
-            </div>
-            <div class="order-info">
-              <div class="time">2021-01-21 20:44</div>
-              <div class="price">
-                共1件商品 合计：¥ 99.88
-              </div>
-            </div>
-          </div>
-        </div>
-      </template>
-      <template #tab2>
-        <div class="list">
-          C
-        </div>
-      </template>
-      <template #tab3>
-        <div class="list">
-          D
-        </div>
-      </template>
-    </swiper-page>
-  </view>
+				<view class="list" v-for="item in listC" :key="item.id">
+					<view class="top">
+						<view class="order-type">
+							外卖
+						</view>
+						<view class="address">
+							{{item.receiveAddress}}
+						</view>
+						<view class="order-status">
+							已完成
+						</view>
+					</view>
+					<scroll-view class="content" scroll-x="true">
+						<img-view v-for="itm in item.osProductDtoList" class="img-view" :src="itm.skuImg"></img-view>
+					</scroll-view>
+					<view class="order-info">
+						<view class="time">{{timeCv(item.createTime)}}</view>
+						<view class="price">
+							共{{item.osProductDtoList.length}}件商品 合计：¥ {{item.orderAmount}}
+						</view>
+					</view>
+				</view>
+			</template>
+			<template #tab3>
+
+				<view class="list" v-for="item in listD" :key="item.id">
+					<view class="top">
+						<view class="order-type">
+							外卖
+						</view>
+						<view class="address">
+							{{item.receiveAddress}}
+						</view>
+						<view class="order-status">
+							已完成
+						</view>
+					</view>
+					<scroll-view class="content" scroll-x="true">
+						<img-view v-for="itm in item.osProductDtoList" class="img-view" :src="itm.skuImg"></img-view>
+					</scroll-view>
+					<view class="order-info">
+						<view class="time">{{timeCv(item.createTime)}}</view>
+						<view class="price">
+							共{{item.osProductDtoList.length}}件商品 合计：¥ {{item.orderAmount}}
+						</view>
+					</view>
+				</view>
+			</template>
+		</swiper-page>
+	</view>
 </template>
 
 <script>
+	import {
+		timeCv
+	} from "@/utils/tool.js";
 	import swiperPage from "@/components/swiper-page/swiper-page";
 	import orderApi from "@/api/orderApi.js";
 
@@ -82,6 +118,7 @@
 		},
 		data() {
 			return {
+				timeCv: timeCv,
 				//swiper-page 组件tab参数
 				tabList: [{
 						name: "全部",
@@ -108,28 +145,6 @@
 				listB: [], //……
 				listC: [], //……
 				listD: [], //……
-				testList: [
-					1,
-					2,
-					3,
-					4,
-					5,
-					6,
-					7,
-					8,
-					9,
-					10,
-					11,
-					12,
-					13,
-					14,
-					15,
-					16,
-					17,
-					18,
-					19,
-					20,
-				],
 			};
 		},
 		methods: {
@@ -138,7 +153,6 @@
 				let now = new Date().getTime(); //当前时间
 				if (this.isOnload && now - this.timeAbs < 1000) return; //接口节制
 				this.timeAbs = new Date().getTime(); //更新节制时间
-				console.log(type);
 				switch (type) {
 					case 'tab0':
 						type = '';
@@ -177,98 +191,106 @@
 		},
 		onLoad() {
 			this.getList(""); //获取全部订单
+			this.getList(1);
+			this.getList(3);
+			this.getList(8);
 			this.isOnload = true;
 		},
 	};
 </script>
 
 <style lang="scss">
-page {
-  background-color: $color-page;
-}
+	page {
+		background-color: $color-page;
+	}
 
-.list {
-  width: 96%;
-  height: 320rpx;
-  background-color: #fff;
-  border-radius: 14rpx;
-  margin: 20rpx auto;
-  padding: 0 16rpx;
+	.list {
+		width: 96%;
+		height: 320rpx;
+		background-color: #fff;
+		border-radius: 14rpx;
+		margin: 20rpx auto;
+		padding: 0 16rpx;
+		overflow: hidden;
 
-  .top {
-    @include flexVtCenter;
-    width: 100%;
-    height: 84rpx;
-    border-bottom: 1px solid #f1f1f1;
+		.top {
+			@include flexVtCenter;
+			width: 100%;
+			height: 84rpx;
+			border-bottom: 1px solid #f1f1f1;
 
-    .order-type {
-      @include flexCenter;
-      width: 88rpx;
-      height: 40rpx;
-      background-color: $color-green;
-      border-radius: 4px;
-      font-size: 26rpx;
-      line-height: 26rpx;
-      color: #fff;
-      margin-right: 16rpx;
-    }
+			.order-type {
+				@include flexCenter;
+				width: 88rpx;
+				height: 40rpx;
+				background-color: $color-green;
+				border-radius: 4px;
+				font-size: 26rpx;
+				line-height: 26rpx;
+				color: #fff;
+				margin-right: 16rpx;
+			}
 
-    .address {
-      width: 68%;
-      font-size: 28rpx;
-      color: $color-text0;
-      @include ellipsis;
-    }
+			.address {
+				width: 68%;
+				font-size: 28rpx;
+				color: $color-text0;
+				@include ellipsis;
+			}
 
-    .order-status {
-      margin-left: auto;
-      font-size: 28rpx;
-      color: $color-text2;
-    }
-  }
+			.order-status {
+				margin-left: auto;
+				font-size: 28rpx;
+				color: $color-text2;
+			}
+		}
 
-  .content {
-    @include flexVtCenter;
-    position: relative;
-    width: 100%;
-    height: 150rpx;
+		.content {
+			//@include flexVtCenter;
+			white-space: nowrap;
+			position: relative;
+			width: 100%;
+			height: 150rpx;
+			padding: 20rpx 0;
 
-    .img-view {
-      width: 110rpx;
-      height: 110rpx;
-      border-radius: 4px;
-    }
+			.img-view {
+				display: inline-block;
+				width: 110rpx;
+				height: 110rpx;
+				border-radius: 4px;
+				margin-right: 16rpx;
+			}
 
-    .name {
-      font-size: 30rpx;
-      color: $color-text0;
-      font-weight: 700;
-      margin-left: 18rpx;
-    }
+			.name {
+				font-size: 30rpx;
+				color: $color-text0;
+				font-weight: 700;
+				margin-left: 18rpx;
+			}
 
-    .num {
-      position: absolute;
-      top: 8%;
-      right: 0;
-      font-size: 28rpx;
-      color: $color-text2;
-    }
-  }
+			.num {
+				position: absolute;
+				top: 8%;
+				right: 0;
+				font-size: 28rpx;
+				color: $color-text2;
+			}
+		}
 
-  .order-info {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
+		.order-info {
+			display: flex;
+			width: 100%;
+			justify-content: space-between;
 
-    .time {
-      font-size: 24rpx;
-      color: $color-text2;
-    }
+			.time {
+				font-size: 24rpx;
+				color: $color-text2;
+			}
 
-    .price {
-      font-size: 28rpx;
-      color: $color-text0;
-    }
-  }
-}
+			.price {
+				font-size: 28rpx;
+				color: $color-text0;
+			}
+		}
+	}
 </style>

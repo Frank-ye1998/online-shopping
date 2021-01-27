@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="user-top">
-			<div class="top-content" @tap="goto('mobileLogin')">
+			<view class="top-content" @tap="goto('mobileLogin')">
 				<template v-if="userInfo.cellPhone">
 					<img-view src="/static/images/mine/avatar.jpg" class="avatar"></img-view>
 					<view class="phone">手机号：{{userInfo.cellPhone}}</view>
@@ -13,8 +13,8 @@
 				<view class="right">
 					<i class="icon icon-to"></i>
 				</view>
-			</div>
-			<div class="top-background"></div>
+			</view>
+			<view class="top-background"></view>
 
 		</view>
 
@@ -68,12 +68,23 @@
 				<i class="icon icon-to"></i>
 			</view>
 		</view>
+		<view class="list">
+			<view class="content" @tap="goto('setting')">
+				<image class="list-icon"  src="../../static/images/mine/list-icon6.png"></image>
+				<view class="tit">设置</view>
+				<i class="icon icon-to"></i>
+			</view>
+		</view>
 	</view>
 </template>
 
 <script>
 	import userApi from "@/api/userApi.js";
+	import {
+		appMixin
+	} from "@/utils/mixin";
 	export default {
+		mixins: [appMixin],
 		data() {
 			return {
 				scrollTop: 0,
@@ -82,34 +93,26 @@
 		},
 
 		methods: {
-			toLogin: function() {
-				this.$Router.push({
-					name: "mobileLogin"
-				});
-			},
 			goto(name) {
 				this.$Router.push({
 					name
 				});
 			},
-			goDetail() {
-				let obj = this.userInfo;
-				this.$Router.push({
-					name: "userCenter",
-					params: {
-						obj
-					}
-				});
-			},
-			getSessionId() {},
-		},
-		onLoad() {
-			if (this.sessionId) {
+			getUserInfo: function() {
 				userApi.getUserInfo().then((res) => {
 					this.userInfo = res.data;
 				});
 			}
-			console.log(this.userInfo);
+		},
+		onShow() {
+			this.getUserInfo();
+		},
+		onLoad() {
+			if (this.$loginKey.sessionId) {
+				if (this.$userInfo.isLoad) {
+					this.userInfo = this.$userInfo.data;
+				}
+			}
 		},
 	};
 </script>
@@ -181,10 +184,6 @@
 				height: 44rpx;
 			}
 
-			// .icon:first-of-type {
-			//   color: $color-green;
-			//   font-size: 44rpx;
-			// }
 			.icon {
 				font-size: 34rpx;
 				color: $color-text2;
@@ -202,6 +201,8 @@
 	}
 
 	.list-order {
+		position: relative;
+		z-index: 10;
 		height: 260rpx;
 		margin-top: -48rpx;
 	}

@@ -28,10 +28,6 @@
 			"name": "coupon"
 		},
 		{
-			"path": "pages/mine/sub/userCenter/userCenter",
-			"name": "userCenter"
-		},
-		{
 			"path": "pages/login/loginindex/loginindex",
 			"name": "loginindex"
 		},
@@ -65,12 +61,19 @@
 		{
 			"path": "pages/mine/sub/myOrder/myOrder",
 			"name": "myOrder"
+		}, {
+			"path": "pages/mine/sub/setting/setting",
+			"name": "setting"
+		}, {
+			"path": "pages/mine/sub/information/information",
+			"name": "information"
 		}
 	   
     ],
 	"globalStyle": {
 		"navigationStyle": "custom",
-		"backgroundColor": "#F8F8F8"
+		"backgroundColor": "#F8F8F8",
+		"navigationBarTextStyle": "black"
 	},
 	"tabBar": {
 		"color": "#333333",

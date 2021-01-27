@@ -1,6 +1,7 @@
 <template>
   <view class="img-view-main">
-    <image class="img" :src="src" :mode="mode"></image>
+    <image v-if="!isErr" lazy-load="true" @error="imgErr" class="img" :src="src" :mode="mode"></image>
+	<text v-else class="img">加载失败</text>
   </view>
 </template>
 
@@ -21,8 +22,15 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+		isErr:false
+	};
   },
+  methods:{
+	  imgErr:function(){
+		  this.isErr = true;
+	  }
+  }
 };
 </script>
 
@@ -33,6 +41,8 @@ export default {
   .img {
     @include absCenter;
     width: 100%;
+	font-size: 20rpx;
+	color: $color-text3;
   }
 }
 </style>
