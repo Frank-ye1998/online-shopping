@@ -4,16 +4,28 @@
 		<view class="mobile-img">
 			<image src="../../../static/icon/favicon.png" mode="" class="imgs"></image>
 		</view>
-		<view class="mobile-ipt">
+		<view class="mobile-ipt" v-if="isShowSMSLogin">
 			<view class="ipt-mobile">
 				<input type="text" v-model="phone" placeholder="请输入手机号" />
 			</view>
 			<view class="ipt-code">
 				<input type="text" value="" placeholder="请输入手机验证码" />
-				<view class="get-code"> 获取验证码 </view>
+				<view class="get-code" @tap="getSmsCode()" v-if="!countDown"> 获取验证码 </view>
+				<view class="get-code" v-else> {{countDown}}s </view>
 			</view>
 		</view>
-		<view class="cli-sure" @tap="registered"> 确定 </view>
+		<view class="mobile-ipt" v-else>
+			<view class="ipt-mobile">
+				<input type="text" v-model="phone" placeholder="请输入账号" />
+			</view>
+			<view class="ipt-code">
+				<input type="text" value="" placeholder="请输入密码" />
+			</view>
+		</view>
+		<view class="changeSite" @tap="changeWay">
+			{{this.isShowSMSLogin?'密码登录':'验证码登录'}}
+		</view>
+		<view class="cli-sure" @tap="mobileLogin()"> 登录 </view>
 		<view class="font">
 			点击确定，即表示已阅读并同意
 			<text class="text">《注册会员服务条款》</text>
@@ -31,8 +43,12 @@
 		mixins: [appMixin],
 		data() {
 			return {
-				phone: 17696769527,
-				token: ''
+				phone: '',
+				// phone: 17696769527,
+				token: '',
+				smsCode: '',
+				isShowSMSLogin:true,
+				countDown:0
 			};
 		},
 		onShow() {
@@ -45,10 +61,16 @@
 		},
 		methods: {
 			//页面code（LOGIN_PAGE;REGISTER_PAGE）1
-			registered: function() {
+			mobileLogin: function() {
 				if (!this.phone) {
 					uni.showToast({
 						title: "请输入手机号",
+						icon: "none",
+					});
+					return;
+				} else if (this.smsCode < 6) {
+					uni.showToast({
+						title: "请输入正确的验证码",
 						icon: "none",
 					});
 					return;
@@ -57,60 +79,61 @@
 					title: "请稍等",
 					mask: true,
 				});
-
-				this.getSmsCode("REGISTER_PAGE").then((registerCode) => {
-					userApi
-						.register({
-							cellPhone: this.phone,
-							smsCode: registerCode,
-							passWord: 123456,
-						})
-						.then((res) => {
-							if (res.successCode === "00") {
-								this.saveUserKey(res.data);
-								uni.showToast({
-									title: "注册成功",
-									icon: "none",
-								});
-							} else if (res.successCode === "01") {
-								this.getSmsCode("LOGIN_PAGE").then((loginCode) => {
-									userApi
-										.smsLogin({
-											cellPhone: this.phone,
-											smsCode: loginCode,
-										})
-										.then((res) => {
-											this.saveUserKey(res.data);
-											uni.showToast({
-												title: "登录成功",
-												icon: "none",
-											});
-										});
-								});
-							} else {
-								uni.hideLoading();
-								uni.showToast({
-									title: res.message,
-									icon: "none",
-								});
-							}
-						})
-						.catch((err) => {
+				userApi
+					.smsLogin({
+						cellPhone: this.phone,
+						smsCode: this.smsCode
+					})
+					.then((res) => {
+						console.log(res.successCode)
+						if (res.successCode === "00") {
+							this.saveUserKey(res.data);
+							uni.showToast({
+								title: "登录成功",
+								icon: "none",
+							})
+							this.$Router.push({
+								name: "index"
+							});
+						} else {
 							uni.hideLoading();
-							console.log(err);
-						});
-				});
+							uni.showToast({
+								title: res.message,
+								icon: "none",
+							});
+						}
+					})
+					.catch((err) => {
+						uni.hideLoading();
+						console.log(err);
+					});
 			},
 			getSmsCode: function(code) {
+				this.countDown = 60;
+				this.timeIntervalID = setInterval(() => {
+				        this.countDown--;
+				        if (this.countDown == 0) {
+				          clearInterval(this.timeIntervalID);
+				        }
+				      }, 1000)
+
 				return userApi
 					.sendCode({
 						cellPhone: this.phone,
 						pageCode: code,
 					})
 					.then((res) => {
+						this.smsCode = res.data.code
+						console.log(res.data.code)
+						uni.showToast({
+							title: "验证码:" + this.smsCode,
+							icon: "none",
+						});
 						return res.data.code;
 					});
+
 			},
+
 			saveUserKey: function(data) {
 				this.setLoginKey({
 					sessionId: data.sessionId,
@@ -120,6 +143,10 @@
 				uni.setStorageSync("userId", data.userId);
 				uni.hideLoading();
 			},
+			
+			changeWay(){
+				this.isShowSMSLogin = !this.isShowSMSLogin;
+			}
 		},
 
 	};
@@ -202,7 +229,11 @@
 		}
 
 	}
-
+	.changeSite{
+		height: 60rpx;
+		line-height: 60rpx;
+		padding-left: 550rpx;
+	}
 	.cli-sure {
 		width: 96%;
 		height: 90rpx;
@@ -214,7 +245,7 @@
 		letter-spacing: 8rpx;
 		font-weight: lighter;
 		margin: 0 auto;
-		margin-top: 60rpx;
+		margin-top: 30rpx;
 	}
 
 	.font {
