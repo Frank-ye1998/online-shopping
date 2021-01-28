@@ -63,6 +63,23 @@
 			return {
 				date: ''
 			};
+		},
+		methods: {
+			getDate:function(type){
+				const date = new Date();
+				let year = date.getFullYear();
+				let month = date.getMonth() + 1;
+				let day = date.getDate();
+				
+				if (type === 'start') {
+					year = year - 60;
+				} else if (type === 'end') {
+					year = year + 2;
+				}
+				month = month > 9 ? month : '0' + month;;
+				day = day > 9 ? day : '0' + day;
+				return `${year}-${month}-${day}`;
+			}
 		}
 	}
 </script>
@@ -113,7 +130,7 @@
 				color: $color-text3;
 				margin-left: 24rpx;
 			}
-			
+
 			.picker {
 				position: absolute;
 				width: 100%;
@@ -130,7 +147,6 @@
 				background-color: #efefef;
 			}
 
-
 			&:active {
 				background-color: $color-page;
 
@@ -145,8 +161,8 @@
 			height: 160rpx;
 
 			.img-view {
-				width: 132rpx;
-				height: 132rpx;
+				width: 116rpx;
+				height: 116rpx;
 				margin-left: auto;
 				border-radius: 50%;
 			}
