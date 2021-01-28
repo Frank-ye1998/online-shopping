@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="user-top">
-			<view class="top-content" @tap="goto('mobileLogin')">
+			<view class="top-content" @tap="goto('information')">
 				<template v-if="userInfo.cellPhone">
 					<img-view src="/static/images/mine/avatar.jpg" class="avatar"></img-view>
 					<view class="phone">手机号：{{userInfo.cellPhone}}</view>

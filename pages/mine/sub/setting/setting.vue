@@ -15,7 +15,6 @@
 				</div>
 				<i class="icon icon-to"></i>
 				<div class="hr"></div>
-
 			</div>
 			<div class="list active">
 				<div class="tit">
