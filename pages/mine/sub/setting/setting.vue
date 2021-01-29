@@ -9,7 +9,7 @@
 				<switch color="#08BF30" class="switch" checked="true" />
 				<div class="hr"></div>
 			</div>
-			<div class="list active">
+			<div class="list active" @tap="goto('safety')">
 				<div class="tit">
 					账号与安全
 				</div>
@@ -60,6 +60,13 @@
 			return {
 
 			};
+		},
+		methods:{
+			goto(name) {
+				this.$Router.push({
+					name
+				});
+			}
 		}
 	}
 </script>
