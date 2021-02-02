@@ -106,6 +106,24 @@ function jsonpHandle(url, data) {
 	//#endif
 }
 
+//计算两个坐标之间的距离
+function calcDistance({
+	lat1,
+	lng1,
+	lat2,
+	lng2
+}) {
+	var radLat1 = lat1 * Math.PI / 180.0;
+	var radLat2 = lat2 * Math.PI / 180.0;
+	var a = radLat1 - radLat2;
+	var b = lng1 * Math.PI / 180.0 - lng2 * Math.PI / 180.0;
+	var s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(
+		b / 2), 2)));
+	s = s * 6378.137;
+	s = Math.round(s * 10000) / 10000;
+	return s
+};
+
 //以webview打开页面
 function openWebView(url, title) {
 	let view = plus.webview.create(url, 'pay', {
@@ -137,10 +155,11 @@ function openWebView(url, title) {
 }
 
 export {
-	timeCv,//时间戳转换
-	getNonceStr,//生成随机20位字符串
-	getLocationByXy,//坐标逆解析
-	checkUpdate,//检查版本更新并获取更新数据
-	jsonpHandle,//兼容处理jsonp请求
-	openWebView,//打开webview
+	timeCv, //时间戳转换
+	getNonceStr, //生成随机20位字符串
+	getLocationByXy, //坐标逆解析
+	checkUpdate, //检查版本更新并获取更新数据
+	jsonpHandle, //兼容处理jsonp请求
+	calcDistance,//计算两个坐标之间的距离
+	openWebView, //打开webview
 };

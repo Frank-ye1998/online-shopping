@@ -7,6 +7,7 @@ const getters = {
 	$userAddress: state => state.userData.userAddress,
 	$menuList: state => state.order.menuList,
 	$shoppingCart: state => state.order.shoppingCart,
+	$storeList: state => state.order.storeList,
 }
 
 export default getters

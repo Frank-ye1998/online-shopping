@@ -43,8 +43,9 @@
 	} from "@/utils/mixin";
 	import config from "@/config.js"; //配置文件
 	import {
-		jsonpHandle
-	} from "../../utils/tool.js"
+		jsonpHandle,
+		calcDistance
+	} from "../../utils/tool.js";
 	import AddressPicker from "@/components/address-picker/address-picker"; //地区选择组件
 	export default {
 		mixins: [appMixin],
@@ -66,10 +67,10 @@
 		computed: {
 			//原生map组件 中心控件参数
 			controlData() {
-				let deviceWidth = this.$deviceInfo.windowWidth;//设备宽度
-				let rpxPx = deviceWidth / 750;//每rpx对应的实际像素
-				let controlTop = rpxPx * 600 * 0.5 - 52;//计算控件位置
-				let controlLeft = deviceWidth * 0.5 - 13;//……
+				let deviceWidth = this.$deviceInfo.windowWidth; //设备宽度
+				let rpxPx = deviceWidth / 750; //每rpx对应的实际像素
+				let controlTop = rpxPx * 600 * 0.5 - 52; //计算控件位置
+				let controlLeft = deviceWidth * 0.5 - 13; //……
 				return [{
 					id: 'mapCenter',
 					position: {
@@ -106,23 +107,15 @@
 					filter: `category<>公交站`,
 					key: config.tencentMapKey,
 				}).then(res => {
-					if (res) {
-						this.nearList = res;
+					console.log(res);
+					if (res&&res.data) {
+						this.nearList = res.data;
 						this.locationXy = {
-							lat: res[0].location.lat,
-							lng: res[0].location.lng
+							lat: res.data[0].location.lat,
+							lng: res.data[0].location.lng
 						}
 					}
 				})
-			},
-			//选择地点
-			nearTap: function(data) {
-				this.nearSelected = data;
-				uni.$emit("locationSelected", data); //传递选择结果
-				setTimeout(() => {
-					this.$Router.back(1);
-				}, 500);
-				console.log(data);
 			},
 			//坐标逆解析
 			getLocationByXy: function({
@@ -139,13 +132,40 @@
 						this.nowCity = res.ad_info;
 					}
 				})
+			},
+			//选择地点
+			nearTap: function(data) {
+				this.nearSelected = data;
+				this.getNearStore({
+					lat: data.location.lat,
+					lng: data.location.lng
+				})
+				// uni.$emit("locationSelected", data); //传递选择结果
+				// setTimeout(() => {
+				// 	this.$Router.back(1);
+				// }, 500);
+			},
+			//获取所选地点附近门店
+			getNearStore: function({
+				lat,
+				lng
+			}) {
+				console.log(lat, lng);
+				this.$storeList.forEach(item => {
+					console.log(calcDistance({
+						lat1: lat,
+						lng1: lng,
+						lat2: Number(item.lat),
+						lng2: Number(item.lng)
+					}));
+				})
 			}
 		},
 
 		onReady() {
 			//APP端地图拖动处理
 			//#ifdef APP-PLUS
-			setTimeout(() => {//等待地图初始化完成
+			setTimeout(() => { //等待地图初始化完成
 				const mapContext = uni.createMapContext('uniMap', this).$getAppMap();
 				mapContext.onstatuschanged = (event) => {
 					console.log("拖动地图");

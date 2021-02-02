@@ -10,6 +10,7 @@ export const appMixin = {
 			'$locationXy',
 			'$locationInfo',
 			'$userInfo',
+			'$storeList',
 			'$menuList',
 			'$shoppingCart',
 			'$userAddress'
@@ -27,6 +28,7 @@ export const appMixin = {
 			'setLocationXy',
 			'setLocationInfo',
 			'setUserInfo',
+			'setStoreList',
 			'setMenuList',
 			'setShoppingCart',
 			'setUserAddress'

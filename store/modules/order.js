@@ -1,6 +1,7 @@
 const order = {
 	state: {
 		menuList: {},
+		storeList: [],
 		shoppingCart: {}
 	},
 	mutations: {
@@ -9,6 +10,9 @@ const order = {
 		},
 		'SET_SHOPPING_CART': (state, data) => {
 			state.shoppingCart = data;
+		},
+		'SET_STORE_LIST': (state, data) => {
+			state.storeList = data;
 		},
 	}
 }

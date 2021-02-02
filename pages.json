@@ -40,10 +40,6 @@
 			"name": "mobileLogin"
 		},
 		{
-			"path": "pages/mine/sub/myOrder/orderDetail/orderDetail",
-			"name": "orderDetail"
-		},
-		{
 			"path": "pages/shoppingCart/sub/submitOrder/submitOrder",
 			"name": "submitOrder"
 		}, {

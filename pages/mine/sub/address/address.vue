@@ -51,9 +51,7 @@
 			toEdit: function(data) {
 				this.$Router.push({
 					name: 'makeAddress',
-					params: {
-						name:data?data:''
-					}
+					params: data
 				})
 			}
 		},
