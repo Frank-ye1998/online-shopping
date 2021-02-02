@@ -1,7 +1,6 @@
 <template>
 	<view>
 		<top-status-bar></top-status-bar>
-
 		<view class="top">
 			<top-carousel class="top-carousel"></top-carousel>
 			<receiving-method class="receiving-method"></receiving-method>
@@ -12,6 +11,7 @@
 			<view class="main-cli">
 				<view v-for="(item,index) in ifiArr" :key="index" :class="['single',index === ificaArr?'main-cli-select':'']" @tap="getItem(index)">
 					{{item.name}}
+					<div class="point"></div>
 				</view>
 			</view>
 			<!-- 右侧 -->
@@ -21,12 +21,24 @@
 					<scroll-view class="scroll-view_H" :scroll-x="true" scroll-left="120">
 						<template v-if="ifiArr[leftIndex]">
 							<view v-for="(item,index) in ifiArr[leftIndex].secondPtCategoryProductVos" :key="index" :class="['select-box',index === seleStatus?'select-box-select':'']"
-							 @tap="selecItem(index)">{{item.name}}</view>
+							 @tap="selecItem(index)">
+								{{item.name}}
+							</view>
 						</template>
 					</scroll-view>
 				</view>
 				<view class="query-box">
-					特惠专区
+					<div class="text">
+						特惠专区
+					</div>
+					<div class="tips">
+						<div class="tips-text">
+							<div class="txt">
+								每日最多优惠
+							</div>
+							<div class="hr"></div>
+						</div>
+					</div>
 				</view>
 				<view class="content">
 					<!-- 右侧商品主内容 -->
@@ -45,10 +57,10 @@
 									￥{{item.price}}
 								</view>
 								<view class="addCar">
-									<i class="icon icon-cart-add"></i>
-									<view class="num">
+									<i class="icon icon-shopping-cart"></i>
+									<!-- <view class="num">
 										2
-									</view>
+									</view> -->
 								</view>
 							</view>
 						</view>
@@ -170,19 +182,21 @@
 <style lang="scss">
 	page {
 		background-color: $color-page;
+		height: calv(100vh - var(--window-bottom));
+		overflow: hidden;
 	}
 
 	.top {
 		width: 100%;
-		height: 400rpx;
 		background-color: $color-page;
+		overflow: hidden;
 
 		.top-carousel {
-			width: 90%;
-			height: 340rpx;
-			margin-left: 5%;
-			padding-top: 20rpx;
-			border-radius: 10rpx;
+			width: 96%;
+			height: 240rpx;
+			margin: 20rpx auto;
+			overflow: hidden;
+			border-radius: 16rpx;
 		}
 
 		.take-away {
@@ -258,41 +272,52 @@
 		}
 	}
 
-	.receiving-method {
-		margin-top: 8rpx;
-	}
-
 	.main {
 		position: relative;
 		width: 96%;
-		height: calc(100vh - 520rpx - var(--window-bottom));
+		height: calc(100vh - 430rpx - var(--window-bottom));
 		overflow: hidden;
 		display: flex;
 		flex-direction: row;
-		margin: 108rpx auto 0;
-		background-color: #fff;
-		border-radius: 10rpx;
+		margin: 20rpx auto 0;
+		background-color: $color-page;
+		overflow: hidden;
 
 		.main-cli {
-			width: 25%;
+			width: 23.6%;
 			height: 100%;
 			background: #fff;
 			overflow: hidden;
 			overflow-y: scroll;
+			background-color: $color-page;
 
 			.single {
+				position: relative;
 				@include flexCenter;
 				width: 100%;
-				height: 110rpx;
+				height: 90rpx;
 				letter-spacing: 4rpx;
-				font-size: 32rpx;
+				font-size: 30rpx;
+				border-radius: 14rpx;
+				overflow: hidden;
+
+				.point {
+					position: absolute;
+					top: 8rpx;
+					left: 0;
+					transform: translateX(-50%);
+					width: 42rpx;
+					height: 42rpx;
+					border-radius: 50%;
+					background-color: $color-green;
+					opacity: 0.36;
+				}
 			}
 		}
 
 		.main-cli-select {
-			background: $color-page;
-			border-left: solid 2px $color-green;
-			color: $color-green;
+			background: #fff;
+			color: $color-text0;
 		}
 
 		.main-con {
@@ -300,6 +325,9 @@
 			height: 100%;
 			display: flex;
 			flex-direction: column;
+			margin-left: auto;
+			background-color: #fff;
+			border-radius: 14rpx;
 
 			.select-top {
 				width: 100%;
@@ -337,14 +365,42 @@
 
 			.query-box {
 				width: 100%;
-				height: 80rpx;
-				//border-bottom: solid 1rpx $color-text4;
-				padding-left: 32rpx;
-				line-height: 80rpx;
-				//margin-top: 28rpx;
-				color: $color-text1;
-				font-size: 28rpx;
-				font-weight: 700;
+				height: 90rpx;
+				padding: 8rpx 0 0 32rpx;
+
+				.text {
+					color: $color-text0;
+					font-size: 28rpx;
+					line-height: 28rpx;
+					font-weight: 700;
+				}
+
+				.tips {
+					width: 100%;
+					height: 22rpx;
+					margin-top: 8rpx;
+					padding-right: 18rpx;
+
+					.tips-text {
+						@include flexVtCenter;
+						flex-flow: row nowrap;
+
+						.txt {
+							flex: 1;
+							font-size: 18rpx;
+							color: $color-text3;
+							white-space: nowrap;
+						}
+
+						.hr {
+							flex: 10;
+							height: 1px;
+							background-color: #eee;
+							margin-left: 14rpx;
+						}
+					}
+
+				}
 			}
 
 			.content {
@@ -429,9 +485,9 @@
 								right: 50rpx;
 								@include flexCenter;
 
-								.icon-cart-add {
+								.icon-shopping-cart {
 									color: #fff;
-									font-size: 30rpx;
+									font-size: 32rpx;
 								}
 
 								.num {

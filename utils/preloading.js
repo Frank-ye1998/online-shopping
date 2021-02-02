@@ -24,6 +24,12 @@ const preloading = function() {
 			res.isLoad = true;
 			store.dispatch('setUserInfo', res)
 		});
+		//收货地址
+		userApi.findAddress().then(res => {
+			console.log(res,'-=-=');
+			res.isLoad = true;
+			store.dispatch('setUserAddress', res)
+		})
 	}
 }
 

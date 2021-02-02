@@ -1,8 +1,8 @@
 <template>
 	<view>
 		<view class="user-top">
-			<view class="top-content" @tap="goto('information')">
-				<template v-if="userInfo.cellPhone">
+			<view class="top-content" @tap="userTap">
+				<template v-if="userInfo&&userInfo.cellPhone">
 					<img-view src="/static/images/mine/avatar.jpg" class="avatar"></img-view>
 					<view class="phone">手机号：{{userInfo.cellPhone}}</view>
 				</template>
@@ -70,7 +70,7 @@
 		</view>
 		<view class="list">
 			<view class="content" @tap="goto('setting')">
-				<image class="list-icon"  src="../../static/images/mine/list-icon6.png"></image>
+				<image class="list-icon" src="../../static/images/mine/list-icon6.png"></image>
 				<view class="tit">设置</view>
 				<i class="icon icon-to"></i>
 			</view>
@@ -85,14 +85,28 @@
 	} from "@/utils/mixin";
 	export default {
 		mixins: [appMixin],
+		watch: {
+			$loginKey(nv, ov) {
+				if (!nv.sessionId) {
+					this.userInfo = {};
+				}
+			}
+		},
 		data() {
 			return {
 				scrollTop: 0,
 				userInfo: {},
 			};
 		},
-
 		methods: {
+			userTap: function() {
+				console.log(this.$loginKey);
+				if (this.$loginKey.sessionId) {
+					this.goto('information');
+				} else {
+					this.goto('mobileLogin');
+				}
+			},
 			goto(name) {
 				this.$Router.push({
 					name

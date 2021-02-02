@@ -34,11 +34,9 @@
 <style lang="scss">
 	.swiper-item {
 		position: relative;
-		border-radius: 40rpx;
 		.img {
 			@include absCenter;
 			width: 100%;
-			border-radius: 22rpx;
 		}
 		
 	}

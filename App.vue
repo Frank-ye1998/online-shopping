@@ -1,5 +1,4 @@
 <script>
-	import Vue from "vue";
 	import {
 		getLocationByXy
 	} from "@/utils/tool.js";
@@ -15,8 +14,28 @@
 			//监听定位坐标，逆解析地址
 			$locationXy(nv, ov) {
 				getLocationByXy(nv).then(res => {
-					this.setLocationInfo(res.result);
+					this.setLocationInfo(res);
 				})
+			},
+			$shoppingCart(nv, ov) {
+				let quantity = 0;
+				if(!nv.data) return;
+				nv.data.items.forEach(item => {
+					quantity += item.quantity;
+				})
+				setTabBar(String(quantity))
+
+				function setTabBar(text) {
+					uni.setTabBarBadge({
+						index: 2,
+						text: text,
+						fail: err => {
+							setTimeout(() => {
+								setTabBar(text)
+							}, 100)
+						}
+					});
+				}
 			}
 		},
 		onLaunch: function() {
@@ -31,8 +50,8 @@
 			this.setLoginKey({
 				sessionId: uni.getStorageSync("sessionId"),
 				userId: uni.getStorageSync("userId"),
-			}).then(()=>{
-				preloading();//接口预加载
+			}).then(() => {
+				preloading(); //接口预加载
 			})
 
 			//获取定位

@@ -14,22 +14,21 @@
 		</view>
 		<div class="top-location-plc"></div>
 		<top-carousel class="top-carousel"></top-carousel>
-
-		<view class="mation">
-			<view class="mation-left">
+		<view class="top-tips">
+			<view class="tips">
 				最快30分钟送达
 			</view>
-			<view class="mation-center">
+			<view class="tips">
 				满30元免配送费
 			</view>
-			<view class="mation-right">
+			<view class="tips">
 				安全食品
 			</view>
 		</view>
-		<view class="food-img">
-			<view class="font-query" v-for="(item,index) in mess" :key="index">
-				<image :src="item.url" mode="widthFix" class="menu-img"></image>
-				<view class="menu-font">{{item.msg}}</view>
+		<view class="category-view">
+			<view class="list" v-for="(item,index) in mess" :key="index">
+				<image :src="item.url" class="category-img"></image>
+				<view class="category-text">{{item.msg}}</view>
 			</view>
 		</view>
 		<view class="vip-save">
@@ -51,27 +50,8 @@
 				<text class="more">更多></text>
 			</view>
 			<view class="limit-content">
-				<view class="limt-query">
-					<img-view class="limit-img" src="/static/images/home/shop-1.png"></img-view>
-					<view class="name-food">JJJ级车厘子</view>
-					<view class="pri">
-						￥16.2
-						<view class="btn-car">
-							<i class="icon icon-cart-add"></i>
-						</view>
-					</view>
-				</view>
-				<view class="limt-query">
-					<img-view class="limit-img" src="/static/images/home/shop-1.png"></img-view>
-					<view class="name-food">JJJ级车厘子</view>
-					<view class="pri">
-						￥16.2
-						<view class="btn-car">
-							<i class="icon icon-cart-add"></i>
-						</view>
-					</view>
-				</view>
-
+				<commodity-view class="commodity-view" name="智利车厘子J级1盒450g 【包装随机发货】" :payPrice="9.88" :originalPrice="12.88"></commodity-view>
+				<commodity-view class="commodity-view" name="智利车厘子J级1盒450g 【包装随机发货】" :payPrice="9.88" :originalPrice="12.88"></commodity-view>
 			</view>
 		</view>
 		<view class="recommed">
@@ -86,37 +66,40 @@
 					</view>
 				</view>
 				<view class="content-bottom">
-					<view v-for="(item,index) in shopArr[arrStatus]" :key="index" class="content-query">
-						<view class="shop-img">
-							<image :src="item.url" mode="widthFix" class="con-img"></image>
-						</view>
-						<text class="name-title">{{item.names}}</text>
-						<view class="pri">
-							<text class="price-t">￥{{item.price}}</text>
-							<view class="btn-car">
-								<i class="icon icon-cart-add"></i>
-							</view>
-						</view>
-					</view>
+					<commodity-view v-for="(item,index) in shopArr[arrStatus]" class="commodity-view" :name="item.names" :payPrice="item.price"></commodity-view>
 				</view>
 			</view>
 		</view>
+
+		<div class="bottom-login" v-if="bottomLogin">
+			<div class="text">
+				您还没有登录，快去登录开启健康购物生活~
+			</div>
+			<div class="login-btn" @tap="toLogin">
+				立即登录
+			</div>
+		</div>
+		<div class="bottom-login-plc" v-if="bottomLogin"></div>
 	</view>
 </template>
 
 <script>
+	import config from "@/config.js";
 	import userApi from "@/api/userApi.js";
 	import topCarousel from "@/components/top-carousel/top-carousel.vue";
 	import {
 		appMixin
 	} from "@/utils/mixin";
+	import commodityView from "@/components/commodity-view/commodity-view.vue"
 	export default {
 		mixins: [appMixin],
 		components: {
-			'top-carousel': topCarousel
+			'top-carousel': topCarousel,
+			'commodity-view': commodityView
 		},
 		data() {
 			return {
+				bottomLogin: false, //底部登录提示
 				shopArr: [
 					[{
 							names: "智利车厘子J级1盒450g",
@@ -267,42 +250,24 @@
 		},
 		methods: {
 			getItem(index) {
-				console.log(index);
 				this.arrStatus = index;
 			},
+			toLogin: function() {
+				this.$Router.push({
+					name: "mobileLogin"
+				})
+			}
 		},
 		onShow() {
-			uni.setTabBarBadge({
-				index: 2,
-				text: "1",
-			});
-			/*
-				页面管理规则：
-				4个tab页面要一直保持打开状态，非特殊情况不要使用replace和replaceAll关闭Tab页面；
-				page.json 中所有的页面都要命名name，所有路由跳转使用name跳转
-				
-				以下是路由常用方法：
-			
-				//跳转到某个页面(在当前页面栈上增加) name 是页面名称，query是需要传递的参数，不需要传参就不写query
-				this.$Router.push({name:'xxx',query:{xxx}}); //下面的方法参数和这个相同
-				
-				//关闭当前页面然后跳转到某个页面
-				this.$Router.replace();
-				
-				//关闭所有页面然后跳转到某个页面(也可跳转到tab页面)   (很少使用，这个方法会把tab页面也关掉，慎用)
-				this.$Router.replaceAll();
-				
-				//跳转到tab页面，并关闭所有其他非tab页面  如果要跳转到tab页面，只能使用这个方法，不要使用其他方法(replaceAll除外)
-				this.$Router.pushTab();
-				
-				//n是数值型，这个方法作用是在页面记录中后退多少步
-				this.$Router.back(n);
-				
-				//获取当前页面的query参数
-				this.$Route.query;
-			*/
+			if (!this.$loginKey.sessionId) {
+				this.bottomLogin = true;
+			} else {
+				this.bottomLogin = false;
+			}
 		},
-		onLoad() {},
+		onLoad() {
+
+		},
 	};
 </script>
 
@@ -314,7 +279,7 @@
 	.top-location {
 		@include flexVtCenter;
 		position: fixed;
-		z-index: 10;
+		z-index: 20;
 		top: var(--status-bar-height);
 		left: 50%;
 		transform: translateX(-50%);
@@ -361,9 +326,7 @@
 		margin: 0 auto;
 	}
 
-
-
-	.mation {
+	.top-tips {
 		@include flexVtCenter;
 		width: 96%;
 		height: 72rpx;
@@ -372,12 +335,6 @@
 		color: $color-text3;
 		margin: 0 auto;
 		padding: 0 36rpx;
-	}
-
-	.btn {
-		width: 750rpx;
-		height: 100rpx;
-		border: 2px solid #000;
 	}
 
 	.img-vip {
@@ -390,37 +347,32 @@
 		}
 	}
 
-	.food-img {
-		width: 96%;
-		height: 410rpx;
+	.category-view {
 		display: flex;
-		flex-direction: row;
-		flex-wrap: wrap;
-		text-align: center;
-		line-height: 200rpx;
-		padding: 28rpx 0;
+		width: 96%;
+		height: 380rpx;
+		flex-flow: row wrap;
+		justify-content: space-between;
+		padding: 32rpx 0 0;
 		background: #fff;
 		margin: 0 auto;
 		border-radius: 30rpx;
 
-		.font-query {
-			width: 98rpx;
-			height: 196rpx;
+		.list {
 			display: flex;
-			flex-direction: column;
+			flex-flow: column;
 			align-items: center;
-			margin-left: 34rpx;
-
-			.menu-font {
-				width: 98rpx;
-				height: 24rpx;
-				margin-top: -60rpx;
-				font-size: 24rpx;
-			}
-
-			.menu-img {
+			width: 20%;
+			height: 158rpx;
+			.category-img {
 				width: 98rpx;
 				height: 98rpx;
+			}
+			.category-text {
+				font-size: 24rpx;
+				line-height: 24rpx;
+				color: $color-text1;
+				margin-top: 20rpx;
 			}
 		}
 	}
@@ -517,62 +469,12 @@
 		}
 
 		.limit-content {
-			display: flex;
 			width: 96%;
-			flex-flow: row wrap;
-			justify-content: space-between;
+			column-count: 2;
+			column-gap: 0rpx;
 			margin: 30rpx auto 0;
 			background-color: #fff;
-			border-radius: 30rpx;
-			padding: 18rpx 22rpx 0;
-
-			.limt-query {
-				position: relative;
-				width: 300rpx;
-				height: 470rpx;
-				overflow: hidden;
-				background: #ffffff;
-				padding-top: 12rpx;
-
-				.limit-img {
-					width: 100%;
-					height: 280rpx;
-				}
-
-				.name-food {
-					@include ellipsis2(2);
-					font-size: 28rpx;
-					line-height: 32rpx;
-					margin-top: 20rpx;
-					color: $color-text1;
-				}
-
-				.pri {
-					position: relative;
-					width: 100%;
-					height: 34rpx;
-					margin-top: 30rpx;
-					color: $color-red;
-					font-weight: 700;
-				}
-
-				.btn-car {
-					@include flexCenter;
-					position: absolute;
-					bottom: -8rpx;
-					right: 0;
-					width: 50rpx;
-					height: 50rpx;
-					border-radius: 50%;
-					color: #fff;
-					@include btnGreen-gradient-top;
-
-					.icon-cart-add {
-						font-size: 30rpx;
-						color: #fff;
-					}
-				}
-			}
+			border-radius: 14rpx;
 		}
 	}
 
@@ -628,11 +530,9 @@
 			}
 
 			.content-bottom {
-				display: flex;
 				width: 100%;
-				flex-direction: row;
-				flex-wrap: wrap;
-				justify-content: space-between;
+				column-count: 2;
+				column-gap: 0rpx;
 				background-color: #fff;
 
 				.content-query {
@@ -644,12 +544,6 @@
 					border-radius: 20rpx;
 					display: flex;
 					flex-direction: column;
-
-					.shop-img {
-						// width: 185rpx;
-						// height: 106rpx;
-						// background: #00C130;
-					}
 
 					.con-img {
 						width: 300rpx;
@@ -693,16 +587,42 @@
 							height: 50rpx;
 							border-radius: 50%;
 							color: #fff;
-							@include btnGreen-gradient-top;
-
-							.icon-cart-add {
-								font-size: 30rpx;
-								color: #fff;
-							}
+							@include btnGreen-gradient-bottom;
 						}
 					}
 				}
 			}
+		}
+	}
+	.bottom-login-plc {
+		width: 100%;
+		height: 70rpx;
+	}
+	.bottom-login {
+		@include flexVtCenter;
+		position: fixed;
+		z-index: 20;
+		bottom: var(--window-bottom);
+		left: 0;
+		width: 100%;
+		height: 70rpx;
+		background-color: rgba(0, 0, 0, 0.5);
+		padding: 0 24rpx;
+
+		.text {
+			font-size: 24rpx;
+			color: #fff;
+		}
+
+		.login-btn {
+			@include flexCenter;
+			width: 160rpx;
+			height: 48rpx;
+			margin-left: auto;
+			font-size: 24rpx;
+			color: #fff;
+			border-radius: 8rpx;
+			background-color: $color-green;
 		}
 	}
 </style>
