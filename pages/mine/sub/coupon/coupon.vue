@@ -48,28 +48,29 @@
 				</view>
 			</template>
 			<template #tab1>
-				
-				<view class="coupon-box">
-					<view class="coupon-top">
-						<view class="lef">
-							<view class="purpose">饮品抵用金</view>
-							<view class="count-down">仅剩13:17:45</view>
-						</view>
-						<view class="rig">
-							￥<text class="price">12</text>
-						</view>
+			<view class="coupon-box">
+				<view class="coupon-top">
+					<view class="lef">
+						<view class="purpose">饮品抵用金</view>
+						<view class="count-down">仅剩13:17:45</view>
 					</view>
-					<view class="coupon-bott">
-						<view class="rule">使用规则 <i class="icon icon-right" @tap="getRule()"></i></view>
-						<view class="click">立即使用</view>
+					<view class="rig">
+						￥<text class="price">12</text>
 					</view>
+				</view>
+				<view class="coupon-bott">
+					<view class="rule">使用规则 <i class="icon icon-right" @tap="getRule()"></i></view>
+					<view class="click">立即使用</view>
 				</view>
 				<view class="use-rule" v-show="status">
 					使用期间:生生世世是生你的今年春节多久才能见到你超级电脑才能
 				</view>
+				<view class="radius-left"></view>
+				<view class="rdius-right"></view>
+			</view>
+			
 			</template>
 			<template #tab2>
-				
 				<view class="coupon-box">
 					<view class="coupon-top">
 						<view class="lef">
@@ -84,10 +85,13 @@
 						<view class="rule">使用规则 <i class="icon icon-right" @tap="getRule()"></i></view>
 						<view class="click">立即使用</view>
 					</view>
+					<view class="use-rule" v-show="status">
+						使用期间:生生世世是生你的今年春节多久才能见到你超级电脑才能
+					</view>
+					<view class="radius-left"></view>
+					<view class="rdius-right"></view>
 				</view>
-				<view class="use-rule" v-show="status">
-					使用期间:生生世世是你的今年春节多久才能见到你超级电脑才能
-				</view>
+				
 			</template>
 		</swiper-page>
 	</view>
@@ -200,12 +204,12 @@ page {
 	.coupon-box{
 		width: 94%;
 		background: #FFFFFF;
-		margin: 30rpx auto 0;
+		margin: 12rpx auto 0;
 		border-radius: 10rpx;
 		position: relative;
 		.coupon-top{
 			width: 90%;
-			height: 208rpx;
+			height: 158rpx;
 			margin: 0 auto;
 			border-bottom: dotted 1px $color-text3;
 			display: flex;
@@ -215,7 +219,7 @@ page {
 			.lef{
 				width: 220rpx;
 				height: 126rpx;
-				line-height: 72rpx;
+				line-height: 62rpx;
 				.purpose{
 					font-size: 36rpx;
 					letter-spacing: 4rpx;
@@ -224,6 +228,7 @@ page {
 					font-size: 30rpx;
 					color:#f3682f ;
 					letter-spacing: 1rpx;
+					
 				}
 			}
 			.rig{
@@ -246,11 +251,12 @@ page {
 			justify-content: space-between;
 			align-items: center;
 			.rule{
-				width: 180rpx;
+				width: 160rpx;
 				height: 70rpx;
 				color:$color-text2 ;
 				display: flex;
 				flex-direction: row;
+				font-size: 28rpx;
 				justify-content: space-between;
 				.icon-right{
 					transform:rotate(90deg);
@@ -265,7 +271,7 @@ page {
 				text-align: center;
 				line-height: 62rpx;
 				border-radius: 40rpx;
-				font-size: 32rpx;
+				font-size: 28rpx;
 				letter-spacing: 4rpx;
 				color: #FFFFFF;
 			}

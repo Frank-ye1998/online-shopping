@@ -4,7 +4,10 @@
 
 		<swiper-page :tabList="tabList">
 			<template #tab0>
-				<view class="list" v-for="item in listA" :key="item.id">
+				<view class="car-img" v-if="isLoad && !listA.length">
+					<image src="../../../../static/images/null-img/list-null.png" mode="" class="imgscar"></image>
+				</view>
+				<view class="list" v-if="isLoad && listA.length" v-for="item in listA" :key="item.id">
 					<view class="top">
 						<view class="order-type">
 							外卖
@@ -25,10 +28,16 @@
 							共{{item.osProductDtoList.length}}件商品 合计：¥ {{item.orderAmount}}
 						</view>
 					</view>
+					
 				</view>
+				
 			</template>
+			
 			<template #tab1>
-				<view class="list" v-for="item in listB" :key="item.id">
+				<view class="car-img" v-if="isLoad && !listB.length">
+					<image src="../../../../static/images/null-img/list-null.png" mode="" class="imgscar"></image>
+				</view>
+				<view class="list" v-if="isLoad && listB.length" v-for="item in listB" :key="item.id">
 					<view class="top">
 						<view class="order-type">
 							外卖
@@ -52,8 +61,10 @@
 				</view>
 			</template>
 			<template #tab2>
-
-				<view class="list" v-for="item in listC" :key="item.id">
+				<view class="car-img" v-if="isLoad && !listC.length">
+					<image src="../../../../static/images/null-img/list-null.png" mode="" class="imgscar"></image>
+				</view>
+				<view class="list" v-if="isLoad && listC.length" v-for="item in listC" :key="item.id">
 					<view class="top">
 						<view class="order-type">
 							外卖
@@ -77,8 +88,10 @@
 				</view>
 			</template>
 			<template #tab3>
-
-				<view class="list" v-for="item in listD" :key="item.id">
+				<view class="car-img" v-if="isLoad && !listD.length">
+					<image src="../../../../static/images/null-img/list-null.png" mode="" class="imgscar"></image>
+				</view>
+				<view class="list" v-if="isLoad && listD.length" v-for="item in listD" :key="item.id">
 					<view class="top">
 						<view class="order-type">
 							外卖
@@ -118,6 +131,7 @@
 		},
 		data() {
 			return {
+				isLoad: false,
 				timeCv: timeCv,
 				//swiper-page 组件tab参数
 				tabList: [{
@@ -175,15 +189,19 @@
 						switch (type) {
 							case "":
 								this.listA = res.data;
+								this.isLoad = true;
 								break;
 							case 1:
 								this.listB = res.data;
+								this.isLoad = true;
 								break;
 							case 3:
 								this.listC = res.data;
+								this.isLoad = true;
 								break;
 							case 8:
 								this.listD = res.data;
+								this.isLoad = true;
 								break;
 						}
 					});
@@ -203,7 +221,20 @@
 	page {
 		background-color: $color-page;
 	}
-
+	.car-img {
+		@include flexCenter;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+		flex-flow: column;
+	
+		.imgscar {
+			width: 320rpx;
+			height: 320rpx;
+			display: block;
+		}
+	
+	}
 	.list {
 		width: 96%;
 		height: 320rpx;
@@ -244,7 +275,7 @@
 				color: $color-text2;
 			}
 		}
-
+		
 		.content {
 			//@include flexVtCenter;
 			white-space: nowrap;
