@@ -18,7 +18,7 @@
 <style lang="scss">
 	.top-status-bar {
 		position: fixed;
-		z-index: 10;
+		z-index: 20;
 		top: 0;
 		left: 0;
 		width: 100%;

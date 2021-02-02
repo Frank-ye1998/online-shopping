@@ -34,6 +34,11 @@ const actions = {
 	}, data) => {
 		return commit('SET_USER_INFO', data);
 	},
+	setUserAddress: ({
+		commit
+	}, data) => {
+		return commit('SET_USER_ADDRESS', data);
+	},
 }
 
 export default actions

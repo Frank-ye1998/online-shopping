@@ -18,7 +18,6 @@ if (!clientId) {
 //普通请求
 const request = (Xhrdata) => {
 	if (!Xhrdata.data) Xhrdata.data = {};
-	//Xhrdata.data.Frank = randomCode(20);
 	let parames = {
 		url: config.domain + Xhrdata.url,
 		method: Xhrdata.method || 'post',
@@ -35,20 +34,11 @@ const request = (Xhrdata) => {
 	};
 	return uni.request(parames).then(res => {
 		let data = res[1].data;
-		if (data.successCode == -2) {
-			uni.showModal({
-				title: '提示',
-				content: '登录状态过期请重新登录',
-				confirmText: "前往登录",
-				cancelText: '暂不登录',
-				success: (res) => {
-					if (res.confirm) {
-						router.push({
-							name: 'mobileLogin'
-						});
-					}
-				}
-			})
+		if (data.successCode === '-2') { //登录过期
+			store.dispatch('setLoginKey', {});
+			uni.clearStorageSync();
+			uni.hideLoading();
+			console.log(data.message);
 		}
 
 

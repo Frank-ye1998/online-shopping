@@ -45,7 +45,11 @@
 	import productApi from "@/api/productApi.js";
 	import shopperApi from "@/api/shopperApi.js";
 	import stepper from '../../../../components/stepper/stepper.vue';
+	import {
+		appMixin
+	} from "@/utils/mixin";
 	export default {
+		mixins: [appMixin],
 		components: {
 			stepper
 		},
@@ -96,6 +100,9 @@
 
 			//加入购物车接口
 			clickAddCart: function() {
+				uni.showLoading({
+					mask: true
+				})
 				if (this.detailData.isMultiSpec) {
 					let code = this.detailData.skuId;
 					this.detailData.ptSpuAttrs.forEach((item) => {
@@ -159,7 +166,8 @@
 					shopperApi
 						.addCart(obj)
 						.then((res) => {
-							console.log(res);
+							this.setShoppingCart(res);
+							uni.hideLoading()
 							uni.showToast({
 								title: "添加成功",
 							});
@@ -228,7 +236,8 @@
 					shopperApi
 						.addCart(obj)
 						.then((res) => {
-							console.log(res);
+							uni.hideLoading()
+							this.setShoppingCart(res);
 							uni.showToast({
 								title: "添加成功",
 							});
@@ -245,7 +254,7 @@
 		},
 		onLoad: function() {
 			uni.showLoading({
-				mask:true
+				mask: true
 			})
 			this.getCommodity();
 		},
@@ -341,10 +350,10 @@
 				.font-right {
 					width: 130rpx;
 					height: 60rpx;
-					border: solid 1px $color-text3;
+					border: solid 1px #ddd;
 					text-align: center;
 					line-height: 60rpx;
-					border-radius:999px;
+					border-radius: 999px;
 					margin-left: 30rpx;
 					font-size: 28rpx;
 					color: $color-text2;

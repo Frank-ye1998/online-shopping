@@ -2,70 +2,48 @@
 	<view>
 		<top-bar pageTitle="确认订单"></top-bar>
 		<view class="top">
-			立即自取(约15:50可取)
+			立即送达(约15:50送达)
 		</view>
 		<receiving-method class="receiving-method"></receiving-method>
 		<view class="commodity-list view">
 			<view class="tips">系统已为您选择最优折扣方案</view>
-			<view class="list">
-				<img-view class="list-img" src="../../../../static/images/home/shop-2.png"></img-view>
+
+			<view class="list" v-for="item in shoppingList.items" :key="item.skuCode">
+				<img-view class="list-img" :src="item.badgeImg"></img-view>
 				<view class="info">
 					<view class="text-1">
-						大草莓
+						{{item.skuName}}
 					</view>
 					<view class="text-2">
-						大/好大一个
+						{{item.specsValues}}
 					</view>
 				</view>
 				<view class="quantity">
-					x 1
+					x {{item.quantity}}
 				</view>
 				<view class="price-view">
 					<view class="new-price">
-						¥ 66.88
+						¥ {{item.countPrice}}
 					</view>
-					<view class="old-price">
-						¥ 99.99
+					<view v-if="item.originPrice*item.quantity!==item.countPrice" class="old-price">
+						¥ {{item.originPrice*item.quantity}}
 					</view>
 				</view>
 				<view class="discount-tips">
 					会员优惠
 				</view>
 			</view>
-			<view class="list">
-				<img-view class="list-img" src="../../../../static/images/home/shop-2.png"></img-view>
-				<view class="info">
-					<view class="text-1">
-						大草莓
-					</view>
-					<view class="text-2">
-						大/好大一个
-					</view>
-				</view>
-				<view class="quantity">
-					x 1
-				</view>
-				<view class="price-view">
-					<view class="new-price">
-						¥ 66.88
-					</view>
-					<view class="old-price">
-						¥ 99.99
-					</view>
-				</view>
-				<view class="discount-tips">
-					会员优惠
-				</view>
-			</view>
+			<div class="shipping">运费 ¥{{shoppingList.deliveryFee}}</div>
+
 			<view class="all-price">
 				<view class="text-1">
 					小计
 				</view>
 				<view class="new-price">
-					¥122.88
+					¥{{shoppingList.totalPrice}}
 				</view>
-				<view class="old-price">
-					¥188.99
+				<view class="old-price" v-if="shoppingList.totalPrice!==shoppingList.totalOriginPrice">
+					¥{{shoppingList.totalOriginPrice}}
 				</view>
 			</view>
 		</view>
@@ -109,10 +87,10 @@
 
 		<view class="to-pay-btn">
 			<view class="text-1">
-				总价¥998 优惠¥666
+				总价¥{{shoppingList.totalOriginPrice}} <text class="discount-text" v-if="shoppingList.totalOriginPrice-shoppingList.totalPrice>0">优惠¥{{shoppingList.totalOriginPrice-shoppingList.totalPrice}}</text>
 			</view>
 			<view class="text-2">
-				实付¥332
+				实付¥{{shoppingList.totalPrice}}
 			</view>
 			<view class="pay-btn" @tap="submitOrder">
 				去支付
@@ -128,16 +106,15 @@
 	import wx from "weixin-js-sdk"; //微信支付js-sdk
 	// #endif
 	import {
-		openWebView
+		openWebView,
+		getNonceStr
 	} from "@/utils/tool.js";
-	import sha1 from "sha1";
+	import sha1 from "sha1"; //sha1加密
 	import shopperApi from "@/api/shopperApi.js";
 	import orderApi from "@/api/orderApi.js";
 	import weChatApi from "@/api/weChatApi.js";
-	import {
-		getNonceStr
-	} from "@/utils/tool.js";
-	import receivingMethod from "@/components/receiving-method/receiving-method.vue";
+	import userApi from "@/api/userApi.js"
+	import receivingMethod from "@/components/receiving-method/receiving-method.vue"; //切换地址组件
 	export default {
 		components: {
 			"receiving-method": receivingMethod,
@@ -145,12 +122,16 @@
 		data() {
 			return {
 				shoppingList: [],
+				address: {}
 			};
 		},
 		methods: {
 			submitOrder: function() {
+				uni.showLoading({
+					mask: true,
+					title: "正在提交订单"
+				})
 				const orderInfo = this.shoppingList;
-				console.log(orderInfo);
 				orderApi
 					.postOrder({
 						remark: "",
@@ -174,8 +155,8 @@
 						paySource: 2,
 					})
 					.then((res) => {
-						console.log(res);
-						openWebView(res.data.data+'&redirect_url=http://10.1.50.57:8080/', "支付")
+						uni.hideLoading();
+						// openWebView(res.data.data + '&redirect_url=http://10.1.50.57:8080/', "支付")
 						// uni.requestPayment({
 						// 	provider: 'wxpay',
 						// 	orderInfo: JSON.stringify(res.data.data),
@@ -207,6 +188,7 @@
 						console.log(err);
 					});
 			},
+			//重新发起支付
 			toPay: function({
 				orderNo,
 				payAmount
@@ -221,57 +203,59 @@
 						console.log(res);
 					});
 			},
+			//获取购物车数据
 			getShoppingList: function() {
 				shopperApi.getCartInfo().then((res) => {
-					console.log('购物车列表', res);
 					this.shoppingList = res.data;
 				});
 			},
+			//获取门店列表
 			getStoreList: function() {
 				orderApi.getStoreList().then((res) => {
 					//console.log(res);
 				});
 			},
+			getAddress: function() {
+				userApi.findAddress().then(res => {
+					console.log(res);
+					if (!res.data.length) {
+						this.address = false;
+					}
+				})
+			}
 		},
 		onLoad() {
 			this.getShoppingList();
 			this.getStoreList();
-			uni.getProvider({
-				service: 'payment',
-				success: res => {
-					//console.log(res);
-				}
-			})
-
-			return
+			this.getAddress();
 			//获取ticket
-			weChatApi.getJsApiTicket().then((res) => {
-				//微信JS-SDK初始化
-				let time = parseInt(new Date().getTime() / 1000);
-				let noncestr = getNonceStr();
-				let str =
-					`jsapi_ticket=${res.data
-        }&noncestr=${noncestr}&timestamp=${time}&url=${location.href.split("#")[0]
-        }`;
-				let signature = sha1(str);
+			// weChatApi.getJsApiTicket().then((res) => {
+			// 	//微信JS-SDK初始化
+			// 	let time = parseInt(new Date().getTime() / 1000);
+			// 	let noncestr = getNonceStr();
+			// 	let str =
+			// 		`jsapi_ticket=${res.data
+			//      }&noncestr=${noncestr}&timestamp=${time}&url=${location.href.split("#")[0]
+			//      }`;
+			// 	let signature = sha1(str);
 
-				wx.config({
-					debug: false,
-					appId: "wxc1bdb5fea6bc9e6d",
-					timestamp: time,
-					nonceStr: noncestr,
-					signature: signature,
-					jsApiList: [],
-					openTagList: ["wx-open-launch-weapp", "chooseWXPay"] //小程序跳转按钮、微信支付
-				});
+			// 	wx.config({
+			// 		debug: false,
+			// 		appId: "wxc1bdb5fea6bc9e6d",
+			// 		timestamp: time,
+			// 		nonceStr: noncestr,
+			// 		signature: signature,
+			// 		jsApiList: [],
+			// 		openTagList: ["wx-open-launch-weapp", "chooseWXPay"] //小程序跳转按钮、微信支付
+			// 	});
 
-				wx.ready(() => {
-					console.log('微信JS-SDK初始化成功');
-				});
-				wx.error((res) => {
-					console.log('微信JS-SDK初始化失败', res);
-				});
-			});
+			// 	wx.ready(() => {
+			// 		console.log('微信JS-SDK初始化成功');
+			// 	});
+			// 	wx.error((res) => {
+			// 		console.log('微信JS-SDK初始化失败', res);
+			// 	});
+			// });
 		},
 	};
 </script>
@@ -387,12 +371,22 @@
 			}
 		}
 
+		.shipping {
+			@include flexVtCenter;
+			width: 100%;
+			height: 42rpx;
+			font-size: 20rpx;
+			color: $color-text0;
+			justify-content: flex-end;
+			border-top: 1px solid #e3e3e3;
+			padding-right: 6rpx;
+		}
+
 		.all-price {
 			@include flexVtCenter;
 			justify-content: flex-end;
 			width: 100%;
-			height: 88rpx;
-			border-top: 1px solid #e3e3e3;
+			height: 78rpx;
 
 			.text-1 {
 				font-size: 26rpx;
@@ -493,6 +487,10 @@
 		.text-1 {
 			font-size: 24rpx;
 			color: $color-text3;
+
+			.discount-text {
+				margin-left: 4rpx;
+			}
 		}
 
 		.text-2 {

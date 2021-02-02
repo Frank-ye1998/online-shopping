@@ -1,5 +1,7 @@
 import config from "@/config.js"; //配置文件
 import Vue from "vue";
+import store from "@/store";
+import userApi from "@/api/userApi.js";
 
 //时间戳转换
 function timeCv(time) {
@@ -37,16 +39,72 @@ function getLocationByXy({
 	lat,
 	lng
 }) {
-	return Vue.prototype.$jsonp("https://apis.map.qq.com/ws/geocoder/v1/", {
-			location: `${lat},${lng}`,
-			key: config.tencentMapKey,
-			get_poi: 1,
-			output: "jsonp",
-		})
-		.then((res) => {
-			return res
-		})
+	return jsonpHandle("https://apis.map.qq.com/ws/geocoder/v1/", {
+		location: `${lat},${lng}`,
+		key: config.tencentMapKey,
+		get_poi: 1
+	})
 };
+
+//版本更新
+function checkUpdate(type) {
+	if (type) {
+		uni.showLoading({
+			mask: true
+		})
+	}
+	return userApi.getVersion().then(res => {
+		uni.hideLoading();
+		let upData = res.data;
+		let thatV = config.appVersion;
+		let nowV = upData[0].versionNo;
+		if (thatV < nowV) {
+			let now = upData[0]; //当前版本信息
+			let updateType = -1; //更新方式=>1整包更新 2整包强制更新 3wgt更新 4wgt强制更新 5wgt&整包强制更新(特殊状态，无法更新)
+			let mustPackage = false; //是否必须整包更新
+			let isForce = false; //是否强制更新
+			let diffIndex = upData.findIndex((item) => {
+				return config.appVersion === item.versionNo
+			})
+			let diffVersion = upData.splice(0, diffIndex); //获取所有新版本
+			diffVersion.forEach(item => {
+				if (item.isForceUpdate) {
+					isForce = true;
+				}
+				if (item.isSdkUpdate || !now.isWgtUpdate) {
+					mustPackage = true;
+				}
+			});
+			return diffVersion
+		}
+	})
+}
+
+//处理jsonp请求兼容问题(目前只适用于腾讯地图的WebService API,其他请求需修改return结果)
+function jsonpHandle(url, data) {
+	//#ifdef H5 || MP-WEIXIN
+	if (url.indexOf('map.qq') > -1) {
+		data.output = "jsonp"
+	}
+	return Vue.prototype.$jsonp(url, data).then(res => {
+		return res.result || res
+	}).catch(err => {
+		console.log(err);
+	});
+	//#endif
+
+	//#ifdef APP-PLUS
+	return uni.request({
+		url: url,
+		method: 'get',
+		data: data
+	}).then(res => {
+		return res[1].data.result || res[1].data.data
+	}).catch(err => {
+		console.log(err);
+	})
+	//#endif
+}
 
 //以webview打开页面
 function openWebView(url, title) {
@@ -77,9 +135,12 @@ function openWebView(url, title) {
 		plus.webview.close(view, 'fade-out', 250, 'auto');
 	};
 }
+
 export {
-	getNonceStr,
-	openWebView,
-	getLocationByXy,
-	timeCv
+	timeCv,//时间戳转换
+	getNonceStr,//生成随机20位字符串
+	getLocationByXy,//坐标逆解析
+	checkUpdate,//检查版本更新并获取更新数据
+	jsonpHandle,//兼容处理jsonp请求
+	openWebView,//打开webview
 };

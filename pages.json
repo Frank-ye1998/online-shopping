@@ -44,15 +44,15 @@
 			"name": "orderDetail"
 		},
 		{
-			"path": "pages/addressSelection/addressSelection",
-			"name": "addressSelection"
-		},
-		{
 			"path": "pages/shoppingCart/sub/submitOrder/submitOrder",
 			"name": "submitOrder"
 		}, {
 			"path": "pages/member/member",
 			"name": "member"
+		},
+		{
+			"path": "pages/addressSelection/addressSelection",
+			"name": "addressSelection"
 		},
 		{
 			"path": "pages/menu/sub/Confirm/Confirm",
