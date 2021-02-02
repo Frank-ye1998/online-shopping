@@ -17,7 +17,7 @@ const preloading = function() {
 		//购物车
 		shopperApi.getCartInfo().then(res => {
 			res.isLoad = true;
-			store.dispatch('setShoppingCart', res)
+			store.dispatch('setShoppingCart', res.data)
 		})
 		//个人信息
 		userApi.getUserInfo().then((res) => {
@@ -26,7 +26,6 @@ const preloading = function() {
 		});
 		//收货地址
 		userApi.findAddress().then(res => {
-			console.log(res,'-=-=');
 			res.isLoad = true;
 			store.dispatch('setUserAddress', res)
 		})

@@ -50,8 +50,8 @@
 				<text class="more">更多></text>
 			</view>
 			<view class="limit-content">
-				<commodity-view class="commodity-view" name="智利车厘子J级1盒450g 【包装随机发货】" :payPrice="9.88" :originalPrice="12.88"></commodity-view>
-				<commodity-view class="commodity-view" name="智利车厘子J级1盒450g 【包装随机发货】" :payPrice="9.88" :originalPrice="12.88"></commodity-view>
+				<commodity-view name="智利车厘子J级1盒450g 【包装随机发货】" mainImg="/static/images/home/shop-1.png" :payPrice="9.88" :originalPrice="12.88"></commodity-view>
+				<commodity-view name="智利车厘子J级1盒450g 【包装随机发货】" mainImg="/static/images/home/shop-1.png" :payPrice="9.88" :originalPrice="12.88"></commodity-view>
 			</view>
 		</view>
 		<view class="recommed">
@@ -66,7 +66,7 @@
 					</view>
 				</view>
 				<view class="content-bottom">
-					<commodity-view v-for="(item,index) in shopArr[arrStatus]" class="commodity-view" :name="item.names" :payPrice="item.price"></commodity-view>
+					<commodity-view v-for="(item,index) in shopArr[arrStatus]" :mainImg="item.url" :name="item.names" :payPrice="item.price"></commodity-view>
 				</view>
 			</view>
 		</view>
@@ -103,85 +103,85 @@
 				shopArr: [
 					[{
 							names: "智利车厘子J级1盒450g",
-							url: "../../static/images/home/shop-1.png",
+							url: "/static/images/home/shop-1.png",
 							price: "16.2",
 						},
 						{
 							names: "丹东红颜草莓1盒500g",
-							url: "../../static/images/home/shop-2.png",
+							url: "/static/images/home/shop-1.png",
 							price: "16.2",
 						},
 						{
 							names: "智利车厘子J级1盒450g",
-							url: "../../static/images/home/shop-1.png",
+							url: "/static/images/home/shop-1.png",
 							price: "16.2",
 						},
 						{
 							names: "丹东红颜草莓1盒500g",
-							url: "../../static/images/home/shop-2.png",
+							url: "/static/images/home/shop-1.png",
 							price: "16.2",
 						},
 					],
 					[{
 							names: "智利车厘子J级2盒450g",
-							url: "../../static/images/home/shop-1.png",
+							url: "/static/images/home/shop-1.png",
 							price: "26.2",
 						},
 						{
 							names: "丹东红颜草莓2盒500g",
-							url: "../../static/images/home/shop-2.png",
+							url: "/static/images/home/shop-1.png",
 							price: "26.2",
 						},
 						{
 							names: "智利车厘子J级2盒450g",
-							url: "../../static/images/home/shop-1.png",
+							url: "/static/images/home/shop-1.png",
 							price: "26.2",
 						},
 						{
 							names: "丹东红颜草莓2盒500g",
-							url: "../../static/images/home/shop-2.png",
+							url: "/static/images/home/shop-1.png",
 							price: "26.2",
 						},
 					],
 					[{
 							names: "智利车厘子J级3盒450g",
-							url: "../../static/images/home/shop-1.png",
+							url: "/static/images/home/shop-1.png",
 							price: "36.2",
 						},
 						{
 							names: "丹东红颜草莓3盒500g",
-							url: "../../static/images/home/shop-2.png",
+							url: "/static/images/home/shop-1.png",
 							price: "36.2",
 						},
 						{
 							names: "智利车厘子J级3盒450g",
-							url: "../../static/images/home/shop-1.png",
+							url: "/static/images/home/shop-1.png",
 							price: "36.2",
 						},
 						{
 							names: "丹东红颜草莓3盒500g",
-							url: "../../static/images/home/shop-2.png",
+							url: "/static/images/home/shop-1.png",
 							price: "36.2",
 						},
 					],
 					[{
 							names: "智利车厘子J级4盒450g",
-							url: "../../static/images/home/shop-1.png",
+							url: "/static/images/home/shop-1.png",
 							price: "46.2",
 						},
 						{
 							names: "丹东红颜草莓4盒500g",
-							url: "../../static/images/home/shop-2.png",
+							url: "/static/images/home/shop-1.png",
 							price: "46.2",
 						},
 						{
 							names: "智利车厘子J级4盒450g",
-							url: "../../static/images/home/shop-1.png",
+							url: "/static/images/home/shop-1.png",
 							price: "46.2",
 						},
 						{
 							names: "丹东红颜草莓4盒500g",
-							url: "../../static/images/home/shop-2.png",
+							url: "/static/images/home/shop-1.png",
 							price: "46.2",
 						},
 					],

@@ -195,7 +195,7 @@ export default {
   },
   onLoad() {
     this.address = this.$Route.query;
-    if (this.address.address) {
+    if (this.address.name) {
       this.pageTitle = "编辑地址"
       this.isEdit = true;
     } else {

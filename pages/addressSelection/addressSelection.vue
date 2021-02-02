@@ -9,14 +9,15 @@
 				<view class="right-border"></view>
 			</view>
 			<view class="input-view">
-				<input @input="searchLocation" v-model="searchValue" class="input" type="text" placeholder="输入地址" focus>
+				<input @input="searchLocation" v-model="searchValue" class="input" type="text" placeholder="输入地址">
 			</view>
 		</view>
 
 
 		<!-- 地图中心点控件 -->
-		<map class="uni-map" id="uniMap" :controls="controlData" :scale="14" :latitude="locationXy.lat" :longitude="locationXy.lng"
-		 @regionchange="webMapChange"></map>
+		<map v-if="xyLoad" class="uni-map" id="uniMap" :controls="controlData" :scale="14" :latitude="locationXy.lat"
+		 :longitude="locationXy.lng" @regionchange="webMapChange"></map>
+		<view v-else class="uni-map-plc"></view>
 
 		<!-- 附近地点列表 -->
 		<scroll-view class="near-list" scroll-y="true">
@@ -52,33 +53,23 @@
 		},
 		data() {
 			return {
-				isLocate: false, //地图初始化完成状态
+				xyLoad: false, //坐标初始化完成状态
 				pickerShow: false,
 				nearList: [],
 				nearSelected: {},
 				searchValue: "",
 				nowCity: {},
 				locationXy: {},
-				//原生map组件 中心控件参数
-				mapControls: [{
-					id: 'mapCenter',
-					position: {
-						height: 52,
-						left: 20,
-						top: 20,
-						width: 26,
-					},
-					iconPath: "/static/images/mine/now-location.png"
-				}],
 				webChangeStatus: true,
 			};
 		},
 		computed: {
+			//原生map组件 中心控件参数
 			controlData() {
-				let deviceWidth = this.$deviceInfo.windowWidth;
-				let rpxPx = deviceWidth / 750;
-				let controlTop = rpxPx * 600 * 0.5 - 26;
-				let controlLeft = deviceWidth * 0.5 - 13;
+				let deviceWidth = this.$deviceInfo.windowWidth;//设备宽度
+				let rpxPx = deviceWidth / 750;//每rpx对应的实际像素
+				let controlTop = rpxPx * 600 * 0.5 - 52;//计算控件位置
+				let controlLeft = deviceWidth * 0.5 - 13;//……
 				return [{
 					id: 'mapCenter',
 					position: {
@@ -143,26 +134,46 @@
 					key: config.tencentMapKey,
 					get_poi: 1
 				}).then(res => {
-					this.nearList = res.pois;
-					this.nowCity = res.ad_info;
+					if (res.pois.length) {
+						this.nearList = res.pois;
+						this.nowCity = res.ad_info;
+					}
 				})
 			}
 		},
+
+		onReady() {
+			//APP端地图拖动处理
+			//#ifdef APP-PLUS
+			setTimeout(() => {//等待地图初始化完成
+				const mapContext = uni.createMapContext('uniMap', this).$getAppMap();
+				mapContext.onstatuschanged = (event) => {
+					console.log("拖动地图");
+					this.getLocationByXy({ //解析当前拖动结果坐标
+						lat: event.center.latitude,
+						lng: event.center.longitude
+					})
+				}
+			}, 1500)
+			//#endif
+		},
+
 		onLoad() {
 			//加载地图
-			let xyLoad = setInterval(() => {
+			let xyLoad = setInterval(() => { //调试
 				if (this.$locationXy.lat) {
 					clearInterval(xyLoad)
 					this.getLocationByXy(this.$locationXy);
+
+					this.locationXy = {
+						lat: this.$locationXy.lat,
+						lng: this.$locationXy.lng
+					}
+					this.xyLoad = true;
 				}
 			}, 50);
 
-		},
-		onHide() {
-
-		},
-		mounted() {
-			//关闭address-picker
+			//监听address-picker关闭
 			uni.$on("addressPickerClose", () => {
 				this.pickerShow = false;
 			});
@@ -170,7 +181,9 @@
 			uni.$on("citySelected", (data) => {
 				this.nowCity = data;
 			});
-		},
+
+		}
+
 	};
 </script>
 
@@ -184,7 +197,7 @@
 		height: 600rpx;
 	}
 
-	.map {
+	.uni-map-plc {
 		width: 100%;
 		height: 600rpx;
 	}

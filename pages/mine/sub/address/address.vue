@@ -51,12 +51,14 @@
 			toEdit: function(data) {
 				this.$Router.push({
 					name: 'makeAddress',
-					params: data
+					params: {
+						name:data?data:''
+					}
 				})
 			}
 		},
 		onLoad() {
-			uni.showLoading()
+			// uni.showLoading()
 			this.getList();
 			uni.$on('addressChange', () => {
 				this.getList();

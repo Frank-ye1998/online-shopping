@@ -1,6 +1,6 @@
 <template>
 	<view class="commodity-view-main">
-		<img-view class="main-img" src="/static/images/home/shop-1.png"></img-view>
+		<img-view class="main-img" :src="mainImg"></img-view>
 		<div class="name">
 			{{name}}
 		</div>
@@ -31,6 +31,10 @@
 	export default {
 		props: {
 			name: {
+				type: String,
+				required: true
+			},
+			mainImg:{
 				type: String,
 				required: true
 			},

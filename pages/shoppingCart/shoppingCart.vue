@@ -47,105 +47,12 @@
 				<view class="hr"></view>
 			</view>
 			<view class="recommend">
-				<view class="list">
-					<img-view class="img-view" mode="widthFix" src="/static/images/shopping-car/caomei.jpg" />
-					<view class="name">大草莓大草莓大草莓大草莓大草莓大草莓</view>
-					<view class="price">
-						<view class="last-price"><text class="rmb">¥</text>99</view>
-						<view class="original-price">¥28</view>
-					</view>
-					<view class="add-btn">
-						<i class="icon icon-shopping-cart"></i>
-					</view>
-				</view>
-				<view class="list">
-					<img-view class="img-view" mode="widthFix" src="/static/images/shopping-car/caomei.jpg" />
-					<view class="name">大草莓大草莓大草莓大草莓大草莓大草莓</view>
-					<view class="price">
-						<view class="last-price"><text class="rmb">¥</text>99</view>
-						<view class="original-price">¥28</view>
-					</view>
-					<view class="add-btn">
-						<i class="icon icon-shopping-cart"></i>
-					</view>
-				</view>
-				<view class="list">
-					<img-view class="img-view" mode="widthFix" src="/static/images/shopping-car/caomei.jpg" />
-					<view class="name">大草莓大草莓大草莓大草莓大草莓大草莓</view>
-					<view class="price">
-						<view class="last-price"><text class="rmb">¥</text>99</view>
-						<view class="original-price">¥28</view>
-					</view>
-					<view class="add-btn">
-						<i class="icon icon-shopping-cart"></i>
-					</view>
-				</view>
-				<view class="list">
-					<img-view class="img-view" mode="widthFix" src="/static/images/shopping-car/caomei.jpg" />
-					<view class="name">大草莓大草莓大草莓大草莓大草莓大草莓</view>
-					<view class="price">
-						<view class="last-price"><text class="rmb">¥</text>99</view>
-						<view class="original-price">¥28</view>
-					</view>
-					<view class="add-btn">
-						<i class="icon icon-shopping-cart"></i>
-					</view>
-				</view>
-				<view class="list">
-					<img-view class="img-view" mode="widthFix" src="/static/images/shopping-car/caomei.jpg" />
-					<view class="name">大草莓大草莓大草莓大草莓大草莓大草莓</view>
-					<view class="price">
-						<view class="last-price"><text class="rmb">¥</text>99</view>
-						<view class="original-price">¥28</view>
-					</view>
-					<view class="add-btn">
-						<i class="icon icon-shopping-cart"></i>
-					</view>
-				</view>
-				<view class="list">
-					<img-view class="img-view" mode="widthFix" src="/static/images/shopping-car/caomei.jpg" />
-					<view class="name">大草莓大草莓大草莓大草莓大草莓大草莓</view>
-					<view class="price">
-						<view class="last-price"><text class="rmb">¥</text>99</view>
-						<view class="original-price">¥28</view>
-					</view>
-					<view class="add-btn">
-						<i class="icon icon-shopping-cart"></i>
-					</view>
-				</view>
-				<view class="list">
-					<img-view class="img-view" mode="widthFix" src="/static/images/shopping-car/caomei.jpg" />
-					<view class="name">大草莓大草莓大草莓大草莓大草莓大草莓大草莓大草莓大草莓大草莓大草莓大草莓</view>
-					<view class="price">
-						<view class="last-price"><text class="rmb">¥</text>99</view>
-						<view class="original-price">¥28</view>
-					</view>
-					<view class="add-btn">
-						<i class="icon icon-shopping-cart"></i>
-					</view>
-				</view>
-				<view class="list">
-					<img-view class="img-view" mode="widthFix" src="/static/images/shopping-car/caomei.jpg" />
-					<view class="name">大草莓大草莓大草莓</view>
-					<view class="price">
-						<view class="last-price"><text class="rmb">¥</text>99</view>
-						<view class="original-price">¥28</view>
-					</view>
-					<view class="add-btn">
-						<i class="icon icon-shopping-cart"></i>
-					</view>
-				</view>
-				<view class="list">
-					<img-view class="img-view" mode="widthFix" src="/static/images/shopping-car/caomei.jpg" />
-					<view class="name">大草莓大草莓大草莓大草莓大草莓大草莓</view>
-					<view class="price">
-						<view class="last-price"><text class="rmb">¥</text>99</view>
-						<view class="original-price">¥28</view>
-					</view>
-					<view class="add-btn">
-						<i class="icon icon-shopping-cart"></i>
-					</view>
-				</view>
+				<commodity-view mainImg="/static/images/shopping-car/caomei.jpg" name="大草莓大草莓大草莓大草莓大草莓大草莓" payPrice="66.88"
+				 originalPrice="88.23"></commodity-view>
+				<commodity-view mainImg="/static/images/shopping-car/caomei.jpg" name="大草莓大草莓大草莓大草莓大草莓大草莓" payPrice="66.88"
+				 originalPrice="88.23"></commodity-view>
+				<commodity-view mainImg="/static/images/shopping-car/caomei.jpg" name="大草莓大草莓大草莓大草莓大草莓大草莓" payPrice="66.88"
+				 originalPrice="88.23"></commodity-view>
 			</view>
 
 		</template>
@@ -163,8 +70,8 @@
 				<!-- <radio style="transform: scale(0.94)" color="#00C130"/>全选 -->
 			</view>
 			<view class="price-data">
-				<text space="nbsp" class="text-1">不含运费 合计:<text class="pay-num">¥66</text></text>
-				<text space="nbsp" class="text-2">已减: ¥23 优惠明细</text>
+				<text space="nbsp" class="text-1">不含运费 合计:<text class="pay-num">¥{{totalPrice}}</text></text>
+				<text space="nbsp" class="text-2">已减: ¥{{discountPrice}} 优惠明细</text>
 			</view>
 			<view class="to-btn">去结算({{allQuantity}})</view>
 		</view>
@@ -175,14 +82,15 @@
 
 <script>
 	import shopperApi from "@/api/shopperApi.js";
-	import imgView from "../../components/img-view/img-view.vue";
+	import commodityView from "@/components/commodity-view/commodity-view.vue"
+
 	import {
 		appMixin
 	} from "@/utils/mixin";
 	export default {
 		mixins: [appMixin],
 		components: {
-			imgView,
+			'commodity-view': commodityView
 		},
 		data() {
 			return {
@@ -191,24 +99,33 @@
 				isEdit: false,
 				editAll: false,
 				thatIndex: -1,
-				allQuantity: 0
+				allQuantity: 0,
+				totalPrice: 0,
+				discountPrice: 0
 			};
 		},
 		watch: {
 			$shoppingCart(nv, ov) {
-				this.allQuantity = getAllQuantity(nv);
+				console.log(nv,'watch');
+				this.getAllQuantity(nv);
 			}
 		},
 		methods: {
-			getAllQuantity:function(data){
+			getAllQuantity: function(data) {
 				let quantity = 0;
 				if (!data.data) {
-					return 0
+					this.allQuantity = 0;
+					return
 				};
 				data.data.items.forEach(item => {
 					quantity += item.quantity;
 				})
-				return quantity
+				this.allQuantity = quantity;
+			},
+			getPriceData: function(data) {
+				if (!data.data) return;
+				this.totalPrice = data.data.totalPrice - data.data.deliveryFee;
+				this.discountPrice = data.data.totalOriginPrice - data.data.totalPrice;
 			},
 			toSubmit: function() {
 				if (!this.$userAddress.data.length) {
@@ -220,8 +137,6 @@
 					})
 					return;
 				}
-
-
 				this.$Router.push({
 					name: 'submitOrder'
 				})
@@ -340,9 +255,6 @@
 
 						})
 				}
-
-
-				// console.log(res);
 			},
 			//查询购物车接口
 			getCartInfo: function() {
@@ -353,24 +265,26 @@
 						}
 						uni.hideLoading();
 						this.isLoad = true;
-						this.allQuantity = this.getAllQuantity(res);
+						this.getAllQuantity(res);
+						this.getPriceData(res);
 					});
 			},
 
 
 		},
 		onLoad() {
-			if (this.$loginKey.sessionId) {
-				if (this.$shoppingCart.isLoad) {
-					this.isLoad = true;
-					this.carShop = this.$shoppingCart.data ? this.$shoppingCart.data.items : [];
-				} else {
-					uni.showLoading();
-					this.getCartInfo();
-				}
-			} else {
-				this.isLoad = true;
-			}
+			console.log(this.$shoppingCart,'9900');
+			// if (this.$loginKey.sessionId) {
+			// 	if (this.$shoppingCart.isLoad) {
+			// 		this.isLoad = true;
+			// 		this.carShop = this.$shoppingCart.data ? this.$shoppingCart.data.items : [];
+			// 	} else {
+			// 		uni.showLoading();
+			// 		this.getCartInfo();
+			// 	}
+			// } else {
+			// 	this.isLoad = true;
+			// }
 		},
 		onShow() {
 			this.getCartInfo();
@@ -611,82 +525,17 @@
 	}
 
 	.recommend {
-		display: flex;
-		width: 100%;
-		flex-flow: row wrap;
-		padding: 0 26rpx;
-		justify-content: space-between;
+		width: 96%;
+		margin: 0 auto;
+		column-count: 2;
+		column-gap: 16rpx;
 
-		.list {
-			position: relative;
-			width: 48%;
-			height: 500rpx;
-			border-radius: 8px;
-			background-color: #fff;
-			padding: 0 18rpx;
-			margin-bottom: 22rpx;
-
-			.img-view {
-				width: 100%;
-				height: 280rpx;
-				margin: 0 auto;
-			}
-
-			.name {
-				@include ellipsis2(2);
-				font-size: 30rpx;
-				line-height: 42rpx;
-				color: $color-text1;
-				margin-top: 6rpx;
-			}
-
-			.price {
-				@include flexVtCenter;
-				flex-flow: row;
-				position: absolute;
-				bottom: 24rpx;
-				left: 18rpx;
-
-				.last-price {
-					font-size: 38rpx;
-					line-height: 38rpx;
-					color: $color-red;
-					font-weight: 700;
-					margin-right: 14rpx;
-
-					.rmb {
-						font-size: 26rpx;
-						line-height: 26rpx;
-						margin-right: 2rpx;
-					}
-				}
-
-				.original-price {
-					font-size: 26rpx;
-					color: $color-text2;
-					text-decoration: line-through;
-				}
-			}
-
-			.add-btn {
-				@include btnGreen-gradient;
-				position: absolute;
-				bottom: 24rpx;
-				right: 18rpx;
-				width: 58rpx;
-				height: 58rpx;
-				border-radius: 50%;
-
-				.icon-shopping-cart {
-					color: #fff;
-					font-size: 36rpx;
-					font-weight: lighter;
-				}
-			}
+		.commodity-view-main {
+			margin-bottom: 16rpx;
 		}
 	}
 
-	//删除
+	//删除功能
 	.compiler {
 		@include flexVtCenter;
 		position: fixed;

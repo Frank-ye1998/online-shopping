@@ -65,9 +65,7 @@
 							</view>
 						</view>
 					</view>
-
 				</view>
-
 			</view>
 		</view>
 
@@ -87,8 +85,8 @@
 			"receiving-method": receivingMethod,
 			'top-carousel': topCarousel
 		},
-		watch: {
-
+		computed: {
+			
 		},
 		data() {
 			return {
