@@ -68,7 +68,10 @@
 			"path": "pages/mine/sub/information/information",
 			"name": "information"
 		}
-	   
+	    ,{
+            "path" : "pages/mine/sub/setting/sub/Safety/Safety",
+            "name" : "safety"
+        }
     ],
 	"globalStyle": {
 		"navigationStyle": "custom",
