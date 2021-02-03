@@ -16,7 +16,7 @@ export const appMixin = {
 	},
 	data() {
 		return {
-
+			
 		}
 	},
 	methods: {
