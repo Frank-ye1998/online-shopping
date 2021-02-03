@@ -4,8 +4,10 @@ const getters = {
 	$locationXy: state => state.userData.locationXy,
 	$locationInfo: state => state.userData.locationInfo,
 	$userInfo:state => state.userData.userInfo,
+	$userAddress: state => state.userData.userAddress,
 	$menuList: state => state.order.menuList,
-	$shoppingCart: state => state.order.shoppingCart
+	$shoppingCart: state => state.order.shoppingCart,
+	$storeList: state => state.order.storeList,
 }
 
 export default getters

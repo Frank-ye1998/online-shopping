@@ -9,6 +9,15 @@ const port = ':9002';
 // #endif
 
 const userApi = {
+	//获取版本信息
+	getVersion(){
+		const params = {
+			url: port + '/app/version',
+			method: 'get'
+		}
+		return xhr.request(params)
+	},
+
 	//发送验证码
 	sendCode(data) {
 		const params = {
@@ -64,7 +73,7 @@ const userApi = {
 		return xhr.request(params)
 	},
 	//退出登录
-	logOutNow() {
+	loginOut() {
 		const params = {
 			url: port + '/user/logout',
 			method: 'get',

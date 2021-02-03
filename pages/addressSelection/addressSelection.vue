@@ -9,27 +9,16 @@
 				<view class="right-border"></view>
 			</view>
 			<view class="input-view">
-				<input @input="searchLocation" v-model="searchValue" class="input" type="text" placeholder="输入地址" focus>
+				<input @input="searchLocation" v-model="searchValue" class="input" type="text" placeholder="输入地址">
 			</view>
 		</view>
 
 
-		<!-- 地图组件 -->
 		<!-- 地图中心点控件 -->
-		<!-- 		<map class="uni-map" id="uniMap" :controls="mapControls" :scale="14" :latitude="locationXy.lat"
-		 :longitude="locationXy.lng"></map> -->
+		<map v-if="xyLoad" class="uni-map" id="uniMap" :controls="controlData" :scale="14" :latitude="locationXy.lat"
+		 :longitude="locationXy.lng" @regionchange="webMapChange"></map>
+		<view v-else class="uni-map-plc"></view>
 
-		<view ref="map" class="map"></view>
-		<view v-show="isLocate" ref="point" class="gps-point">
-			<view class="content">
-				<view class="top"></view>
-				<view class="center"></view>
-				<view class="bottom"></view>
-			</view>
-		</view>
-
-
-		<!-- 地图组件 -->
 		<!-- 附近地点列表 -->
 		<scroll-view class="near-list" scroll-y="true">
 			<view class="list" @tap="nearTap(item)" v-for="item in nearList" :key="item.request_id">
@@ -53,9 +42,10 @@
 		appMixin
 	} from "@/utils/mixin";
 	import config from "@/config.js"; //配置文件
-	// #ifdef H5
-	import TencentMap from "@/utils/TencentMap.js"; //地图组件
-	// #endif
+	import {
+		jsonpHandle,
+		calcDistance
+	} from "../../utils/tool.js";
 	import AddressPicker from "@/components/address-picker/address-picker"; //地区选择组件
 	export default {
 		mixins: [appMixin],
@@ -64,118 +54,146 @@
 		},
 		data() {
 			return {
-				isLocate: false, //地图初始化完成状态
+				xyLoad: false, //坐标初始化完成状态
 				pickerShow: false,
 				nearList: [],
 				nearSelected: {},
 				searchValue: "",
 				nowCity: {},
 				locationXy: {},
-				//原生map组件 中心控件参数
-				mapControls: [{
+				webChangeStatus: true,
+			};
+		},
+		computed: {
+			//原生map组件 中心控件参数
+			controlData() {
+				let deviceWidth = this.$deviceInfo.windowWidth; //设备宽度
+				let rpxPx = deviceWidth / 750; //每rpx对应的实际像素
+				let controlTop = rpxPx * 600 * 0.5 - 52; //计算控件位置
+				let controlLeft = deviceWidth * 0.5 - 13; //……
+				return [{
 					id: 'mapCenter',
 					position: {
-						left: 170,
-						top: 94,
+						left: controlLeft,
+						top: controlTop,
 						width: 26,
 						height: 52
 					},
 					iconPath: "/static/images/mine/now-location.png"
-				}]
-			};
+				}];
+			}
 		},
 		methods: {
+			//H5地图拖动
+			webMapChange: function(e) {
+				// #ifndef H5
+				return
+				// #endif
+				this.webChangeStatus = !this.webChangeStatus;
+				if (this.webChangeStatus) { //web手指离开地图
+					this.getLocationByXy({ //解析当前拖动结果坐标
+						lat: e.detail.centerLocation.latitude,
+						lng: e.detail.centerLocation.longitude
+					})
+				}
+			},
 			//搜索地点
 			searchLocation: function() {
 				let value = this.searchValue;
-				this.$jsonp("https://apis.map.qq.com/ws/place/v1/search", {
+				if (!value) return;
+				jsonpHandle("https://apis.map.qq.com/ws/place/v1/search", {
 					keyword: value,
 					boundary: `region(${this.nowCity.city},0)`,
 					filter: `category<>公交站`,
 					key: config.tencentMapKey,
-					output: "jsonp",
-				}).then((res) => {
-					this.nearList = res.data;
-				});
-			},
-			//选择地点
-			nearTap: function(data) {
-				this.nearSelected = data;
-				uni.$emit("locationSelected", data); //传递选择结果
-				setTimeout(() => {
-					this.$Router.back(1);
-				}, 500);
-				console.log(data);
+				}).then(res => {
+					console.log(res);
+					if (res&&res.data) {
+						this.nearList = res.data;
+						this.locationXy = {
+							lat: res.data[0].location.lat,
+							lng: res.data[0].location.lng
+						}
+					}
+				})
 			},
 			//坐标逆解析
 			getLocationByXy: function({
 				lat,
 				lng
 			}) {
-				this.$jsonp("https://apis.map.qq.com/ws/geocoder/v1/", {
-						location: `${lat},${lng}`,
-						key: config.tencentMapKey,
-						get_poi: 1,
-						output: "jsonp",
-					})
-					.then((res) => {
-						this.nearList = res.result.pois;
-						this.nowCity = res.result.ad_info;
-					})
-					.catch((err) => {
-						uni.showToast({
-							title: "坐标解析失败",
-							icon: "none",
-						});
-					});
+				jsonpHandle("https://apis.map.qq.com/ws/geocoder/v1/", {
+					location: `${lat},${lng}`,
+					key: config.tencentMapKey,
+					get_poi: 1
+				}).then(res => {
+					if (res.pois.length) {
+						this.nearList = res.pois;
+						this.nowCity = res.ad_info;
+					}
+				})
 			},
+			//选择地点
+			nearTap: function(data) {
+				this.nearSelected = data;
+				this.getNearStore({
+					lat: data.location.lat,
+					lng: data.location.lng
+				})
+				// uni.$emit("locationSelected", data); //传递选择结果
+				// setTimeout(() => {
+				// 	this.$Router.back(1);
+				// }, 500);
+			},
+			//获取所选地点附近门店
+			getNearStore: function({
+				lat,
+				lng
+			}) {
+				console.log(lat, lng);
+				this.$storeList.forEach(item => {
+					console.log(calcDistance({
+						lat1: lat,
+						lng1: lng,
+						lat2: Number(item.lat),
+						lng2: Number(item.lng)
+					}));
+				})
+			}
 		},
-		created() {
-			//加载地图
-			setTimeout(() => {
-				this.$nextTick(() => {
-					TencentMap.load(this.$refs.map, {
-						mapKey: config.tencentMapKey,
-					}).then(({
-						maps
-					}) => {
-						//获取当前定位
-						const nowLatLng = new maps.LatLng(
-							this.$locationXy.lat,
-							this.$locationXy.lng
-						);
 
-						//当前定位逆解析
-						this.getLocationByXy(this.$locationXy);
-						
-						//地图初始化参数
-						const myOptions = {
-							zoom: 14,
-							minZoom: 10,
-							backgroundColor: "#a4ebc9",
-							mapTypeControl: false,
-							center: nowLatLng,
-							zoomControl: true,
-							mapTypeId: qq.maps.MapTypeId.ROADMAP,
-						};
-						console.log(this.$refs.point,'---');
-						//添加地图中心点
-						let mapsDom = new maps.Map(TencentMap.elements, myOptions);
-						mapsDom.controls[maps.ControlPosition.CENTER].push(this.$refs.point);
-						setTimeout(() => {
-							this.isLocate = true;
-						}, 500);
-						//监听地图拖动
-						maps.event.addListener(mapsDom, "center_changed", () => {
-							//逆解析地图中心点坐标
-							this.getLocationByXy(mapsDom.getCenter());
-						});
-					});
-				});
-			}, 200);
+		onReady() {
+			//APP端地图拖动处理
+			//#ifdef APP-PLUS
+			setTimeout(() => { //等待地图初始化完成
+				const mapContext = uni.createMapContext('uniMap', this).$getAppMap();
+				mapContext.onstatuschanged = (event) => {
+					console.log("拖动地图");
+					this.getLocationByXy({ //解析当前拖动结果坐标
+						lat: event.center.latitude,
+						lng: event.center.longitude
+					})
+				}
+			}, 1500)
+			//#endif
 		},
-		mounted() {
-			//关闭address-picker
+
+		onLoad() {
+			//加载地图
+			let xyLoad = setInterval(() => { //调试
+				if (this.$locationXy.lat) {
+					clearInterval(xyLoad)
+					this.getLocationByXy(this.$locationXy);
+
+					this.locationXy = {
+						lat: this.$locationXy.lat,
+						lng: this.$locationXy.lng
+					}
+					this.xyLoad = true;
+				}
+			}, 50);
+
+			//监听address-picker关闭
 			uni.$on("addressPickerClose", () => {
 				this.pickerShow = false;
 			});
@@ -183,7 +201,9 @@
 			uni.$on("citySelected", (data) => {
 				this.nowCity = data;
 			});
-		},
+
+		}
+
 	};
 </script>
 
@@ -197,7 +217,7 @@
 		height: 600rpx;
 	}
 
-	.map {
+	.uni-map-plc {
 		width: 100%;
 		height: 600rpx;
 	}

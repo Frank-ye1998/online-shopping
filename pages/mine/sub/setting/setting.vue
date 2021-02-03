@@ -38,7 +38,7 @@
 				<i class="icon icon-to"></i>
 				<div class="hr"></div>
 			</div>
-			<div class="list active">
+			<div class="list active" @tap="updateTap">
 				<div class="tit">
 					检查更新
 				</div>
@@ -48,24 +48,63 @@
 			</div>
 		</div>
 
-		<div class="out-login">
+		<div class="out-login" @tap="outLogin">
 			退出登录
 		</div>
+
+
+		<app-update v-if="updateShow"></app-update>
 	</view>
 </template>
 
 <script>
+	import appUpdate from "@/components/app-update/app-update";
+	import userApi from "@/api/userApi.js";
+	import {
+		checkUpdate
+	} from "@/utils/tool.js";
+	import {
+		appMixin
+	} from "@/utils/mixin";
 	export default {
+		mixins: [appMixin],
+		components: {
+			"app-update": appUpdate
+		},
 		data() {
 			return {
-
+				updateShow: false
 			};
 		},
-		methods:{
-			goto(name) {
-				this.$Router.push({
-					name
-				});
+		methods: {
+			updateTap: function() {
+				checkUpdate(true).then(res => {
+					this.updateShow = true;
+				})
+			},
+			updateClose: function() {
+				this.updateShow = false;
+			},
+			outLogin: function() {
+				uni.showModal({
+					title: "您确定要退出登录吗？",
+					showCancel: true,
+					success: data => {
+						if (data.confirm) {
+							uni.showLoading({
+								mask: true
+							})
+							userApi.loginOut().then((res) => {
+								this.setLoginKey({});
+								uni.clearStorageSync();
+								uni.hideLoading();
+								setTimeout(() => {
+									this.$Router.back(1);
+								}, 300)
+							})
+						}
+					}
+				})
 			}
 		}
 	}

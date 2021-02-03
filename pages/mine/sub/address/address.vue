@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<top-bar pageTitle="我的地址"></top-bar>
+		<top-bar :pageTitle="title"></top-bar>
 		<view class="list" @tap="toEdit(item)" v-for="item in addressList" :key="item.id">
 			<view class="content">
 				<view class="address">
@@ -17,6 +17,14 @@
 			</view>
 			<i class="icon icon-edit"></i>
 		</view>
+
+		<div class="null-status">
+			<image class="null-img" src="/static/images/null-img/address-null.png"></image>
+			<div class="text">
+				暂无地址
+			</div>
+		</div>
+
 		<view class="bottom-btn" @tap="toEdit(false)">
 			新增地址
 		</view>
@@ -28,7 +36,9 @@
 	export default {
 		data() {
 			return {
-				addressList: []
+				title: '',
+				addressList: [],
+				isSelect: false
 			};
 		},
 		methods: {
@@ -46,11 +56,18 @@
 			}
 		},
 		onLoad() {
-			uni.showLoading()
+			// uni.showLoading()
 			this.getList();
-			uni.$on('addressChange',()=>{
+			uni.$on('addressChange', () => {
 				this.getList();
 			})
+
+			this.isSelect = this.$Route.query.isSelect; //选择地址模式
+			if (this.isSelect) {
+				this.title = "选择地址"
+			} else {
+				this.title = "我的地址"
+			}
 		}
 	}
 </script>
@@ -103,6 +120,24 @@
 			margin-left: auto;
 			font-size: 34rpx;
 			color: $color-text2;
+		}
+	}
+	
+	.null-status {
+		@include flexCenter;
+		width: 86%;
+		padding: 36rpx 0;
+		flex-flow: column;
+		margin: 180rpx auto;
+		border-radius: 14rpx;
+		.null-img {
+			width: 320rpx;
+			height: 320rpx;
+		}
+		.text {
+			font-size: 32rpx;
+			color: $color-text3;
+			margin-top: 42rpx;
 		}
 	}
 

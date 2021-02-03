@@ -41,7 +41,7 @@
 	.receiving-method-main {
 		@include flexVtCenter;
 		width: 96%;
-		height: 148rpx;
+		height: 118rpx;
 		background-color: #fff;
 		margin: 0 auto;
 		padding: 0 18rpx;
@@ -76,7 +76,7 @@
 			position: relative;
 			display: flex;
 			width: 168rpx;
-			height: 58rpx;
+			height: 68rpx;
 			background-color: $color-green;
 			border-radius: 999px;
 			margin-left: auto;
