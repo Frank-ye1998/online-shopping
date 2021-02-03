@@ -33,6 +33,7 @@
 				<view class="hr"></view>
 			</view>
 		</view>
+		
 		<view class="car-img" v-if="isLoad && !carShop.length">
 			<image src="/static/images/null-img/data-null.png" class="imgscar"></image>
 			<view class="text">购物车空空如也</view>
@@ -82,8 +83,7 @@
 
 <script>
 	import shopperApi from "@/api/shopperApi.js";
-	import commodityView from "@/components/commodity-view/commodity-view.vue"
-
+	import commodityView from "@/components/commodity-view/commodity-view.vue";
 	import {
 		appMixin
 	} from "@/utils/mixin";

@@ -19,10 +19,7 @@
 			"path": "pages/mine/sub/address/address",
 			"name": "address"
 		},
-		{
-			"path": "pages/mine/sub/makeAddress/makeAddress",
-			"name": "makeAddress"
-		},
+
 		{
 			"path": "pages/mine/sub/coupon/coupon",
 			"name": "coupon"
@@ -38,6 +35,10 @@
 		{
 			"path": "pages/login/mobileLogin/mobileLogin",
 			"name": "mobileLogin"
+		},
+		{
+			"path": "pages/mine/sub/makeAddress/makeAddress",
+			"name": "makeAddress"
 		},
 		{
 			"path": "pages/shoppingCart/sub/submitOrder/submitOrder",

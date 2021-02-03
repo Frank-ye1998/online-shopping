@@ -3,13 +3,22 @@
 		<div @tap="locationTap" class="tap-view"></div>
 		<i class="icon icon-location"></i>
 		<view class="location">
-			<view class="text-1">
-				{{$currentAddress.name?$currentAddress.address + $currentAddress.detailAddress:$locationInfo.address}}
-
-			</view>
-			<view v-if="$currentAddress.name" class="text-2">
-				{{$currentAddress.tel}} {{$currentAddress.name}}
-			</view>
+			<template v-if="$receivingMethod">
+				<view class="text-1">
+					{{$currentAddress.name?$currentAddress.address + $currentAddress.detailAddress:$locationInfo.address}}
+				</view>
+				<view v-if="$currentAddress.name" class="text-2">
+					{{$currentAddress.tel}} {{$currentAddress.name}}
+				</view>
+			</template>
+			<template v-else>
+				<view class="text-1">
+					{{$currentStore.name}}
+				</view>
+				<view class="text-2">
+					{{$currentStore.address}}
+				</view>
+			</template>
 		</view>
 		<view @tap="methodChange" :class="['mode-switch',$receivingMethod?'':'mode-ask']">
 			<view class="text-1">
@@ -36,6 +45,8 @@
 					this.$Router.push({
 						name: "storeList"
 					})
+				} else {
+					this.setCurrentStore({});
 				}
 			},
 			locationTap: function() {
@@ -47,7 +58,9 @@
 						}
 					})
 				} else {
-					console.log('选择门店');
+					this.$Router.push({
+						name: 'storeList'
+					})
 				}
 			}
 		},
@@ -63,7 +76,7 @@
 		position: relative;
 		@include flexVtCenter;
 		width: 96%;
-		height: 118rpx;
+		height: 132rpx;
 		background-color: #fff;
 		margin: 0 auto;
 		padding: 0 18rpx;
@@ -91,12 +104,12 @@
 				font-size: 28rpx;
 				line-height: 28rpx;
 				color: $color-text1;
-				margin-bottom: 18rpx;
+				margin-bottom: 6rpx;
 			}
 
 			.text-2 {
 				font-size: 22rpx;
-				line-height: 22rpx;
+				line-height: 32rpx;
 				color: $color-text3;
 			}
 		}

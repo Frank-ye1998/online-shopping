@@ -173,6 +173,8 @@ function setAddressByDistance() {
 		})
 		if (!store.getters.$currentAddress.isUserSet) { //当前收货地址非用户设置
 			store.dispatch('setCurrentAddress', res.data[0]);//设置收货地址为当前最近的收货地址
+			console.log(res.data[0],'距离最近的收货地址');
+			
 		}
 		store.dispatch('setAddressList', res.data);//更新地址列表
 	})
