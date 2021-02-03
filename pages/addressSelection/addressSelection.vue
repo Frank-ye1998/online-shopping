@@ -61,7 +61,7 @@
 				searchValue: "",
 				nowCity: {},
 				locationXy: {},
-				webChangeStatus: true,
+				webChangeStatus: true
 			};
 		},
 		computed: {
@@ -102,17 +102,21 @@
 				let value = this.searchValue;
 				if (!value) return;
 				jsonpHandle("https://apis.map.qq.com/ws/place/v1/search", {
+					poi_options: 'address_format=short',
 					keyword: value,
 					boundary: `region(${this.nowCity.city},0)`,
 					filter: `category<>公交站`,
 					key: config.tencentMapKey,
 				}).then(res => {
 					console.log(res);
-					if (res&&res.data) {
-						this.nearList = res.data;
+					let resData = res.data || res;
+					if (resData.length) {
+						this.nearList = resData.filter(item => {
+							return item.address
+						});
 						this.locationXy = {
-							lat: res.data[0].location.lat,
-							lng: res.data[0].location.lng
+							lat: resData[0].location.lat,
+							lng: resData[0].location.lng
 						}
 					}
 				})
@@ -123,12 +127,15 @@
 				lng
 			}) {
 				jsonpHandle("https://apis.map.qq.com/ws/geocoder/v1/", {
+					poi_options: 'address_format=short',
 					location: `${lat},${lng}`,
 					key: config.tencentMapKey,
 					get_poi: 1
 				}).then(res => {
 					if (res.pois.length) {
-						this.nearList = res.pois;
+						this.nearList = res.pois.filter(item => {
+							return item.address
+						})
 						this.nowCity = res.ad_info;
 					}
 				})
@@ -136,29 +143,48 @@
 			//选择地点
 			nearTap: function(data) {
 				this.nearSelected = data;
-				this.getNearStore({
+				let nearbyStore = this.getNearStore({
 					lat: data.location.lat,
 					lng: data.location.lng
 				})
-				// uni.$emit("locationSelected", data); //传递选择结果
-				// setTimeout(() => {
-				// 	this.$Router.back(1);
-				// }, 500);
+				if (nearbyStore) {
+					uni.$emit("locationSelected", data, nearbyStore); //传递选择结果
+					setTimeout(() => {
+						this.$Router.back(1);
+					}, 500);
+				}
 			},
 			//获取所选地点附近门店
 			getNearStore: function({
 				lat,
 				lng
 			}) {
-				console.log(lat, lng);
+				let nearbyStore;
 				this.$storeList.forEach(item => {
-					console.log(calcDistance({
+					let distance = calcDistance({
 						lat1: lat,
 						lng1: lng,
 						lat2: Number(item.lat),
 						lng2: Number(item.lng)
-					}));
+					})
+					if (distance < 3 && nearbyStore) { //判断3km内是否有门店
+						if (distance < nearbyStore.distance) {
+							item.distance = distance;
+							nearbyStore = item;
+						}
+					} else if (distance < 3) {
+						item.distance = distance;
+						nearbyStore = item;
+					}
 				})
+				if (!nearbyStore) {
+					uni.showModal({
+						content: "当前地点附近暂无门店，请选择其他地点",
+						showCancel: false
+					})
+					return
+				}
+				return nearbyStore;
 			}
 		},
 

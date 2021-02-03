@@ -1,9 +1,12 @@
-/*接口预加载*/
+/*接口预加载&&部分初始化*/
 import store from "@/store";
 import userApi from "@/api/userApi.js";
 import productApi from "@/api/productApi.js";
 import shopperApi from "@/api/shopperApi.js";
 import orderApi from "@/api/orderApi.js";
+import {
+	setAddressByDistance
+} from "@/utils/tool.js";
 const preloading = function() {
 	//菜单
 	productApi
@@ -30,19 +33,7 @@ const preloading = function() {
 			store.dispatch('setUserInfo', res)
 		});
 		//收货地址
-		userApi.findAddress().then(res => {
-			res.isLoad = true;
-			if (!res.data || !res.data.length) return;
-			res.data.forEach(item => {
-				if (item.isDefault) {
-					res.withDefault = true; //标记有默认地址
-					item.isSelect = true; //使用默认地址
-				} else {
-					res.withDefault = false;
-				}
-			})
-			store.dispatch('setUserAddress', res);
-		})
+		setAddressByDistance();
 	}
 }
 

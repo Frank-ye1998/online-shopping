@@ -34,15 +34,30 @@ const actions = {
 	}, data) => {
 		return commit('SET_USER_INFO', data);
 	},
-	setUserAddress: ({
+	setAddressList: ({
 		commit
 	}, data) => {
-		return commit('SET_USER_ADDRESS', data);
+		return commit('SET_ADDRESS_LIST', data);
 	},
 	setStoreList: ({
 		commit
 	}, data) => {
 		return commit('SET_STORE_LIST', data);
+	},
+	setCurrentAddress: ({
+		commit
+	}, data) => {
+		return commit('SET_CURRENT_ADDRESS', data);
+	},
+	setCurrentStore: ({
+		commit
+	}, data) => {
+		return commit('SET_CURRENT_STORE', data);
+	},
+	setReceivingMethod: ({
+		commit
+	}, data) => {
+		return commit('SET_RECEIVING_METHOD', data);
 	},
 }
 

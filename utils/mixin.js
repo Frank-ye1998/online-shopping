@@ -13,7 +13,10 @@ export const appMixin = {
 			'$storeList',
 			'$menuList',
 			'$shoppingCart',
-			'$userAddress'
+			'$addressList',
+			'$currentAddress',
+			'$currentStore',
+			'$receivingMethod'
 		])
 	},
 	data() {
@@ -31,7 +34,10 @@ export const appMixin = {
 			'setStoreList',
 			'setMenuList',
 			'setShoppingCart',
-			'setUserAddress'
+			'setAddressList',
+			'setCurrentAddress',
+			'setCurrentStore',
+			'setReceivingMethod'
 		])
 	}
 }

@@ -1,15 +1,17 @@
 <template>
 	<view class="receiving-method-main">
+		<div @tap="locationTap" class="tap-view"></div>
 		<i class="icon icon-location"></i>
 		<view class="location">
 			<view class="text-1">
-				漕宝路日月光中心
+				{{$currentAddress.name?$currentAddress.address + $currentAddress.detailAddress:$locationInfo.address}}
+
 			</view>
-			<view class="text-2">
-				距您88m
+			<view v-if="$currentAddress.name" class="text-2">
+				{{$currentAddress.tel}} {{$currentAddress.name}}
 			</view>
 		</view>
-		<view @tap="isAsk=!isAsk" :class="['mode-switch',isAsk?'mode-ask':'']">
+		<view @tap="methodChange" :class="['mode-switch',$receivingMethod?'':'mode-ask']">
 			<view class="text-1">
 				外送
 			</view>
@@ -22,23 +24,43 @@
 </template>
 
 <script>
+	import {
+		appMixin
+	} from "@/utils/mixin";
 	export default {
-		data() {
-			return {
-				isAsk:false
-			};
-		},
-		watch:{
-			//监听配送方式变化
-			isAsk(nv,ov){
-				
+		mixins: [appMixin],
+		methods: {
+			methodChange: function() {
+				this.setReceivingMethod(!this.$receivingMethod);
+				if (!this.$receivingMethod) {
+					this.$Router.push({
+						name: "storeList"
+					})
+				}
+			},
+			locationTap: function() {
+				if (this.$receivingMethod) {
+					this.$Router.push({
+						name: 'address',
+						params: {
+							isSelect: true
+						}
+					})
+				} else {
+					console.log('选择门店');
+				}
 			}
+		},
+		created() {
+			console.log(this.$currentAddress, '收货地址');
+			console.log(this.$locationInfo, '定位信息');
 		}
 	}
 </script>
 
 <style lang="scss">
 	.receiving-method-main {
+		position: relative;
 		@include flexVtCenter;
 		width: 96%;
 		height: 118rpx;
@@ -46,6 +68,13 @@
 		margin: 0 auto;
 		padding: 0 18rpx;
 		border-radius: 16rpx;
+
+		.tap-view {
+			@include absVtCenter;
+			left: 2%;
+			width: 68%;
+			height: 80%;
+		}
 
 		.icon {
 			font-size: 34rpx;
@@ -80,6 +109,7 @@
 			background-color: $color-green;
 			border-radius: 999px;
 			margin-left: auto;
+
 			.text-1,
 			.text-2 {
 				@include flexCenter;
@@ -120,7 +150,8 @@
 			.text-2 {
 				color: $color-green !important;
 			}
-			.selected-bg{
+
+			.selected-bg {
 				transform: translateX(102%) translateY(-50%) !important;
 			}
 		}
