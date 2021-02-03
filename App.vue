@@ -18,9 +18,10 @@
 				})
 			},
 			$shoppingCart(nv, ov) {
+
 				let quantity = 0;
-				if(!nv.data) return;
-				nv.data.items.forEach(item => {
+				if(!nv) return;
+				nv.items.forEach(item => {
 					quantity += item.quantity;
 				})
 				setTabBar(String(quantity))

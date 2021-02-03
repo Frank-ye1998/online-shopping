@@ -9,7 +9,7 @@
     <view class="top-order-type-plc"></view>
     <swiper class="swiper-view" @change="swiperChange" :current="current" :duration="200">
       <swiper-item class="swiper-item" v-for="(item,index) in tabList" :key="item.id">
-        <scroll-view @scrolltolower="item.toBottom(item.id)" class="item-content" scroll-y="true">
+        <scroll-view class="item-content" scroll-y="true">
           <slot :name="`tab${index}`"></slot>
         </scroll-view>
       </swiper-item>
@@ -37,8 +37,8 @@ export default {
   },
   data() {
     return {
-      current: 0,
-      topStatus: 0,
+		current: 0,
+		topStatus: 0,
     };
   },
   methods: {

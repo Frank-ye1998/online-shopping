@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="false">
+		<swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="true">
 			<swiper-item class="swiper-item">
 				<image src="../../static/images/warpBar/banner_1.png" mode="widthFix" class="img"></image>
 			</swiper-item>

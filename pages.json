@@ -74,7 +74,27 @@
 			"path": "pages/firstLoad/firstLoad",
 			"name": "firstLoad"
 		}
-	],
+	    ,{
+            "path" : "pages/mine/sub/setting/sub/feedback/feedback",
+            "name": "feedback"
+        }
+        ,{
+            "path" : "pages/mine/sub/setting/sub/concern/concern",
+            "name": "concern"
+        }
+        ,{
+            "path" : "pages/mine/sub/setting/sub/concern/sub/service/service",
+			"name": "service"
+        }
+        ,{
+            "path" : "pages/mine/sub/setting/sub/concern/sub/privacy/privacy",
+            "name": "privacy"
+        }
+        ,{
+            "path" : "pages/mine/sub/setting/sub/concern/sub/qualifications/qualifications",
+            "name": "qualifications"
+        }
+    ],
 	"globalStyle": {
 		"navigationStyle": "custom",
 		"backgroundColor": "#F8F8F8",
