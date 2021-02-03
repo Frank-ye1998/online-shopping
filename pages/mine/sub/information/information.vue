@@ -48,7 +48,7 @@
 					手机号
 				</div>
 				<div class="right">
-					<div class="text1">十九</div>
+					<div class="text1"></div>
 					<i class="icon icon-to"></i>
 				</div>
 				<div class="hr"></div>
@@ -133,7 +133,7 @@
 			},
 			//修改用户性别接口
 			confirmsex: function() {
-				this.isLoad = false
+				
 				console.log(this.check,'check');
 				if (this.check === 0) {
 					uni.showToast({
@@ -141,19 +141,26 @@
 						icon: "none"
 					});
 					return
+					this.isLoad = true
+				}else{
+					this.isLoad = false
 				}
 				this.editUserInfo()
 
 			},
 			//修改用户昵称接口
 			confirmmodify: function() {
-				this.isModify = false
+				// this.isModify = false
 				if (!this.filter) {
 					uni.showToast({
 						title: "昵称不能为空",
 						icon: "none"
 					});
 					return
+					this.isModify = true
+					
+				}else{
+					this.isModify = false
 				}
 				this.editUserInfo()
 					

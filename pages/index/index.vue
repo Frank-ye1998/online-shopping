@@ -86,6 +86,7 @@
 <script>
 	import config from "@/config.js";
 	import userApi from "@/api/userApi.js";
+	import peApi from "@/api/peApi.js";
 	import topCarousel from "@/components/top-carousel/top-carousel.vue";
 	import {
 		appMixin
@@ -249,6 +250,26 @@
 			};
 		},
 		methods: {
+			//获取登录优惠券
+			getLoginCoupon:function(){
+				peApi
+					.getLoginCoupon({
+						
+					}).then((res) =>{
+						
+					})
+			},
+			//用户领取卡券
+			userCoupon:function(){
+				peApi
+					.userReceiveCoupon([{
+						id:493,
+						ruleId:1053,
+						couponName:"满100减20"
+					}]).then((res) =>{
+						console.log(res,'ressss');
+					})
+			},
 			getItem(index) {
 				this.arrStatus = index;
 			},
@@ -266,7 +287,8 @@
 			}
 		},
 		onLoad() {
-
+			this.getLoginCoupon(),
+			this.userCoupon()
 		},
 	};
 </script>

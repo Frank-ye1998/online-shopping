@@ -16,15 +16,14 @@
 				<i class="icon icon-to"></i>
 				<div class="hr"></div>
 			</div>
-			<div class="list active">
+			<div class="list active" @tap="clifeedback()">
 				<div class="tit">
 					我要反馈
 				</div>
 				<i class="icon icon-to"></i>
 				<div class="hr"></div>
-
 			</div>
-			<div class="list active">
+			<div class="list active" @tap="cliconcern()">
 				<div class="tit">
 					关于我们
 				</div>
@@ -77,6 +76,16 @@
 			};
 		},
 		methods: {
+			cliconcern:function(){
+				this.$Router.push({
+				  name: 'concern'
+				})
+			},
+			clifeedback:function() {
+				this.$Router.push({
+				  name: 'feedback'
+				})
+			},
 			updateTap: function() {
 				checkUpdate(true).then(res => {
 					this.updateShow = true;

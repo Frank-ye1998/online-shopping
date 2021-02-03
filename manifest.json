@@ -153,6 +153,14 @@
 						"^/pay/osInfo": "pay/osInfo"
 					}
 				},
+				"/pe": {
+					"target": "http://39.101.206.165:9012",
+					"ws": true,
+					"changeOrigin": true,
+					"pathRewrite": {
+						"^/pe": "pe"
+					}
+				},
 				"/wechat": {
 					"target": "http://39.101.206.165:9005",
 					"ws": true,

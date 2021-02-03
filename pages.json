@@ -1,5 +1,6 @@
 {
-	"pages": [{
+	"pages": [
+		{
 			"path": "pages/index/index",
 			"name": "index"
 		},
@@ -43,7 +44,8 @@
 		{
 			"path": "pages/shoppingCart/sub/submitOrder/submitOrder",
 			"name": "submitOrder"
-		}, {
+		},
+		{
 			"path": "pages/member/member",
 			"name": "member"
 		},
@@ -58,19 +60,46 @@
 		{
 			"path": "pages/mine/sub/myOrder/myOrder",
 			"name": "myOrder"
-		}, {
+		},
+		{
 			"path": "pages/mine/sub/setting/setting",
 			"name": "setting"
-		}, {
+		},
+		{
 			"path": "pages/mine/sub/information/information",
 			"name": "information"
-		}, {
+		},
+		{
 			"path": "pages/mine/sub/setting/sub/Safety/Safety",
 			"name": "safety"
-		}, {
+		},
+		{
+			"path": "pages/firstLoad/firstLoad",
+			"name": "firstLoad"
+		},
+		{
+			"path": "pages/mine/sub/setting/sub/feedback/feedback",
+			"name": "feedback"
+		},
+		{
+			"path": "pages/mine/sub/setting/sub/concern/concern",
+			"name": "concern"
+		},
+		{
+			"path": "pages/mine/sub/setting/sub/concern/sub/service/service",
+			"name": "service"
+		},
+		{
+			"path": "pages/mine/sub/setting/sub/concern/sub/privacy/privacy",
+			"name": "privacy"
+		},
+		{
+			"path": "pages/mine/sub/setting/sub/concern/sub/qualifications/qualifications",
+			"name": "qualifications"
+		},
+		{
 			"path": "pages/storeList/storeList",
 			"name": "storeList"
-
 		}
 	],
 	"globalStyle": {
@@ -84,7 +113,8 @@
 		"backgroundColor": "#ffffff",
 		"font-size": "20rpx",
 		"borderStyle": "white",
-		"list": [{
+		"list": [
+			{
 				"pagePath": "pages/index/index",
 				"text": "首页",
 				"iconPath": "/static/images/tabBar/tabA-false.png",
