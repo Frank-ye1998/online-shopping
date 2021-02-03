@@ -13,7 +13,7 @@ const productApi = {
     //查询类目下所有商品
     getCategoryData(data){
         const params = {
-            url: port+'/product/categoryProductList?sendWay=${sendWay}',
+            url: port+'/product/categoryProductList',
             method: 'get',
             data: data,
 			isFrom:true
@@ -21,10 +21,10 @@ const productApi = {
         return xhr.request(params)
     },
     
-    //多规格商品弹窗界面
-    goToGoodsDetail(data){
+	//商品详情
+    findAttrProduct(data){
         const params = {
-            url: port+'/product/findAttrProduct?id=${id}',
+            url: port+'/product/findAttrProduct',
             method: 'get',
             data: data,
 			isFrom:true

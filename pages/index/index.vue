@@ -287,8 +287,8 @@
 			}
 		},
 		onLoad() {
-			this.getLoginCoupon(),
-			this.userCoupon()
+			this.getLoginCoupon();
+			//this.userCoupon()
 		},
 	};
 </script>
