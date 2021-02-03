@@ -128,7 +128,7 @@
 				this.discountPrice = data.data.totalOriginPrice - data.data.totalPrice;
 			},
 			toSubmit: function() {
-				if (!this.$userAddress.data.length) {
+				if (!this.$addressList.data.length) {
 					this.$Router.push({
 						name: "address",
 						params: {

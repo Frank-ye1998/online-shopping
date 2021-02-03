@@ -19,8 +19,7 @@
 					地址
 				</view>
 				<view class="location-view" @tap="toMap()">
-					<view v-if="address.address">{{address.address}}</view>
-					<view v-else-if="address.map">{{address.map.address}}</view>
+					<view v-if="locationData.baseAddress">{{locationData.baseAddress}}</view>
 					<view v-else class="plc">点击选择地址</view>
 				</view>
 				<view class="icon icon-to"></view>
@@ -31,12 +30,12 @@
 				</view>
 				<input v-model="address.detailAddress" placeholder-class="plc" placeholder="请输入门牌号" class="input" type="text" />
 			</view>
-			<view class="input-list">
+			<!-- 			<view class="input-list">
 				<view class="tit">
 					默认地址
 				</view>
 				<switch class="switch" @change="defaultChange" :checked="isSelect" color="#08BF30" />
-			</view>
+			</view> -->
 		</view>
 
 		<view class="bottom-btns">
@@ -54,56 +53,46 @@
 <script>
 	import userApi from "@/api/userApi.js";
 	import {
+		setAddressByDistance
+	} from "@/utils/tool.js";
+	import {
 		appMixin
 	} from "@/utils/mixin";
 	export default {
 		mixins: [appMixin],
 		data() {
 			return {
-				pageTitle: '',
-				address: {},
-				isEdit: false,
-				isSelect: false
+				pageTitle: '', //页面标题
+				address: {}, //当前地址
+				isEdit: false, //页面模式
+				isSelect: false, //默认地址按钮
+				locationData: {}, //地址选择结果
+				isResetCurrentAddress: false //是否重设收货地址(修改当前收货地址时为true)
 			};
 		},
 		methods: {
-			defaultChange: function(e) {
-				this.isSelect = e.detail.value;
-			},
+			//保存地址
 			savaAddress: function() {
-				let obj = this.getRequestData();
-				obj.storeId = 96531;
+				let addressData = this.getRequestData();
+				if (!addressData) return;
 				uni.showLoading({
 					mask: true
 				})
 				if (this.isEdit) {
-					userApi.editAddress(obj).then(res => {
+					userApi.editAddress(addressData).then(res => {
 						if (res.successCode === '00') {
-							this.requestSuccess();
+							this.requestSuccess(res.data);
 						}
 					})
 				} else {
-					userApi.addAddress(obj).then(res => {
+					userApi.addAddress(addressData).then(res => {
 						if (res.successCode === '00') {
-							this.requestSuccess();
+							this.requestSuccess(res.data);
 						}
 					})
 				}
 			},
-
-			requestSuccess: function() {
-				uni.hideLoading();
-				uni.showToast({
-					title: this.isEdit ? "修改成功" : "添加成功",
-					mask: true,
-					duration: 1200
-				})
-				uni.$emit('addressChange')
-				setTimeout(() => {
-					this.$Router.back(1)
-				}, 1200)
-			},
-
+			//删除地址
 			deleteAddress: function() {
 				uni.showModal({
 					title: "确定要删除此地址吗",
@@ -122,7 +111,7 @@
 									mask: true,
 									duration: 1200
 								})
-								uni.$emit('addressChange')
+								setAddressByDistance();
 								setTimeout(() => {
 									this.$Router.back(1)
 								}, 1200)
@@ -131,13 +120,9 @@
 					}
 				})
 			},
-			toMap: function() {
-				this.$Router.push({
-					name: 'addressSelection'
-				})
-			},
+			//生成保存地址所需参数&&表单校验
 			getRequestData: function() {
-				var status = false;
+				var status = false; //表单验证状态
 				switch (false) {
 					case Boolean(this.address.name):
 						uni.showToast({
@@ -155,79 +140,115 @@
 						break;
 					case Boolean(this.address.detailAddress):
 						uni.showToast({
-							title: '请输入详细地址',
+							title: '请输入门牌号',
+							icon: 'none'
+						})
+						status = true;
+						break;
+					case Boolean(this.locationData.cityName):
+						uni.showToast({
+							title: '请选择地址',
 							icon: 'none'
 						})
 						status = true;
 						break;
 				}
-				if (status) return;
-				let obj;
-				if (this.isEdit) {
-					obj = {
-						id: this.address.id,
-						consignName: this.address.name,
-						consignTel: this.address.tel,
-						detailAddress: this.address.detailAddress,
-						postcode: '000000',
-						isDefault: this.isSelect,
-						baseAddress: this.address.map ?
-							`${this.address.map.ad_info.province} ${this.address.map.ad_info.city} ${this.address.map.ad_info.district}` :
-							`${this.address.provinceName} ${this.address.cityName} ${this.address.countyName}`,
-						provinceName: this.address.map ? this.address.map.ad_info.province : this.address.provinceName,
-						cityName: this.address.map ? this.address.map.ad_info.city : this.address.cityName,
-						countyName: this.address.map ? this.address.map.ad_info.district : this.address.countyName,
-						provinceId: this.address.map ? (this.address.map.ad_info.adcode.subString(0, 2) + '0000') : this.address.provinceId,
-						cityId: this.address.map ? (this.address.map.ad_info.adcode.subString(0, 4) + '00') : this.address.cityId,
-						countyId: this.address.map ? this.address.map.ad_info.adcode : this.address.countyId,
-						lng: this.address.map ? this.address.map.location.lng : this.address.lng,
-						lat: this.address.map ? this.address.map.location.lat : this.address.lat,
-						storeId: this.address.storeId,
-					}
+				if (status) return false;
+				let addressData = Object.assign({
+					id: this.address.id,
+					consignName: this.address.name,
+					consignTel: this.address.tel,
+					detailAddress: this.address.detailAddress,
+					postcode: '000000',
+					isDefault: this.isSelect,
+				}, this.locationData);
+				return addressData;
+			},
+			//保存地址成功处理
+			requestSuccess: function(res) {
+				if (this.address.isSelect) { //判断是否处于选择地址状态
+					this.setCurrentAddress(res).then(() => {
+						uni.hideLoading();
+						this.$Router.back(2);
+					})
 				} else {
-					if (!this.address.map) {
-						uni.showToast({
-							title: '请选择地区',
-							icon: 'none'
-						})
-						return
+					uni.hideLoading();
+					uni.showToast({
+						title: this.isEdit ? "修改成功" : "添加成功",
+						mask: true,
+						duration: 1200
+					})
+					//刷新当前收货地址
+					if (this.isResetCurrentAddress) {
+						this.setCurrentAddress(res);
 					}
-					obj = {
-						consignName: this.address.name,
-						consignTel: this.address.tel,
-						detailAddress: this.address.detailAddress,
-						postcode: '000000',
-						isDefault: this.isSelect,
-						baseAddress: `${this.address.map.ad_info.province} ${this.address.map.ad_info.city} ${this.address.map.ad_info.district}`,
-						provinceName: this.address.map.ad_info.province,
-						cityName: this.address.map.ad_info.city,
-						countyName: this.address.map.ad_info.district,
-						provinceId: this.address.map.ad_info.adcode.substring(0, 2) + '0000',
-						cityId: this.address.map.ad_info.adcode.substring(0, 4) + '00',
-						countyId: this.address.map.ad_info.adcode,
-						lng: this.address.map.location.lng,
-						lat: this.address.map.location.lat,
-						storeId: this.address.storeId
-					}
-				}
-				return obj;
+					setTimeout(() => {
+						this.$Router.back(1)
+					}, 1200)
+				};
+				setAddressByDistance(); //刷新地址列表
+			},
+			//默认地址change
+			defaultChange: function(e) {
+				this.isSelect = e.detail.value;
+			},
+			//跳转到地图页面
+			toMap: function() {
+				this.$Router.push({
+					name: 'addressSelection'
+				})
 			}
 		},
 		onLoad() {
+			//获取页面参数
 			this.address = this.$Route.query;
-			if (!this.$userAddress.withDefault && !this.address.name) {
-				this.isSelect = true;
-			} else {
-				this.isSelect = this.address.isDefault;
-			}
+			console.log(this.address);
+			//设置当前页面模式
 			if (this.address.name) {
 				this.pageTitle = "编辑地址"
 				this.isEdit = true;
+				//提取locationData
+				this.locationData = {
+					baseAddress: this.address.address,
+					provinceName: this.address.provinceName,
+					cityName: this.address.cityName,
+					countyName: this.address.countyName,
+					provinceId: this.address.provinceId,
+					cityId: this.address.cityId,
+					countyId: this.address.countyId,
+					lng: this.address.lng,
+					lat: this.address.lat,
+					storeId: this.address.storeId
+				}
+				//判断此地址是否为当前收货地址
+				if (this.address.id === this.$currentAddress.id) {
+					console.log("修改当前收货地址");
+					this.isResetCurrentAddress = true;
+				}
 			} else {
 				this.pageTitle = "新增地址"
 			}
-			uni.$on('locationSelected', res => {
-				this.$set(this.address, 'map', res);
+			//设置默认地址是否默认开启
+			if (!this.$addressList.withDefault && !this.address.name) { //当前无默认地址&&新增模式
+				this.isSelect = true;
+			} else {
+				this.isSelect = this.address.isDefault || false;
+			}
+			//监听地图位置选择结果
+			uni.$on('locationSelected', (mapRes, nearbyStore) => {
+				//提取locationData(地址选择结果)
+				this.locationData = {
+					baseAddress: mapRes.address + mapRes.title,
+					provinceName: mapRes.ad_info.province,
+					cityName: mapRes.ad_info.city,
+					countyName: mapRes.ad_info.district,
+					provinceId: String(mapRes.ad_info.adcode).substring(0, 2) + '0000',
+					cityId: String(mapRes.ad_info.adcode).substring(0, 4) + '00',
+					countyId: String(mapRes.ad_info.adcode),
+					lng: mapRes.location.lng,
+					lat: mapRes.location.lat,
+					storeId: nearbyStore.code
+				}
 			})
 		},
 	}
