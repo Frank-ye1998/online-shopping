@@ -21,9 +21,9 @@ Vue.use(VueJsonp)
 
 // #ifdef H5
 //Vconsole
-import Vconsole from 'vconsole'
-let vConsole = new Vconsole()
-Vue.use(vConsole)
+// import Vconsole from 'vconsole'
+// let vConsole = new Vconsole()
+// Vue.use(vConsole)
 // #endif
 
 
@@ -34,7 +34,6 @@ import stepper from '@/components/stepper/stepper.vue'
 Vue.component('stepper', stepper)
 import topStatusBar from '@/components/top-status-bar/top-status-bar.vue'
 Vue.component('top-status-bar', topStatusBar)
-
 
 Vue.config.productionTip = false
 App.mpType = 'app'

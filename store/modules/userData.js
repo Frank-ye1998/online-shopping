@@ -5,7 +5,7 @@ const userData = {
 		locationXy: {},
 		locationInfo: {},
 		userInfo: {},
-		userAddress: []
+		addressList: []
 	},
 	mutations: {
 		'SET_DEVICE_INFO': (state, info) => {
@@ -23,8 +23,8 @@ const userData = {
 		'SET_USER_INFO': (state, info) => {
 			state.userInfo = info;
 		},
-		'SET_USER_ADDRESS': (state, info) => {
-			state.userAddress = info;
+		'SET_ADDRESS_LIST': (state, info) => {
+			state.addressList = info;
 		},
 	}
 }

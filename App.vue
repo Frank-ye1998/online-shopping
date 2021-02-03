@@ -1,13 +1,14 @@
 <script>
 	import {
-		getLocationByXy
+		getLocationByXy,
+		calcDistance
 	} from "@/utils/tool.js";
-	import {
-		appMixin
-	} from "@/utils/mixin";
 	import {
 		preloading
 	} from "@/utils/preloading";
+	import {
+		appMixin
+	} from "@/utils/mixin";
 	export default {
 		mixins: [appMixin],
 		watch: {
@@ -17,11 +18,12 @@
 					this.setLocationInfo(res);
 				})
 			},
+			//监听购物车，设置购物车tabbar数量角标
 			$shoppingCart(nv, ov) {
 
 				let quantity = 0;
-				if(!nv) return;
-				nv.items.forEach(item => {
+				if (!nv || !nv.data) return;
+				nv.data.items.forEach(item => {
 					quantity += item.quantity;
 				})
 				setTabBar(String(quantity))
@@ -37,6 +39,10 @@
 						}
 					});
 				}
+			},
+			//监听地址列表变化
+			$addressList(nv, ov) {
+				console.log(nv, '地址列表');
 			}
 		},
 		onLaunch: function() {

@@ -106,6 +106,24 @@ function jsonpHandle(url, data) {
 	//#endif
 }
 
+//计算两个坐标之间的距离
+function calcDistance({
+	lat1,
+	lng1,
+	lat2,
+	lng2
+}) {
+	var radLat1 = lat1 * Math.PI / 180.0;
+	var radLat2 = lat2 * Math.PI / 180.0;
+	var a = radLat1 - radLat2;
+	var b = lng1 * Math.PI / 180.0 - lng2 * Math.PI / 180.0;
+	var s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(
+		b / 2), 2)));
+	s = s * 6378.137;
+	s = Math.round(s * 10000) / 10000;
+	return s
+};
+
 //以webview打开页面
 function openWebView(url, title) {
 	let view = plus.webview.create(url, 'pay', {
@@ -134,13 +152,39 @@ function openWebView(url, title) {
 		uni.$emit('web_close', true)
 		plus.webview.close(view, 'fade-out', 250, 'auto');
 	};
+};
+
+//获取地址列表&&根据当前定位距离设置默认收货地址
+function setAddressByDistance() {
+	userApi.findAddress().then(res => {
+		if (!res.data || !res.data.length) return;
+		res.data.forEach(item => {
+			//获取地址与当前定位距离
+			item.userDistance = calcDistance({
+				lat1: Number(item.lat),
+				lng1: Number(item.lng),
+				lat2: store.getters.$locationXy.lat,
+				lng2: store.getters.$locationXy.lng
+			})
+		})
+		//根据距离排序
+		res.data.sort((a, b) => {
+			return a.userDistance - b.userDistance
+		})
+		if (!store.getters.$currentAddress.isUserSet) { //当前收货地址非用户设置
+			store.dispatch('setCurrentAddress', res.data[0]);//设置收货地址为当前最近的收货地址
+		}
+		store.dispatch('setAddressList', res.data);//更新地址列表
+	})
 }
 
 export {
-	timeCv,//时间戳转换
-	getNonceStr,//生成随机20位字符串
-	getLocationByXy,//坐标逆解析
-	checkUpdate,//检查版本更新并获取更新数据
-	jsonpHandle,//兼容处理jsonp请求
-	openWebView,//打开webview
+	timeCv, //时间戳转换
+	getNonceStr, //生成随机20位字符串
+	getLocationByXy, //坐标逆解析
+	checkUpdate, //检查版本更新并获取更新数据
+	jsonpHandle, //兼容处理jsonp请求
+	calcDistance, //计算两个坐标之间的距离
+	openWebView, //打开webview
+	setAddressByDistance, //根据当前定位距离设置默认收货地址
 };

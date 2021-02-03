@@ -1,31 +1,31 @@
 <template>
 	<view>
 		<top-bar :pageTitle="title"></top-bar>
-		<view class="list" @tap="toEdit(item)" v-for="item in addressList" :key="item.id">
-			<view class="content">
-				<view class="address">
-					{{item.address}} {{item.detailAddress}}
-				</view>
-				<view class="info">
-					<view class="type" v-if="item.isDefault">
-						默认地址
+		<template v-if="$addressList.length">
+			<view class="list" @tap="listTap(item)" v-for="item in $addressList" :key="item.id">
+				<view class="content">
+					<view class="address">
+						{{item.address}} {{item.detailAddress}}
 					</view>
-					<view class="text">
-						{{item.name}} {{item.tel}}
+					<view class="info">
+						<view class="text">
+							{{item.name}} {{item.tel}}
+						</view>
 					</view>
 				</view>
+				<div class="edit-btn" @tap.stop="toEdit(item)">
+					<i class="icon icon-edit"></i>
+				</div>
 			</view>
-			<i class="icon icon-edit"></i>
-		</view>
-
-		<div class="null-status">
+		</template>
+		<div v-else class="null-status">
 			<image class="null-img" src="/static/images/null-img/address-null.png"></image>
 			<div class="text">
 				暂无地址
 			</div>
 		</div>
 
-		<view class="bottom-btn" @tap="toEdit(false)">
+		<view class="bottom-btn" @tap="toEdit({})">
 			新增地址
 		</view>
 	</view>
@@ -33,37 +33,36 @@
 
 <script>
 	import userApi from "@/api/userApi.js"
+	import {
+		appMixin
+	} from "@/utils/mixin";
 	export default {
+		mixins: [appMixin],
 		data() {
 			return {
 				title: '',
-				addressList: [],
-				isSelect: false
+				isSelect: false //页面模式 选择地址||default
 			};
 		},
 		methods: {
-			getList: function() {
-				userApi.findAddress().then(res => {
-					uni.hideLoading();
-					this.addressList = res.data || [];
-				})
+			listTap: function(item) {
+				if (this.isSelect) {
+					item.isUserSet = true;
+					this.setCurrentAddress(item);
+					this.$Router.back(1);
+				}
 			},
 			toEdit: function(data) {
+				if (this.isSelect) {
+					data.isSelect = true;
+				}
 				this.$Router.push({
 					name: 'makeAddress',
-					params: {
-						name:data?data:''
-					}
+					params: data
 				})
 			}
 		},
 		onLoad() {
-			// uni.showLoading()
-			this.getList();
-			uni.$on('addressChange', () => {
-				this.getList();
-			})
-
 			this.isSelect = this.$Route.query.isSelect; //选择地址模式
 			if (this.isSelect) {
 				this.title = "选择地址"
@@ -118,13 +117,17 @@
 			}
 		}
 
-		.icon-edit {
+		.edit-btn {
 			margin-left: auto;
-			font-size: 34rpx;
-			color: $color-text2;
+			padding: 14rpx;
+
+			.icon-edit {
+				font-size: 34rpx;
+				color: $color-text2;
+			}
 		}
 	}
-	
+
 	.null-status {
 		@include flexCenter;
 		width: 86%;
@@ -132,10 +135,12 @@
 		flex-flow: column;
 		margin: 180rpx auto;
 		border-radius: 14rpx;
+
 		.null-img {
 			width: 320rpx;
 			height: 320rpx;
 		}
+
 		.text {
 			font-size: 32rpx;
 			color: $color-text3;

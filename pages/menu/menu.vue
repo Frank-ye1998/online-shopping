@@ -167,10 +167,11 @@
 			}
 		},
 		onLoad: function() {
+			console.log(this.$menuList);
 			if (this.$menuList.isLoad) {
 				this.setList(this.$menuList.data);
 			} else {
-				uni.showLoading()
+				// uni.showLoading()
 				this.getList();
 			}
 		},

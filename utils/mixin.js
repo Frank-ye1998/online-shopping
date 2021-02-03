@@ -10,9 +10,13 @@ export const appMixin = {
 			'$locationXy',
 			'$locationInfo',
 			'$userInfo',
+			'$storeList',
 			'$menuList',
 			'$shoppingCart',
-			'$userAddress'
+			'$addressList',
+			'$currentAddress',
+			'$currentStore',
+			'$receivingMethod'
 		])
 	},
 	data() {
@@ -27,9 +31,13 @@ export const appMixin = {
 			'setLocationXy',
 			'setLocationInfo',
 			'setUserInfo',
+			'setStoreList',
 			'setMenuList',
 			'setShoppingCart',
-			'setUserAddress'
+			'setAddressList',
+			'setCurrentAddress',
+			'setCurrentStore',
+			'setReceivingMethod'
 		])
 	}
 }

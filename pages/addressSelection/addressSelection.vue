@@ -43,8 +43,9 @@
 	} from "@/utils/mixin";
 	import config from "@/config.js"; //配置文件
 	import {
-		jsonpHandle
-	} from "../../utils/tool.js"
+		jsonpHandle,
+		calcDistance
+	} from "../../utils/tool.js";
 	import AddressPicker from "@/components/address-picker/address-picker"; //地区选择组件
 	export default {
 		mixins: [appMixin],
@@ -60,16 +61,16 @@
 				searchValue: "",
 				nowCity: {},
 				locationXy: {},
-				webChangeStatus: true,
+				webChangeStatus: true
 			};
 		},
 		computed: {
 			//原生map组件 中心控件参数
 			controlData() {
-				let deviceWidth = this.$deviceInfo.windowWidth;//设备宽度
-				let rpxPx = deviceWidth / 750;//每rpx对应的实际像素
-				let controlTop = rpxPx * 600 * 0.5 - 52;//计算控件位置
-				let controlLeft = deviceWidth * 0.5 - 13;//……
+				let deviceWidth = this.$deviceInfo.windowWidth; //设备宽度
+				let rpxPx = deviceWidth / 750; //每rpx对应的实际像素
+				let controlTop = rpxPx * 600 * 0.5 - 52; //计算控件位置
+				let controlLeft = deviceWidth * 0.5 - 13; //……
 				return [{
 					id: 'mapCenter',
 					position: {
@@ -101,28 +102,24 @@
 				let value = this.searchValue;
 				if (!value) return;
 				jsonpHandle("https://apis.map.qq.com/ws/place/v1/search", {
+					poi_options: 'address_format=short',
 					keyword: value,
 					boundary: `region(${this.nowCity.city},0)`,
 					filter: `category<>公交站`,
 					key: config.tencentMapKey,
 				}).then(res => {
-					if (res) {
-						this.nearList = res;
+					console.log(res);
+					let resData = res.data || res;
+					if (resData.length) {
+						this.nearList = resData.filter(item => {
+							return item.address
+						});
 						this.locationXy = {
-							lat: res[0].location.lat,
-							lng: res[0].location.lng
+							lat: resData[0].location.lat,
+							lng: resData[0].location.lng
 						}
 					}
 				})
-			},
-			//选择地点
-			nearTap: function(data) {
-				this.nearSelected = data;
-				uni.$emit("locationSelected", data); //传递选择结果
-				setTimeout(() => {
-					this.$Router.back(1);
-				}, 500);
-				console.log(data);
 			},
 			//坐标逆解析
 			getLocationByXy: function({
@@ -130,22 +127,71 @@
 				lng
 			}) {
 				jsonpHandle("https://apis.map.qq.com/ws/geocoder/v1/", {
+					poi_options: 'address_format=short',
 					location: `${lat},${lng}`,
 					key: config.tencentMapKey,
 					get_poi: 1
 				}).then(res => {
 					if (res.pois.length) {
-						this.nearList = res.pois;
+						this.nearList = res.pois.filter(item => {
+							return item.address
+						})
 						this.nowCity = res.ad_info;
 					}
 				})
+			},
+			//选择地点
+			nearTap: function(data) {
+				this.nearSelected = data;
+				let nearbyStore = this.getNearStore({
+					lat: data.location.lat,
+					lng: data.location.lng
+				})
+				if (nearbyStore) {
+					uni.$emit("locationSelected", data, nearbyStore); //传递选择结果
+					setTimeout(() => {
+						this.$Router.back(1);
+					}, 500);
+				}
+			},
+			//获取所选地点附近门店
+			getNearStore: function({
+				lat,
+				lng
+			}) {
+				let nearbyStore;
+				this.$storeList.forEach(item => {
+					let distance = calcDistance({
+						lat1: lat,
+						lng1: lng,
+						lat2: Number(item.lat),
+						lng2: Number(item.lng)
+					})
+					if (distance < 3 && nearbyStore) { //判断3km内是否有门店
+						if (distance < nearbyStore.distance) {
+							item.distance = distance;
+							nearbyStore = item;
+						}
+					} else if (distance < 3) {
+						item.distance = distance;
+						nearbyStore = item;
+					}
+				})
+				if (!nearbyStore) {
+					uni.showModal({
+						content: "当前地点附近暂无门店，请选择其他地点",
+						showCancel: false
+					})
+					return
+				}
+				return nearbyStore;
 			}
 		},
 
 		onReady() {
 			//APP端地图拖动处理
 			//#ifdef APP-PLUS
-			setTimeout(() => {//等待地图初始化完成
+			setTimeout(() => { //等待地图初始化完成
 				const mapContext = uni.createMapContext('uniMap', this).$getAppMap();
 				mapContext.onstatuschanged = (event) => {
 					console.log("拖动地图");

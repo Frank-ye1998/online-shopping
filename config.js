@@ -3,7 +3,7 @@ const appVersion = '1.0.0';
 const domain = "";
 // #endif
 // #ifdef APP-PLUS
-const domain = "http://10.1.44.113";
+const domain = "http://10.1.44.93";
 // #endif
 
 const tencentMapKey = "TAABZ-4MZC6-ZLCSK-EUWXZ-CBJ6H-O6FIR";
