@@ -20,6 +20,7 @@
 			},
 			//监听购物车，设置购物车tabbar数量角标
 			$shoppingCart(nv, ov) {
+
 				let quantity = 0;
 				if (!nv || !nv.data) return;
 				nv.data.items.forEach(item => {
