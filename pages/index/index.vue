@@ -80,6 +80,13 @@
 			</div>
 		</div>
 		<div class="bottom-login-plc" v-if="bottomLogin"></div>
+		<view class="mask"  v-show="isMask">
+			<view class="receive">
+				<view class="clirece" @tap="clireceive()">
+					立即领取
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -100,6 +107,7 @@
 		},
 		data() {
 			return {
+				isMask:true,
 				bottomLogin: false, //底部登录提示
 				shopArr: [
 					[{
@@ -250,6 +258,23 @@
 			};
 		},
 		methods: {
+			//立即领取优惠券 ---- 用户领取卡券
+			clireceive:function(){
+				peApi
+					.userReceiveCoupon([{
+						id:493,
+						ruleId:1053,
+						couponName:"满100减20"
+					}]).then((res) =>{
+						uni.showToast({
+							title: "领取成功",
+						});
+						this.isMask = false
+						
+						
+					})
+				
+			},
 			//获取登录优惠券
 			getLoginCoupon:function(){
 				peApi
@@ -259,17 +284,7 @@
 						
 					})
 			},
-			//用户领取卡券
-			userCoupon:function(){
-				peApi
-					.userReceiveCoupon([{
-						id:493,
-						ruleId:1053,
-						couponName:"满100减20"
-					}]).then((res) =>{
-						console.log(res,'ressss');
-					})
-			},
+			
 			getItem(index) {
 				this.arrStatus = index;
 			},
@@ -287,8 +302,7 @@
 			}
 		},
 		onLoad() {
-			this.getLoginCoupon(),
-			this.userCoupon()
+			this.getLoginCoupon()
 		},
 	};
 </script>
@@ -645,6 +659,32 @@
 			color: #fff;
 			border-radius: 8rpx;
 			background-color: $color-green;
+		}
+	}
+	.mask{
+		@include mask;
+		.receive{
+			width: 80%;
+			background: #ffffff;
+			height: 486rpx;
+			border-radius: 14rpx;
+			position: absolute;
+			top: 20%;
+			left: 50%;
+			transform: translateX(-50%);
+			padding: 0 24rpx;
+			.clirece{
+				width: 90%;
+				height: 120rpx;
+				background: #50e1b8;
+				margin: 60rpx auto;
+				border-radius: 20rpx;
+				text-align: center;
+				line-height: 120rpx;
+				color: #ffffff;
+				letter-spacing: 4rpx;
+				margin-top: 300rpx;
+			}
 		}
 	}
 </style>
