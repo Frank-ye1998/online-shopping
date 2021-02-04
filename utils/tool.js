@@ -4,7 +4,7 @@ import store from "@/store";
 import userApi from "@/api/userApi.js";
 
 //时间戳转换
-function timeCv(time) {
+function timeCv(time,type) {
 	let date = new Date(time)
 	var obj = {
 		"Y": date.getFullYear(),
@@ -18,6 +18,10 @@ function timeCv(time) {
 			obj[i] = '0' + obj[i]
 		}
 	}
+	if(type==='hm'){
+		return `${obj.h}:${obj.m}`
+	}
+	
 	return `${obj.Y}-${obj.M}-${obj.D} ${obj.h}:${obj.m}`
 }
 

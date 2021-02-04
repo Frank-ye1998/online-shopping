@@ -1,14 +1,18 @@
 <template>
 	<view>
 		<top-bar pageTitle="确认订单"></top-bar>
-		<view class="top">
-			立即送达(约15:50送达)
+		<view class="top" v-if="$receivingMethod">
+			立即送达(约{{deliveryTimeText}}送达)
 		</view>
-		<receiving-method class="receiving-method"></receiving-method>
+		<view class="top" v-else>
+			立即自取(约{{takeTimeText}}可取)
+		</view>
+
+		<receiving-method :deliveryTimeText="deliveryTimeText" :showDate="true" class="receiving-method"></receiving-method>
+
 		<view class="commodity-list view">
 			<view class="tips">系统已为您选择最优折扣方案</view>
-
-			<view class="list" v-for="item in shoppingList.items" :key="item.skuCode">
+			<view class="list" v-for="item in $shoppingCart.items" :key="item.skuCode">
 				<img-view class="list-img" :src="item.badgeImg"></img-view>
 				<view class="info">
 					<view class="text-1">
@@ -33,17 +37,17 @@
 					会员优惠
 				</view>
 			</view>
-			<div class="shipping">运费 ¥{{shoppingList.deliveryFee}}</div>
+			<div class="shipping">运费 ¥{{$shoppingCart.deliveryFee}}</div>
 
 			<view class="all-price">
 				<view class="text-1">
 					小计
 				</view>
 				<view class="new-price">
-					¥{{shoppingList.totalPrice}}
+					¥{{$shoppingCart.totalPrice}}
 				</view>
-				<view class="old-price" v-if="shoppingList.totalPrice!==shoppingList.totalOriginPrice">
-					¥{{shoppingList.totalOriginPrice}}
+				<view class="old-price" v-if="$shoppingCart.totalPrice!==$shoppingCart.totalOriginPrice">
+					¥{{$shoppingCart.totalOriginPrice}}
 				</view>
 			</view>
 		</view>
@@ -87,16 +91,41 @@
 
 		<view class="to-pay-btn">
 			<view class="text-1">
-				总价¥{{shoppingList.totalOriginPrice}} <text class="discount-text" v-if="shoppingList.totalOriginPrice-shoppingList.totalPrice>0">优惠¥{{shoppingList.totalOriginPrice-shoppingList.totalPrice}}</text>
+				总价¥{{$shoppingCart.totalOriginPrice}} <text class="discount-text" v-if="$shoppingCart.totalOriginPrice-$shoppingCart.totalPrice>0">优惠¥{{$shoppingCart.totalOriginPrice-$shoppingCart.totalPrice}}</text>
 			</view>
 			<view class="text-2">
-				实付¥{{shoppingList.totalPrice}}
+				实付¥{{$shoppingCart.totalPrice}}
 			</view>
 			<view class="pay-btn" @tap="submitOrder">
 				去支付
 			</view>
 		</view>
 		<view class="to-pay-btn-plc"></view>
+
+		<div class="time-picker">
+			<div class="picker-view">
+				<div class="tit">
+					选择{{$receivingMethod?'送达':'自取'}}时间
+					<i class="icon icon-close"></i>
+				</div>
+				<div class="picker-main">
+					<div class="days">
+						<div class="list">
+							今天02月04日
+						</div>
+					</div>
+					<scroll-view class="scroll-view" scroll-y="true">
+						<div class="time-list">
+							尽快送达
+							<div class="hr"></div>
+						</div>
+					</scroll-view>
+				</div>
+				<div class="time-btn">
+					确定
+				</div>
+			</div>
+		</div>
 
 	</view>
 </template>
@@ -106,6 +135,7 @@
 	import wx from "weixin-js-sdk"; //微信支付js-sdk
 	// #endif
 	import {
+		timeCv,
 		openWebView,
 		getNonceStr
 	} from "@/utils/tool.js";
@@ -115,23 +145,41 @@
 	import weChatApi from "@/api/weChatApi.js";
 	import userApi from "@/api/userApi.js"
 	import receivingMethod from "@/components/receiving-method/receiving-method.vue"; //切换地址组件
+	import {
+		appMixin
+	} from "@/utils/mixin";
 	export default {
+		mixins: [appMixin],
 		components: {
 			"receiving-method": receivingMethod,
 		},
 		data() {
 			return {
-				shoppingList: [],
-				address: {}
+				address: {},
+				deliveryTime: 0,
+				deliveryTimeText: '',
+				takeTime: 0,
+				takeTimeText: ''
 			};
 		},
 		methods: {
+			refreshTime: function() {
+				this.deliveryTime = this.deliveryTime + 60000;
+				this.deliveryTimeText = this.getHmTime(this.deliveryTime);
+				this.takeTime = this.takeTime + 60000;
+				this.takeTimeText = this.getHmTime(this.takeTimeText);
+			},
+
+			getHmTime: function(time) {
+				let timeText = timeCv(time);
+				return timeText.substring(timeText.length - 5, timeText.length)
+			},
 			submitOrder: function() {
 				uni.showLoading({
 					mask: true,
 					title: "正在提交订单"
 				})
-				const orderInfo = this.shoppingList;
+				const orderInfo = this.$shoppingCart;
 				orderApi
 					.postOrder({
 						remark: "",
@@ -156,106 +204,70 @@
 					})
 					.then((res) => {
 						uni.hideLoading();
-						// openWebView(res.data.data + '&redirect_url=http://10.1.50.57:8080/', "支付")
-						// uni.requestPayment({
-						// 	provider: 'wxpay',
-						// 	orderInfo: JSON.stringify(res.data.data),
-						// 	success: (res) => {
-						// 		console.log(res);
-						// 	},
-						// 	fail: (err) => {
-						// 		console.log(err);
-						// 		uni.showToast({
-						// 			title: '支付失败',
-						// 			position: 'center',
-						// 			duration: 1500
-						// 		});
-						// 	}
-						// });
-
-						// wx.chooseWXPay({
-						// 	timestamp: res.data.timestamp,
-						// 	nonceStr: res.data.noncestr,
-						// 	package: `prepay_id=res.data.partnerid`,
-						// 	signType: "SHA1",
-						// 	paySign: res.data.sign,
-						// 	success: (res) => {
-						// 		alert(JSON.stringify(res));
-						// 	},
-						// });
 					})
 					.catch((err) => {
 						console.log(err);
 					});
 			},
-			//重新发起支付
-			toPay: function({
-				orderNo,
-				payAmount
-			}) {
-				orderApi
-					.payOrder({
-						orderNo: orderNo,
-						payAmount: payAmount,
-						payMethod: 2,
+			createPickerData: function() {
+				let store;
+				if (this.$receivingMethod) {
+					store = this.$storeList.find(item => { //当前收货地址所属门店信息
+						return item.code == this.$currentAddress.storeId
 					})
-					.then((res) => {
-						console.log(res);
-					});
-			},
-			//获取购物车数据
-			getShoppingList: function() {
-				shopperApi.getCartInfo().then((res) => {
-					this.shoppingList = res.data;
-				});
-			},
-			//获取门店列表
-			getStoreList: function() {
-				orderApi.getStoreList().then((res) => {
-					//console.log(res);
-				});
-			},
-			getAddress: function() {
-				userApi.findAddress().then(res => {
-					console.log(res);
-					if (!res.data.length) {
-						this.address = false;
+				} else {
+					store = this.$currentStore;
+				}
+
+				const now = new Date();
+				const nowDate = parseInt((new Date().getTime() / 1000).toString());
+
+				console.log(store);
+				let storeStart = Number(store.openingBeginTime.substring(0, 2)); //门店营业开始小时
+				let storeEnd = Number(store.openingEndTime.substring(0, 2)); //……结束……
+				let today = nowDate - (nowDate % 86400) - 3600 * 8; //今天0点时间戳
+				let tomorrow = today + 86400; //明天0点时间戳
+				let todayStart = nowDate + (600 - nowDate % 600) + 30 * 60; //today + storeStart * 3600; //今天门店营业开始时间戳
+				let todayEnd = today + storeEnd * 3600; //……结束……
+				let tomorrowStart = tomorrow + storeStart * 3600; //today + storeStart * 3600; //今天门店营业开始时间戳
+				let tomorrowEnd = tomorrow + storeEnd * 3600; //……结束……
+
+				console.log(createArr(todayStart, todayEnd, true));
+				console.log(createArr(tomorrowStart, tomorrowEnd, false));
+				
+				//生成数组
+				function createArr(start, end, isToday) {
+					console.log(arguments);
+					let arr = [];
+					for (let i = 0; i <= end - start; i += 600) {
+						arr.push({
+							time: (start + i) * 1000,
+							timeText: timeCv((start + i) * 1000, 'hm')
+						})
 					}
-				})
+					if (isToday) {
+						arr.unshift({
+							time: nowDate * 1000 + (30 * 60000),
+							timeText: timeCv(nowDate * 1000 + (30 * 60000), 'hm')
+						})
+					}
+					return arr
+				}
 			}
 		},
 		onLoad() {
-			this.getShoppingList();
-			this.getStoreList();
-			this.getAddress();
-			//获取ticket
-			// weChatApi.getJsApiTicket().then((res) => {
-			// 	//微信JS-SDK初始化
-			// 	let time = parseInt(new Date().getTime() / 1000);
-			// 	let noncestr = getNonceStr();
-			// 	let str =
-			// 		`jsapi_ticket=${res.data
-			//      }&noncestr=${noncestr}&timestamp=${time}&url=${location.href.split("#")[0]
-			//      }`;
-			// 	let signature = sha1(str);
+			//订单时间初始化
+			this.deliveryTime = new Date().getTime() + 3600000;
+			this.deliveryTimeText = this.getHmTime(this.deliveryTime);
+			this.takeTime = new Date().getTime() + 3600000;
+			this.takeTimeText = this.getHmTime(this.takeTime);
+			setTimeout(() => {
+				this.createPickerData()
+			}, 1000)
 
-			// 	wx.config({
-			// 		debug: false,
-			// 		appId: "wxc1bdb5fea6bc9e6d",
-			// 		timestamp: time,
-			// 		nonceStr: noncestr,
-			// 		signature: signature,
-			// 		jsApiList: [],
-			// 		openTagList: ["wx-open-launch-weapp", "chooseWXPay"] //小程序跳转按钮、微信支付
-			// 	});
-
-			// 	wx.ready(() => {
-			// 		console.log('微信JS-SDK初始化成功');
-			// 	});
-			// 	wx.error((res) => {
-			// 		console.log('微信JS-SDK初始化失败', res);
-			// 	});
-			// });
+			setInterval(() => {
+				this.refreshTime();
+			}, 60000);
 		},
 	};
 </script>
@@ -282,6 +294,38 @@
 		font-weight: 700;
 		color: #000;
 		letter-spacing: 1rpx;
+	}
+
+	.modify-date {
+		@include flexVtCenter;
+		width: 96%;
+		height: 68rpx;
+		margin: 0 auto;
+		background-color: #fff;
+
+		.tit {
+			font-size: 28rpx;
+			line-height: 28rpx;
+			color: $color-text0;
+		}
+
+		.right {
+			@include flexVtCenter;
+			margin-left: auto;
+
+			.text {
+				font-size: 28rpx;
+				line-height: 28rpx;
+				color: $color-green;
+				font-weight: 700;
+			}
+
+			.icon-to {
+				font-size: 24rpx;
+				line-height: 24rpx;
+				color: $color-text3;
+			}
+		}
 	}
 
 	.commodity-list {
@@ -507,6 +551,92 @@
 			background-color: $color-red;
 			border-radius: 381rpx;
 			margin-left: auto;
+		}
+	}
+
+	.time-picker {
+		@include mask;
+
+		.picker-view {
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			height: 680rpx;
+			background-color: #fff;
+			border-radius: 14rpx 14rpx 0 0;
+
+			.tit {
+				position: relative;
+				@include flexCenter;
+				width: 100%;
+				height: 80rpx;
+				font-size: 26rpx;
+				color: $color-text1;
+
+				.icon-close {
+					@include absVtCenter;
+					right: 4%;
+					font-size: 32rpx;
+					color: $color-text3;
+					line-height: 32rpx;
+				}
+			}
+
+			.picker-main {
+				display: flex;
+				width: 100%;
+				height: 480rpx;
+				justify-content: space-between;
+
+				.days {
+					width: 240rpx;
+					height: 100%;
+					background-color: $color-page;
+
+					.list {
+						@include flexCenter;
+						width: 100%;
+						height: 90rpx;
+						font-size: 28rpx;
+						color: $color-text2;
+					}
+				}
+
+				.scroll-view {
+					flex: 1;
+					height: 100%;
+
+					.time-list {
+						position: relative;
+						@include flexVtCenter;
+						width: 100%;
+						height: 90rpx;
+						font-size: 28rpx;
+						color: $color-text0;
+						padding: 0 24rpx;
+
+						.hr {
+							@include absLvCenter;
+							bottom: 0;
+							width: 92%;
+							height: 1px;
+							background-color: $color-page;
+						}
+					}
+				}
+			}
+
+			.time-btn {
+				@include flexCenter;
+				width: 86%;
+				height: 90rpx;
+				font-size: 32rpx;
+				color: #fff;
+				border-radius: 999px;
+				@include btnGreen-gradient;
+				margin: 14rpx auto;
+			}
 		}
 	}
 </style>

@@ -4,14 +4,12 @@
 		<view class="top-car">
 			<view class="top-status-plc"></view>
 			<view class="top-car-content">
-				<view class="left">
+				<view class="page-title">
+					购物车
 				</view>
-				<view class="cars">
-					<view class="car-font">
-						购物车
-					</view>
-					<view class="local">配送至:徐汇区日月光中心</view>
-				</view>
+				<view v-if="$receivingMethod&&$currentAddress.address" class="local">配送至:{{$currentAddress.address}}</view>
+				<view v-else-if="$receivingMethod&&!$currentAddress.address" class="local">配送至:{{$locationInfo.formatted_addresses?$locationInfo.formatted_addresses.recommend:'定位中…'}}</view>
+				<view v-else="$receivingMethod" class="local">自取门店:{{$currentStore.name}}</view>
 				<view class="edits" v-if="carShop.length" @tap="isEdit = !isEdit">{{ isEdit?'完成':'编辑' }}</view>
 			</view>
 		</view>
@@ -105,7 +103,8 @@
 				thatIndex: -1,
 				allQuantity: 0,
 				totalPrice: 0,
-				discountPrice: 0
+				discountPrice: 0,
+				topLocation: ''
 			};
 		},
 		watch: {
@@ -116,14 +115,19 @@
 		methods: {
 			//前往提交订单页面
 			toSubmit: function() {
-				if (!this.$addressList.data.length) {
+				if (this.$receivingMethod && !this.$currentAddress.name) {
 					this.$Router.push({
-						name: "address",
+						name: 'address',
 						params: {
 							isSelect: true
 						}
 					})
-					return;
+					return
+				} else if (!this.$receivingMethod && !this.$currentStore.code) {
+					this.$Router.push({
+						name: "storeList"
+					})
+					return
 				}
 				this.$Router.push({
 					name: 'submitOrder'
@@ -303,40 +307,35 @@
 		}
 
 		.top-car-content {
+			display: flex;
+			position: relative;
+			flex-flow: column;
 			width: 100%;
 			height: 100rpx;
-			display: flex;
-			flex-direction: row;
+			justify-content: center;
+			align-items: center;
 
-			.left {
-				width: 30%;
-				height: 100%;
+
+			.page-title {
+				font-size: 36rpx;
+				line-height: 36rpx;
+				margin-bottom: 12rpx;
 			}
 
-			.cars {
-				width: 40%;
-				height: 100%;
+			.local {
+				width: 76%;
+				height: 28rpx;
+				font-size: 20rpx;
+				line-height: 28rpx;
 				text-align: center;
-
-				.car-font {
-					width: 100%;
-					height: 60rpx;
-					font-size: 35rpx;
-					line-height: 60rpx;
-				}
-
-				.local {
-					width: 100%;
-					height: 50rpx;
-					font-size: 20rpx;
-					line-height: 20rpx;
-				}
+				@include ellipsis;
 			}
+
 
 			.edits {
-				@include flexCenter;
-				width: 30%;
-				height: 100%;
+				@include absVtCenter;
+				right: 16rpx;
+				padding: 10rpx;
 				font-size: 30rpx;
 				color: $color-text1;
 			}
