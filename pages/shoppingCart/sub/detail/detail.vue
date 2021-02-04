@@ -15,25 +15,28 @@
 			</view>
 		</view>
 		<!-- 规格 -->
-		<view class="choice-commodity">
+		<view class="choice-commodity" v-if="detailData.ptSpuAttrs&&detailData.ptSpuAttrs.length">
 			<view class="commod" v-for="(item, index) in detailData.ptSpuAttrs" :key="index">
 				<view class="font-left">
 					{{ item.name }}
 				</view>
-				<view v-for="(sub, idx) in item.ptSpuAttrValues" :key="idx" :class="[
-            'font-right',
-            item.selectedCode === sub.skuSpliceCode ? 'font-right-select' : '',
-          ]"
+				<view v-for="(sub, idx) in item.ptSpuAttrValues" :key="idx" :class="['font-right',item.selectedCode === sub.skuSpliceCode ? 'font-right-select' : '']"
 				 @tap="selectItem(item, sub.skuSpliceCode)">
 					{{ sub.value }}
 				</view>
 			</view>
 		</view>
-		<view class="default"> 超值加购推荐，满足加倍~ </view>
+		<view class="richtext-detail">
+			<div class="title">
+				{{detailData.subtitle}}
+			</div>
+			<div class="rich-text" v-html="detailData.productDes"></div>
+
+		</view>
 		<view class="calculation">
 			<view class="calcula-price"> ￥{{ detailData.price }} </view>
 			<view class="add-class">
-				<stepper :value=1 :change="change"></stepper>
+				<stepper :value="quantity" :change="change"></stepper>
 				<view class="add-cart" @tap="clickAddCart"> 加入购物车 </view>
 			</view>
 		</view>
@@ -46,6 +49,9 @@
 	import shopperApi from "@/api/shopperApi.js";
 	import stepper from '../../../../components/stepper/stepper.vue';
 	import {
+		createCartRequestData
+	} from "@/utils/shoppingCart.js"
+	import {
 		appMixin
 	} from "@/utils/mixin";
 	export default {
@@ -55,14 +61,10 @@
 		},
 		data() {
 			return {
-				spuAtt: 0,
 				detailData: {},
-				commodity: this.$Route.query || 11352,
-				sizeArr: [],
-				comArr: [],
 				skuCode: "",
 				skuStr: "",
-				quantity: 0,
+				quantity: 1,
 			};
 		},
 		methods: {
@@ -75,17 +77,47 @@
 			goBack() {
 				this.$Router.back(1);
 			},
-			getCommodity: function() {
-				productApi
-					.goToGoodsDetail({
-						id: this.commodity.id,
-					})
-					.then((res) => {
-						uni.hideLoading();
+			//加入购物车接口
+			clickAddCart: function() {
+				uni.showLoading({
+					mask: true
+				})
+				let requestData = {};
+
+				if (this.detailData.isMultiSpec) {
+					//多规格
+					//拼接skuCode
+					let skuCode = this.detailData.skuId;
+					this.detailData.ptSpuAttrs.forEach((item) => {
+						skuCode += item.selectedCode;
+					});
+					//获取当前所选规格sku信息
+					let skuInfo = this.detailData.ptSkus.find(item => {
+						return item.code === skuCode
+					});
+					//生成请求数据
+					requestData = createCartRequestData(skuInfo, this.quantity)
+				} else {
+					//单规格
+					requestData = createCartRequestData(this.detailData.ptSkus[0], this.quantity)
+				}
+				//加入购物车
+				shopperApi.addCart(requestData).then(res => {
+					this.setShoppingCart(res.data);
+					uni.hideLoading()
+					uni.showToast({
+						title: "添加成功",
+					});
+				})
+			},
+			//获取详情数据
+			getDetailData: function(id) {
+				productApi.findAttrProduct({
+					id: id
+				}).then((res) => {
+					if (res.data.isMultiSpec) {
 						let defultCode = res.data.skuCode.replace(res.data.skuId, "");
-
 						res.defultCode = defultCode;
-
 						res.data.ptSpuAttrs.forEach((item) => {
 							item.ptSpuAttrValues.forEach((sub) => {
 								if (defultCode.indexOf(sub.skuSpliceCode) > -1) {
@@ -93,170 +125,13 @@
 								}
 							});
 						});
-						this.detailData = res.data;
-
-					});
-			},
-
-			//加入购物车接口
-			clickAddCart: function() {
-				uni.showLoading({
-					mask: true
-				})
-				if (this.detailData.isMultiSpec) {
-					let code = this.detailData.skuId;
-					this.detailData.ptSpuAttrs.forEach((item) => {
-						code += item.selectedCode;
-					});
-
-					let lastItem = {};
-					this.detailData.ptSkus.forEach((item) => {
-						if (item.code === code) {
-							lastItem = item;
-						}
-					});
-
-					let obj = {
-						cellPhone: "17696769527",
-						userId: 663983581015375872,
-						cityCode: "shangHai",
-						cityName: "上海市",
-						deliveryFee: 8,
-						loyaltyLevel: "",
-						storeCode: "96000",
-						storeName: "槽宝路店",
-						totalOriginPrice: lastItem.originPrice,
-						totalPePrice: 0,
-						totalPrice: lastItem.price,
-						item: {
-							specsValues: lastItem.specsValues,
-							badgeImg: lastItem.badgeImg,
-							buyLimit: lastItem.buyLimit,
-							canBookingMsg: lastItem.canBookingMsg,
-							countPrice: lastItem.price,
-							height: lastItem.height,
-							isBooking: lastItem.isBooking,
-							isGift: lastItem.isGift,
-							isInvoice: lastItem.isInvoice,
-							isPresale: lastItem.isPresale,
-							isPromotion: lastItem.isPromotion,
-							length: lastItem.length,
-							markDiscount: lastItem.markDiscount,
-							markNew: lastItem.markNew,
-							minimumOrderQuantity: lastItem.minimumOrderQuantity,
-							originPrice: lastItem.originPrice,
-							presaleDeliveryDateDisplay: lastItem.presaleDeliveryDateDisplay,
-							price: lastItem.price,
-							promotionId: "", //``
-							promotionPrice: "", //``
-							quantity: this.quantity,
-							roughWeight: lastItem.roughWeight,
-							salePointMsg: lastItem.salePointMsg,
-							saleUnit: lastItem.saleUnit,
-							shopIngredientVos: [],
-							skuCode: lastItem.code,
-							skuId: 11352,
-							skuName: lastItem.name,
-							smallImage: lastItem.smallImage,
-							spuType: "",
-							vipPrice: lastItem.vipPrice,
-							width: lastItem.width,
-						},
-					};
-					shopperApi
-						.addCart(obj)
-						.then((res) => {
-							this.setShoppingCart(res);
-							uni.hideLoading()
-							uni.showToast({
-								title: "添加成功",
-							});
-							setTimeout(() => {
-								this.$Router.back(1);
-							}, 500);
-						})
-						.catch((err) => {
-							console.log(err);
-						});
-				} else {
-					let testItem = {};
-					this.detailData.ptSkus.forEach((item) => {
-						testItem = item
-						console.log(testItem, "testItem")
-					})
-
-					let obj = {
-						cellPhone: "17696769527",
-						userId: 663983581015375872,
-						cityCode: "shangHai",
-						cityName: "上海市",
-						deliveryFee: 8,
-						loyaltyLevel: "",
-						storeCode: "96000",
-						storeName: "槽宝路店",
-						totalOriginPrice: testItem.originPrice,
-						totalPePrice: 0,
-						totalPrice: testItem.price,
-						item: {
-							specsValues: testItem.specsValues,
-							badgeImg: testItem.badgeImg,
-							buyLimit: testItem.buyLimit,
-							canBookingMsg: testItem.canBookingMsg,
-							countPrice: testItem.price,
-							height: testItem.height,
-							isBooking: testItem.isBooking,
-							isGift: testItem.isGift,
-							isInvoice: testItem.isInvoice,
-							isPresale: testItem.isPresale,
-							isPromotion: testItem.isPromotion,
-							length: testItem.length,
-							markDiscount: testItem.markDiscount,
-							markNew: testItem.markNew,
-							minimumOrderQuantity: testItem.minimumOrderQuantity,
-							originPrice: testItem.originPrice,
-							presaleDeliveryDateDisplay: testItem.presaleDeliveryDateDisplay,
-							price: testItem.price,
-							promotionId: "", //``
-							promotionPrice: "", //``
-							quantity: this.quantity,
-							roughWeight: testItem.roughWeight,
-							salePointMsg: testItem.salePointMsg,
-							saleUnit: testItem.saleUnit,
-							shopIngredientVos: [],
-							skuCode: testItem.code,
-							skuId: 11352,
-							skuName: testItem.name,
-							smallImage: testItem.smallImage,
-							spuType: "",
-							vipPrice: testItem.vipPrice,
-							width: testItem.width,
-						},
-					};
-					console.log(obj)
-					shopperApi
-						.addCart(obj)
-						.then((res) => {
-							uni.hideLoading()
-							this.setShoppingCart(res);
-							uni.showToast({
-								title: "添加成功",
-							});
-							setTimeout(() => {
-								this.$Router.back(1);
-							}, 500);
-						})
-						.catch((err) => {
-							console.log(err);
-						});
-				}
-
-			},
+					}
+					this.detailData = res.data;
+				});
+			}
 		},
 		onLoad: function() {
-			uni.showLoading({
-				mask: true
-			})
-			this.getCommodity();
+			this.getDetailData(this.$Route.query.id);
 		},
 	};
 </script>
@@ -302,14 +177,13 @@
 		}
 
 		.detail-con {
-			width: 95%;
+			width: 96%;
 			height: 150rpx;
 			background: #fff;
-			margin-left: 2.5%;
 			line-height: 65rpx;
-			padding-left: 30rpx;
-			margin-top: 20rpx;
-			border-radius: 18rpx;
+			padding-left: 18rpx;
+			margin: 20rpx auto 0;
+			border-radius: 14rpx;
 
 			.con-name {
 				font-size: 39rpx;
@@ -323,10 +197,10 @@
 		}
 
 		.choice-commodity {
-			width: 95%;
+			width: 96%;
 			background: #fff;
 			margin: 20rpx auto 0;
-			border-radius: 18rpx;
+			border-radius: 14rpx;
 			padding: 12rpx;
 
 			.commod {
@@ -366,23 +240,34 @@
 			}
 
 			.font-right-select {
-				border: solid 1px $color-green !important;
+				border: 1px solid $color-green !important;
 				background-color: $color-green-transparent;
 			}
 		}
 
-		.default {
-			width: 95%;
-			height: 100rpx;
-			background-color: #fff;
-			margin-top: 10rpx;
-			margin-left: 2%;
-			line-height: 100rpx;
-			padding-left: 40rpx;
-			color: $color-text2;
+		.richtext-detail {
+			width: 96%;
 			border-radius: 18rpx;
-			margin-bottom: 16rpx;
-			font-size: 28rpx;
+			margin: 20rpx auto 16rpx;
+			background-color: #fff;
+
+			.title {
+				@include flexVtCenter;
+				width: 100%;
+				height: 96rpx;
+				font-size: 28rpx;
+				color: $color-text1;
+				padding: 0 14rpx;
+			}
+
+			.rich-text {
+				width: 100%;
+				overflow: hidden;
+
+				img {
+					max-width: 100%;
+				}
+			}
 		}
 
 		.calculation {

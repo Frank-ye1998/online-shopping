@@ -16,7 +16,12 @@
 
 		<!-- 地图中心点控件 -->
 		<map v-if="xyLoad" class="uni-map" id="uniMap" :controls="controlData" :scale="14" :latitude="locationXy.lat"
-		 :longitude="locationXy.lng" @regionchange="webMapChange"></map>
+		 :longitude="locationXy.lng" @regionchange="webMapChange">
+			<!-- #ifdef APP-PLUS||MP-WEIXIN -->
+			<!-- 兼容APP 原生map组件遮盖 -->
+			<cover-view @tap="mapTap" v-show="pickerShow" class="map-mask"></cover-view>
+			<!-- #endif  -->
+		</map>
 		<view v-else class="uni-map-plc"></view>
 
 		<!-- 附近地点列表 -->
@@ -34,6 +39,7 @@
 
 		<!-- 地址选择picker -->
 		<address-picker class="address-picker" v-show="pickerShow" />
+
 	</view>
 </template>
 
@@ -50,7 +56,7 @@
 	export default {
 		mixins: [appMixin],
 		components: {
-			"address-picker": AddressPicker,
+			"address-picker": AddressPicker
 		},
 		data() {
 			return {
@@ -185,7 +191,11 @@
 					return
 				}
 				return nearbyStore;
-			}
+			},
+			//兼容APP 原生map组件遮盖
+			mapTap: function() {
+				this.pickerShow = false;
+			},
 		},
 
 		onReady() {
@@ -239,8 +249,16 @@
 	}
 
 	.uni-map {
+		position: relative;
 		width: 100%;
 		height: 600rpx;
+
+		.map-mask {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0, 0, 0, 0.4);
+		}
 	}
 
 	.uni-map-plc {

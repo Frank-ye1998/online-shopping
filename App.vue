@@ -20,10 +20,19 @@
 			},
 			//监听购物车，设置购物车tabbar数量角标
 			$shoppingCart(nv, ov) {
-
+				nv = nv || {
+					items: []
+				};
+				console.log(nv,'APPvue');
+				//购物车无数据
+				if (!nv.items.length) {
+					uni.removeTabBarBadge({
+						index: 2
+					})
+					return;
+				};
 				let quantity = 0;
-				if (!nv || !nv.data) return;
-				nv.data.items.forEach(item => {
+				nv.items.forEach(item => {
 					quantity += item.quantity;
 				})
 				setTabBar(String(quantity))
@@ -33,6 +42,7 @@
 						index: 2,
 						text: text,
 						fail: err => {
+							//处理低性能场景小概率失败的问题
 							setTimeout(() => {
 								setTabBar(text)
 							}, 100)

@@ -4,7 +4,7 @@ import store from "@/store";
 import userApi from "@/api/userApi.js";
 
 //时间戳转换
-function timeCv(time) {
+function timeCv(time,type) {
 	let date = new Date(time)
 	var obj = {
 		"Y": date.getFullYear(),
@@ -18,6 +18,10 @@ function timeCv(time) {
 			obj[i] = '0' + obj[i]
 		}
 	}
+	if(type==='hm'){
+		return `${obj.h}:${obj.m}`
+	}
+	
 	return `${obj.Y}-${obj.M}-${obj.D} ${obj.h}:${obj.m}`
 }
 
@@ -173,6 +177,8 @@ function setAddressByDistance() {
 		})
 		if (!store.getters.$currentAddress.isUserSet) { //当前收货地址非用户设置
 			store.dispatch('setCurrentAddress', res.data[0]);//设置收货地址为当前最近的收货地址
+			console.log(res.data[0],'距离最近的收货地址');
+			
 		}
 		store.dispatch('setAddressList', res.data);//更新地址列表
 	})

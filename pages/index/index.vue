@@ -66,7 +66,7 @@
 					</view>
 				</view>
 				<view class="content-bottom">
-					<commodity-view v-for="(item,index) in shopArr[arrStatus]" :mainImg="item.url" :name="item.names" :payPrice="item.price"></commodity-view>
+					<commodity-view v-for="(item,index) in shopArr[arrStatus]" :key="index" :mainImg="item.url" :name="item.names" :payPrice="item.price"></commodity-view>
 				</view>
 			</view>
 		</view>
@@ -302,7 +302,8 @@
 			}
 		},
 		onLoad() {
-			this.getLoginCoupon()
+			this.getLoginCoupon();
+			//this.userCoupon()
 		},
 	};
 </script>

@@ -4,14 +4,12 @@
 		<view class="top-car">
 			<view class="top-status-plc"></view>
 			<view class="top-car-content">
-				<view class="left">
+				<view class="page-title">
+					购物车
 				</view>
-				<view class="cars">
-					<view class="car-font">
-						购物车
-					</view>
-					<view class="local">配送至:徐汇区日月光中心</view>
-				</view>
+				<view v-if="$receivingMethod&&$currentAddress.address" class="local">配送至:{{$currentAddress.address}}</view>
+				<view v-else-if="$receivingMethod&&!$currentAddress.address" class="local">配送至:{{$locationInfo.formatted_addresses?$locationInfo.formatted_addresses.recommend:'定位中…'}}</view>
+				<view v-else="$receivingMethod" class="local">自取门店:{{$currentStore.name}}</view>
 				<view class="edits" v-if="carShop.length" @tap="isEdit = !isEdit">{{ isEdit?'完成':'编辑' }}</view>
 			</view>
 		</view>
@@ -28,11 +26,16 @@
 						<view class="last-price"><text class="rmb">¥{{ item.price }}</text></view>
 						<view class="original-price" v-if="item.price !== item.originPrice">¥{{ item.originPrice }}</view>
 					</view>
-					<stepper class="stepper" :info="item" :change="change" :value="item.quantity"></stepper>
+					<view class="stepper-view">
+						<i @tap="numModify(item.quantity-1,item)" class="icon icon-reduce"></i>
+						<text class="num">{{item.quantity}}</text>
+						<i @tap="numModify(item.quantity+1,item)" class="icon icon-add"></i>
+					</view>
 				</view>
 				<view class="hr"></view>
 			</view>
 		</view>
+
 		<view class="car-img" v-if="isLoad && !carShop.length">
 			<image src="/static/images/null-img/data-null.png" class="imgscar"></image>
 			<view class="text">购物车空空如也</view>
@@ -82,8 +85,7 @@
 
 <script>
 	import shopperApi from "@/api/shopperApi.js";
-	import commodityView from "@/components/commodity-view/commodity-view.vue"
-
+	import commodityView from "@/components/commodity-view/commodity-view.vue";
 	import {
 		appMixin
 	} from "@/utils/mixin";
@@ -101,48 +103,38 @@
 				thatIndex: -1,
 				allQuantity: 0,
 				totalPrice: 0,
-				discountPrice: 0
+				discountPrice: 0,
+				topLocation: ''
 			};
 		},
 		watch: {
 			$shoppingCart(nv, ov) {
-				console.log(nv,'watch');
-				this.getAllQuantity(nv);
+				this.syncCartData();
 			}
 		},
 		methods: {
-			getAllQuantity: function(data) {
-				let quantity = 0;
-				if (!data.data) {
-					this.allQuantity = 0;
-					return
-				};
-				data.data.items.forEach(item => {
-					quantity += item.quantity;
-				})
-				this.allQuantity = quantity;
-			},
-			getPriceData: function(data) {
-				if (!data.data) return;
-				this.totalPrice = data.data.totalPrice - data.data.deliveryFee;
-				this.discountPrice = data.data.totalOriginPrice - data.data.totalPrice;
-			},
+			//前往提交订单页面
 			toSubmit: function() {
-				if (!this.$addressList.data.length) {
+				if (this.$receivingMethod && !this.$currentAddress.name) {
 					this.$Router.push({
-						name: "address",
+						name: 'address',
 						params: {
 							isSelect: true
 						}
 					})
-					return;
+					return
+				} else if (!this.$receivingMethod && !this.$currentStore.code) {
+					this.$Router.push({
+						name: "storeList"
+					})
+					return
 				}
 				this.$Router.push({
 					name: 'submitOrder'
 				})
 			},
 			deleteShop: function() {
-				// 全选按钮为true时执行清空接口
+				//全选时清空
 				if (this.editAll) {
 					uni.showModal({
 						title: "确定要删除全部商品吗",
@@ -151,18 +143,17 @@
 							uni.showLoading()
 							if (res.confirm) {
 								//清除全部商品接口
-								shopperApi
-									.clearCartInfo().then((res) => {
-										uni.hideLoading()
-										this.carShop = [];
-										this.editAll = false;
-										this.isEdit = false;
-									})
+								shopperApi.clearCartInfo().then((res) => {
+									uni.hideLoading();
+									this.setShoppingCart(res.data);
+									this.editAll = false;
+									this.isEdit = false;
+								})
 							}
 						}
 					})
-
-				} else { //否则执行删除接口
+				} else {
+					//多选删除
 					let str = "";
 					let arr = [];
 					this.carShop.forEach((item) => {
@@ -179,24 +170,35 @@
 						success: (res) => {
 							uni.showLoading()
 							if (res.confirm) {
-								shopperApi
-									.deleteCartInfo({
-										skuCodes: str,
-									}).then((res) => {
-										uni.hideLoading()
-										uni.showToast({
-											title: "删除成功",
-										});
-										this.carShop = arr;
-										this.isEdit = false;
-									})
+								shopperApi.deleteCartInfo({
+									skuCodes: str,
+								}).then((res) => {
+									uni.hideLoading()
+									this.setShoppingCart(res.data);
+									uni.showToast({
+										title: "删除成功",
+									});
+									this.carShop = arr;
+									this.isEdit = false;
+								})
 							}
 						}
 					})
 
 				}
 			},
-			//全选按钮
+			//单选
+			singCheck: function(item) {
+				this.$set(item, 'check', !item.check)
+				let status = true;
+				this.carShop.forEach((item) => {
+					if (!item.check) {
+						status = false;
+					}
+				})
+				this.editAll = status
+			},
+			//全选
 			checkAll: function() {
 				//切换全选选中状态
 				this.editAll = !this.editAll
@@ -212,82 +214,66 @@
 					})
 				}
 			},
-			//点击每一个商品的radio
-			singCheck: function(item) {
-				//切换每一个商品的radio状态
-				this.$set(item, 'check', !item.check)
-				let status = true;
-				this.carShop.forEach((item) => {
-					if (!item.check) {
-						status = false;
-					}
-				})
-				this.editAll = status
-				console.log(status);
-			},
-			change: function(num, info) {
-				//删除接口
+			//数量编辑
+			numModify: function(num, info) {
+				//删除
 				if (num < 1) {
 					uni.showModal({
 						title: '确定要删除吗',
 						showCancel: true,
 						success: (res) => {
 							if (res.confirm) {
-								shopperApi
-									.deleteCartInfo({
-										skuCodes: info.skuCode,
-									}).then((res) => {
-										uni.showToast({
-											title: "删除成功",
-										});
-										this.carShop.splice(this.thatIndex, 1)
-									})
+								shopperApi.deleteCartInfo({
+									skuCodes: info.skuCode,
+								}).then((res) => {
+									this.setShoppingCart(res.data);
+									uni.showToast({
+										title: "删除成功",
+									});
+									this.carShop.splice(this.thatIndex, 1)
+								})
 							}
 						}
 					});
 				} else {
 					//修改购物车
-					shopperApi
-						.changeCartInfo({
-							skuCode: info.skuCode,
-							quantity: num,
-						}).then((res) => {
-
-						})
+					shopperApi.changeCartInfo({
+						skuCode: info.skuCode,
+						quantity: num,
+					}).then((res) => {
+						this.setShoppingCart(res.data);
+					})
 				}
 			},
-			//查询购物车接口
-			getCartInfo: function() {
-				shopperApi
-					.getCartInfo().then((res) => {
-						if (res.data) {
-							this.carShop = res.data.items; //获取购物车中的商品
-						}
-						uni.hideLoading();
-						this.isLoad = true;
-						this.getAllQuantity(res);
-						this.getPriceData(res);
-					});
+			//获取购物车数量
+			getAllQuantity: function() {
+				let cartInfo = this.$shoppingCart;
+				cartInfo = cartInfo || {
+					items: []
+				};
+				let quantity = 0;
+				cartInfo.items.forEach(item => {
+					quantity += item.quantity;
+				})
+				this.allQuantity = quantity;
 			},
-
-
-		},
-		onLoad() {
-			console.log(this.$shoppingCart,'9900');
-			// if (this.$loginKey.sessionId) {
-			// 	if (this.$shoppingCart.isLoad) {
-			// 		this.isLoad = true;
-			// 		this.carShop = this.$shoppingCart.data ? this.$shoppingCart.data.items : [];
-			// 	} else {
-			// 		uni.showLoading();
-			// 		this.getCartInfo();
-			// 	}
-			// } else {
-			// 	this.isLoad = true;
-			// }
+			//获取购物车价格
+			getPriceData: function() {
+				let cartInfo = this.$shoppingCart;
+				if (!cartInfo) return;
+				this.totalPrice = cartInfo.totalPrice - cartInfo.deliveryFee;
+				this.discountPrice = cartInfo.totalOriginPrice - cartInfo.totalPrice;
+			},
+			//与vuex中购物车数据同步
+			syncCartData: function() {
+				this.carShop = this.$shoppingCart ? this.$shoppingCart.items : [];
+				this.isLoad = true;
+				this.getAllQuantity();
+				this.getPriceData();
+			}
 		},
 		onShow() {
-			this.getCartInfo();
+			this.syncCartData();
 		}
 	};
 </script>
@@ -321,40 +307,35 @@
 		}
 
 		.top-car-content {
+			display: flex;
+			position: relative;
+			flex-flow: column;
 			width: 100%;
 			height: 100rpx;
-			display: flex;
-			flex-direction: row;
+			justify-content: center;
+			align-items: center;
 
-			.left {
-				width: 30%;
-				height: 100%;
+
+			.page-title {
+				font-size: 36rpx;
+				line-height: 36rpx;
+				margin-bottom: 12rpx;
 			}
 
-			.cars {
-				width: 40%;
-				height: 100%;
+			.local {
+				width: 76%;
+				height: 28rpx;
+				font-size: 20rpx;
+				line-height: 28rpx;
 				text-align: center;
-
-				.car-font {
-					width: 100%;
-					height: 60rpx;
-					font-size: 35rpx;
-					line-height: 60rpx;
-				}
-
-				.local {
-					width: 100%;
-					height: 50rpx;
-					font-size: 20rpx;
-					line-height: 20rpx;
-				}
+				@include ellipsis;
 			}
+
 
 			.edits {
-				@include flexCenter;
-				width: 30%;
-				height: 100%;
+				@include absVtCenter;
+				right: 16rpx;
+				padding: 10rpx;
 				font-size: 30rpx;
 				color: $color-text1;
 			}
@@ -468,10 +449,26 @@
 					}
 				}
 
-				.stepper {
+				.stepper-view {
 					position: absolute;
 					right: 18rpx;
 					bottom: 18rpx;
+					@include flexVtCenter;
+					justify-content: space-between;
+					width: 160rpx;
+
+					.icon {
+						font-size: 46rpx;
+						color: $color-green;
+						padding: 4rpx;
+					}
+
+					.num {
+						font-size: 32rpx;
+						line-height: 32rpx;
+						color: $color-text1;
+						font-weight: 700;
+					}
 				}
 			}
 
