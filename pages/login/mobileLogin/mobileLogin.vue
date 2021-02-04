@@ -22,9 +22,6 @@
 				<input type="text" value="" placeholder="请输入密码" />
 			</view>
 		</view>
-		<view class="changeSite" @tap="changeWay">
-			{{this.isShowSMSLogin?'密码登录':'验证码登录'}}
-		</view>
 		<view class="cli-sure" @tap="mobileLogin()"> 登录 </view>
 		<view class="font">
 			点击确定，即表示已阅读并同意

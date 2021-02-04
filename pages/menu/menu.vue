@@ -274,7 +274,7 @@
 	.main {
 		position: relative;
 		width: 96%;
-		height: calc(100vh - 430rpx - var(--window-bottom));
+		height: calc(100vh - 445rpx - var(--window-bottom));
 		overflow: hidden;
 		display: flex;
 		flex-direction: row;

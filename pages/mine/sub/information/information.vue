@@ -175,7 +175,6 @@
 					}).then((res) => {
 					})
 			},
-
 			showckeck: function(type) {
 				this.check = type;
 			},

@@ -7,7 +7,7 @@
 				<view class="car-img" v-if="isLoad && !listA.length">
 					<image src="../../../../static/images/null-img/list-null.png" mode="" class="imgscar"></image>
 				</view>
-				<view class="list" v-if="isLoad && listA.length" v-for="item in listA" :key="item.id">
+				<view class="list" @tap="orderdetailShops(item.id)" v-if="isLoad && listA.length" v-for="item in listA" :key="item.id">
 					<view class="top">
 						<view class="order-type">
 							外卖
@@ -162,6 +162,14 @@
 			};
 		},
 		methods: {
+			orderdetailShops(id) {
+				this.$Router.push({
+					name: "particulars",
+					params: {
+						id: id,
+					},
+				});
+			},
 			//请求订单数据
 			getList: function(type) {
 				let now = new Date().getTime(); //当前时间
