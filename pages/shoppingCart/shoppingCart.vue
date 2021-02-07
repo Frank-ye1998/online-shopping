@@ -248,7 +248,7 @@
 			//获取购物车数量
 			getAllQuantity: function() {
 				let cartInfo = this.$shoppingCart;
-				cartInfo = cartInfo || {
+				cartInfo = cartInfo.items ? cartInfo.items : {
 					items: []
 				};
 				let quantity = 0;
@@ -266,7 +266,7 @@
 			},
 			//与vuex中购物车数据同步
 			syncCartData: function() {
-				this.carShop = this.$shoppingCart ? this.$shoppingCart.items : [];
+				this.carShop = this.$shoppingCart&&this.$shoppingCart.items ? this.$shoppingCart.items : [];
 				this.isLoad = true;
 				this.getAllQuantity();
 				this.getPriceData();

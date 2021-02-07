@@ -2,10 +2,10 @@
 	<view>
 		<top-bar pageTitle="确认订单"></top-bar>
 		<view class="top" v-if="$receivingMethod">
-			立即送达(约{{deliveryTimeText}}送达)
+			{{timePickerStatus?'':'明天'}}{{deliveryTimeText}}送达
 		</view>
 		<view class="top" v-else>
-			立即自取(约{{takeTimeText}}可取)
+			{{timePickerStatus?'':'明天'}}{{takeTimeText}}可取
 		</view>
 
 		<receiving-method :deliveryTimeText="deliveryTimeText" :showDate="true" class="receiving-method"></receiving-method>
@@ -102,26 +102,37 @@
 		</view>
 		<view class="to-pay-btn-plc"></view>
 
-		<div class="time-picker">
-			<div class="picker-view">
+		<div v-if="timePickerShow" @tap="timePickerShow = false" class="time-picker">
+			<div class="picker-view" @tap.stop="">
 				<div class="tit">
 					选择{{$receivingMethod?'送达':'自取'}}时间
-					<i class="icon icon-close"></i>
+					<i @tap="timePickerShow = false" class="icon icon-close"></i>
 				</div>
 				<div class="picker-main">
 					<div class="days">
-						<div class="list">
+						<div :class="['list',timePickerStatus?'day-ck':'']" @tap="timePickerStatus = true">
 							今天02月04日
 						</div>
+						<div :class="['list',!timePickerStatus?'day-ck':'']" @tap="timePickerStatus = false">
+							明天02月05日
+						</div>
 					</div>
-					<scroll-view class="scroll-view" scroll-y="true">
-						<div class="time-list">
-							尽快送达
+					<scroll-view v-show="timePickerStatus" class="scroll-view" scroll-y="true">
+						<div v-for="item in todayArr" @tap="pickerTap(item)" :key="item.time" :class="['time-list',timeSelect.time===item.time?'ck':'']">
+							{{item.timeText}}
+							<i v-if="timeSelect.time===item.time" class="icon icon-check"></i>
+							<div class="hr"></div>
+						</div>
+					</scroll-view>
+					<scroll-view v-show="!timePickerStatus" class="scroll-view" scroll-y="true">
+						<div v-for="item in tomorrowArr" @tap="pickerTap(item)" :key="item.time" :class="['time-list',timeSelect.time===item.time?'ck':'']">
+							{{item.timeText}}
+							<i v-if="timeSelect.time===item.time" class="icon icon-check"></i>
 							<div class="hr"></div>
 						</div>
 					</scroll-view>
 				</div>
-				<div class="time-btn">
+				<div class="time-btn" @tap="changeTime">
 					确定
 				</div>
 			</div>
@@ -159,57 +170,70 @@
 				deliveryTime: 0,
 				deliveryTimeText: '',
 				takeTime: 0,
-				takeTimeText: ''
+				takeTimeText: '',
+
+				timePickerShow: false,
+				timePickerStatus: true,
+				todayArr: [],
+				tomorrowArr: [],
+				timeSelect: {}
 			};
 		},
 		methods: {
-			refreshTime: function() {
-				this.deliveryTime = this.deliveryTime + 60000;
-				this.deliveryTimeText = this.getHmTime(this.deliveryTime);
-				this.takeTime = this.takeTime + 60000;
-				this.takeTimeText = this.getHmTime(this.takeTimeText);
+			pickerTap: function(time) {
+				this.timeSelect = time;
 			},
 
 			getHmTime: function(time) {
 				let timeText = timeCv(time);
 				return timeText.substring(timeText.length - 5, timeText.length)
 			},
+			
+			
+			
 			submitOrder: function() {
 				uni.showLoading({
 					mask: true,
 					title: "正在提交订单"
 				})
 				const orderInfo = this.$shoppingCart;
-				orderApi
-					.postOrder({
-						remark: "",
-						orderType: "1",
-						activityId: "",
-						orderAmount: orderInfo.totalPrice,
-						freightAmount: orderInfo.deliveryFee,
-						activityAmount: orderInfo.totalPrice,
-						consignId: "668752322609647616",
-						isNeedInvoice: false,
-						isStartOrdering: true,
-						storeCode: 96531,
-						storeName: "宝城路店",
-						storeTel: "",
-						storeAddress: "宝城路456号（靠近莘朱路）",
-						couponCode: "",
-						invoiceTitle: "",
-						deskNo: "",
-						tablewareAmount: "",
-						plannedDeliverTime: new Date().getTime() + 3600000,
-						paySource: 2,
-					})
-					.then((res) => {
-						uni.hideLoading();
-					})
-					.catch((err) => {
-						console.log(err);
-					});
+				// orderApi
+				// 	.postOrder({
+				// 		orderType: this.$receivingMethod?'1':'2',
+				// 		orderAmount: orderInfo.totalPrice,
+				// 		freightAmount: orderInfo.deliveryFee,
+				// 		activityAmount: orderInfo.totalPrice,
+				// 		consignId: this.$receivingMethod?this.$currentAddress.id,
+				// 		isNeedInvoice: false,
+				// 		isStartOrdering: true,
+				// 		storeCode: 96531,
+				// 		storeName: "宝城路店",
+				// 		storeTel: "",
+				// 		storeAddress: "宝城路456号（靠近莘朱路）",
+				// 		couponCode: "",
+				// 		invoiceTitle: "",
+				// 		deskNo: "",
+				// 		tablewareAmount: "",
+				// 		plannedDeliverTime: new Date().getTime() + 3600000,
+				// 		paySource: 2,
+				// 	})
+				// 	.then((res) => {
+				// 		uni.hideLoading();
+				// 	})
+				// 	.catch((err) => {
+				// 		console.log(err);
+				// 	});
 			},
+			changeTime: function() {
+				this.deliveryTime = this.timeSelect.time;
+				this.deliveryTimeText = this.timeSelect.timeText;
+				this.takeTime = this.timeSelect.time;
+				this.takeTimeText = this.timeSelect.takeTimeText;
+				this.timePickerShow = false;
+			},
+
 			createPickerData: function() {
+				let that = this;
 				let store;
 				if (this.$receivingMethod) {
 					store = this.$storeList.find(item => { //当前收货地址所属门店信息
@@ -221,8 +245,6 @@
 
 				const now = new Date();
 				const nowDate = parseInt((new Date().getTime() / 1000).toString());
-
-				console.log(store);
 				let storeStart = Number(store.openingBeginTime.substring(0, 2)); //门店营业开始小时
 				let storeEnd = Number(store.openingEndTime.substring(0, 2)); //……结束……
 				let today = nowDate - (nowDate % 86400) - 3600 * 8; //今天0点时间戳
@@ -232,12 +254,11 @@
 				let tomorrowStart = tomorrow + storeStart * 3600; //today + storeStart * 3600; //今天门店营业开始时间戳
 				let tomorrowEnd = tomorrow + storeEnd * 3600; //……结束……
 
-				console.log(createArr(todayStart, todayEnd, true));
-				console.log(createArr(tomorrowStart, tomorrowEnd, false));
-				
+				this.todayArr = createArr(todayStart, todayEnd, true);
+				this.tomorrowArr = createArr(tomorrowStart, tomorrowEnd, false);
+
 				//生成数组
 				function createArr(start, end, isToday) {
-					console.log(arguments);
 					let arr = [];
 					for (let i = 0; i <= end - start; i += 600) {
 						arr.push({
@@ -246,10 +267,17 @@
 						})
 					}
 					if (isToday) {
-						arr.unshift({
+						let timeObj = {
 							time: nowDate * 1000 + (30 * 60000),
-							timeText: timeCv(nowDate * 1000 + (30 * 60000), 'hm')
-						})
+							timeText: '尽快送达 ' + timeCv(nowDate * 1000 + (30 * 60000), 'hm'),
+						}
+						arr.unshift(timeObj)
+						that.timeSelect = timeObj;
+
+						that.deliveryTime = timeObj.time;
+						that.deliveryTimeText = timeObj.timeText;
+						that.takeTime = timeObj.time;
+						that.takeTimeText = timeObj.takeTimeText;
 					}
 					return arr
 				}
@@ -257,13 +285,11 @@
 		},
 		onLoad() {
 			//订单时间初始化
-			this.deliveryTime = new Date().getTime() + 3600000;
-			this.deliveryTimeText = this.getHmTime(this.deliveryTime);
-			this.takeTime = new Date().getTime() + 3600000;
-			this.takeTimeText = this.getHmTime(this.takeTime);
-			setTimeout(() => {
-				this.createPickerData()
-			}, 1000)
+			this.createPickerData();
+
+			uni.$on('timepicker', () => {
+				this.timePickerShow = true;
+			});
 
 			setInterval(() => {
 				this.refreshTime();
@@ -601,6 +627,11 @@
 						font-size: 28rpx;
 						color: $color-text2;
 					}
+
+					.day-ck {
+						background-color: #fff;
+						color: $color-text0;
+					}
 				}
 
 				.scroll-view {
@@ -616,6 +647,12 @@
 						color: $color-text0;
 						padding: 0 24rpx;
 
+						.icon-check {
+							margin-left: auto;
+							font-size: 28rpx;
+							color: $color-green;
+						}
+
 						.hr {
 							@include absLvCenter;
 							bottom: 0;
@@ -623,6 +660,11 @@
 							height: 1px;
 							background-color: $color-page;
 						}
+					}
+
+					.ck {
+						color: $color-green;
+						font-weight: 700;
 					}
 				}
 			}

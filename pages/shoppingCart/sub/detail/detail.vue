@@ -149,7 +149,7 @@
 		border-radius: 50%;
 		position: fixed;
 		z-index: 100;
-		top: 10rpx;
+		top: 60rpx;
 		left: 10rpx;
 		text-align: center;
 		line-height: 70rpx;

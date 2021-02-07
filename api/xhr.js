@@ -32,20 +32,42 @@ const request = (Xhrdata) => {
 			clientId: clientId
 		}
 	};
-	return uni.request(parames).then(res => {
-		let data = res[1].data;
-		if (data.successCode === '-2') { //登录过期
-			store.dispatch('setLoginKey', {});
-			uni.clearStorageSync();
-			uni.hideLoading();
-			console.log(data.message);
-		}
 
-
-		return data;
-	}).catch(e => {
-		return e;
+	return new Promise((resolve, reject) => {
+		uni.request({
+			...parames,
+			success: res => {
+				if (res.statusCode === 200) {
+					resolve(res.data)
+				} else { //网络错误
+					uni.showToast({
+						title: '网络连接失败',
+						icon:'none'
+						
+					})
+					//reject(res)
+				}
+			},
+			fail: err => {
+				reject(err)
+			}
+		})
 	})
+
+	// return uni.request(parames).then(res => {
+	// 	let data = res[1].data;
+	// 	if (!(data instanceof Object)) { //网络错误
+	// 		reject(data)
+	// 	}
+	// 	if (data.successCode === '-2') { //登录过期
+	// 		store.dispatch('setLoginKey', {});
+	// 		uni.clearStorageSync();
+	// 		uni.hideLoading();
+	// 		console.log(data.message);
+	// 	}
+
+	// 	return data;
+	// })
 }
 
 /*生成指定长度的随机数*/
