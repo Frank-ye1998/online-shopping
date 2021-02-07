@@ -100,8 +100,12 @@
 		{
 			"path": "pages/storeList/storeList",
 			"name": "storeList"
-		}
-	],
+		},
+		{
+            "path" : "pages/particulars/particulars",
+			"name": "particulars"
+        }
+    ],
 	"globalStyle": {
 		"navigationStyle": "custom",
 		"backgroundColor": "#F8F8F8",
