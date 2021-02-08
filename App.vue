@@ -23,7 +23,7 @@
 				nv = nv || {
 					items: []
 				};
-				console.log(nv,'APPvue');
+				console.log(nv, 'APPvue');
 				//购物车无数据
 				if (!nv.items.length) {
 					uni.removeTabBarBadge({

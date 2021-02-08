@@ -23,6 +23,12 @@
 				<!-- <div class="to-map">前往导航 ></div> -->
 			</div>
 		</div>
+		<div class="null-view" v-show="!storeList.length">
+			<image class="null-img" src="/static/images/null-img/data-null.png"></image>
+			<text class="null-text">暂无数据</text>
+		</div>
+		
+		
 	</view>
 </template>
 
@@ -39,7 +45,8 @@
 			return {
 				storeList: [],
 				searchText: '',
-				selectStore: {}
+				selectStore: {},
+				isLoad:false
 			};
 		},
 		methods: {
@@ -203,5 +210,22 @@
 			}
 
 		}
+	}
+	
+	.null-view {
+		@include flexVtCenter;
+		flex-flow: column;
+		width: 360rpx;
+		margin: 180rpx auto;
+		.null-img {
+			width: 360rpx;
+			height: 360rpx;
+		}
+		.null-text {
+			font-size: 28rpx;
+			color: $color-text3;
+			margin-top: 36rpx;
+		}
+		
 	}
 </style>

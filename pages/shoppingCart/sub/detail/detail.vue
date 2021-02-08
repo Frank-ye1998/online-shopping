@@ -1,8 +1,11 @@
 <template>
 	<view class="detail-main">
-		<view class="back" @tap="goBack()">
+		<div @tap="pageScroll" :style="{opacity:topColor}" class="top-bar-ts">
+
+		</div>
+		<!-- 		<view class="back" @tap="goBack()">
 			<i class="icon icon-back"></i>
-		</view>
+		</view> -->
 		<view class="">
 			<view class="deta-mess">
 				<view class="detail-img">
@@ -41,6 +44,8 @@
 			</view>
 		</view>
 		<view class="calculation-plc"></view>
+
+		<div class="test"></div>
 	</view>
 </template>
 
@@ -65,6 +70,7 @@
 				skuCode: "",
 				skuStr: "",
 				quantity: 1,
+				topColor: 0
 			};
 		},
 		methods: {
@@ -128,15 +134,41 @@
 					}
 					this.detailData = res.data;
 				});
+			},
+			pageScroll:function(num){
+				uni.pageScrollTo({
+				    scrollTop: 600,
+				    duration: 300
+				});
 			}
 		},
 		onLoad: function() {
 			this.getDetailData(this.$Route.query.id);
 		},
+		onPageScroll: function(e) {
+			let num = e.scrollTop / 200;
+			this.topColor = num <= 1 ? num : 1;
+			console.log(this.topColor);
+		}
 	};
 </script>
 
 <style lang="scss">
+	.test {
+		width: 100%;
+		height: 3000rpx;
+	}
+
+	.top-bar-ts {
+		position: fixed;
+		z-index: 100;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 120rpx;
+		background: #fff;
+	}
+
 	page {
 		background-color: $color-page;
 	}
