@@ -237,7 +237,6 @@
 			uni.$on("citySelected", (data) => {
 				this.nowCity = data;
 			});
-
 		}
 
 	};

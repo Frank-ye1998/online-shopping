@@ -129,7 +129,6 @@
 				});
 			},
 			changeType(index) {
-				// this.$store.commit('setIndex', index)
 				this.$Router.push({
 					name: 'Confirm',
 					params: {
@@ -167,11 +166,9 @@
 			}
 		},
 		onLoad: function() {
-			console.log(this.$menuList);
 			if (this.$menuList.isLoad) {
 				this.setList(this.$menuList.data);
 			} else {
-				// uni.showLoading()
 				this.getList();
 			}
 		},

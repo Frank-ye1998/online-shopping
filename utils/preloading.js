@@ -13,7 +13,7 @@ const preloading = function() {
 		.getCategoryData({
 			sendWay: "1",
 		})
-		.then((res) => {
+		.then(res => {
 			res.isLoad = true;
 			store.dispatch('setMenuList', res);
 		})

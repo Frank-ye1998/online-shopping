@@ -1,11 +1,11 @@
 <template>
 	<view class="receiving-method-main">
-		<div class="modify-date" v-if="showDate">
+		<div class="modify-date" @tap="timePicker" v-if="showDate">
 			<div class="tit">
 				送达时间
 			</div>
 			<div class="right">
-				<div class="text">今天{{deliveryTimeText}}</div>
+				<div class="text">{{deliveryTimeText}}</div>
 				<i class="icon icon-to"></i>
 			</div>
 			<div class="hr"></div>
@@ -60,6 +60,9 @@
 			}
 		},
 		methods: {
+			timePicker:function(){
+				uni.$emit('timepicker',true);
+			},
 			methodChange: function() {
 				this.setReceivingMethod(!this.$receivingMethod);
 				if (!this.$receivingMethod) {
