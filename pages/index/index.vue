@@ -107,7 +107,7 @@
 		},
 		data() {
 			return {
-				isMask:true,
+				isMask:false,
 				bottomLogin: false, //底部登录提示
 				shopArr: [
 					[{
@@ -300,6 +300,12 @@
 			} else {
 				this.bottomLogin = false;
 			}
+			
+			// const query = uni.createSelectorQuery().in(this);
+			// query.select('.receive').boundingClientRect(data => {
+			//   console.log("得到布局位置信息" + JSON.stringify(data));
+			//   console.log("节点离页面顶部的距离为" + data.top);
+			// }).exec();
 		},
 		onLoad() {
 			this.getLoginCoupon();
